@@ -76,7 +76,7 @@ const PlaygroundTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       <textarea
         className={cn(
           "w-full resize-none bg-transparent shadow-sm",
-          "rounded-full border border-border",
+          "rounded-xl border border-border",
           "p-3",
           "text-sm leading-5",
           "placeholder:text-muted-foreground",

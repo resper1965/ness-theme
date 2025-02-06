@@ -51,7 +51,7 @@ const ChatInput = () => {
   const isDisabled = selectedAgent === "";
 
   return (
-    <div className="relative mx-auto flex w-full max-w-2xl justify-center gap-x-2 mb-1 font-inter">
+    <div className="relative mx-auto flex w-full max-w-2xl justify-center items-center gap-x-2 mb-1 font-inter">
       <PlaygroundTextArea
         placeholder={"Ask anything"}
         value={inputMessage}
@@ -62,17 +62,17 @@ const ChatInput = () => {
             handleSubmit();
           }
         }}
-        className="w-full border border-border/50 pr-10 text-sm focus:border-border bg-primary"
+        className="w-full border border-border/50 pr-10 text-sm focus:border-border bg-[#27272a]"
         disabled={isDisabled}
         ref={chatInputRef}
       />
       <Button
         onClick={handleSubmit}
         disabled={isDisabled}
-        variant="link"
-        className="absolute bottom-[-12px] right-1.5 -translate-y-1/2 text-secondary"
+        size="icon"
+        className="bg-secondary text-primary p-5 rounded-xl"
       >
-        <SendIcon className="w-4 h-4" />
+        <SendIcon className="w-5 h-5" />
       </Button>
     </div>
   );
