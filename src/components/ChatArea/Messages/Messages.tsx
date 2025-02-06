@@ -1,19 +1,17 @@
 import { memo } from "react";
-
-// import Icon from '@/components/ui/icon'
+import { AgentIcon, UserIcon } from "@/components/ui/Icons";
 
 import MarkdownRenderer from "@/components/ui/typography/MarkdownRenderer";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 
 import type { PlaygroundChatMessage } from "@/types/playground";
-import { Sparkles } from "lucide-react";
 
 interface MessageProps {
   message: PlaygroundChatMessage;
 }
 
 export const AgentMessage = ({ message }: MessageProps) => {
-  const { streamingError } = usePlaygroundStore();
+  const { streamingError, selectedAgent } = usePlaygroundStore();
 
   let messageContent;
   if (message.content) {
@@ -36,11 +34,9 @@ export const AgentMessage = ({ message }: MessageProps) => {
   }
 
   return (
-    <div className="flex flex-row items-start gap-4">
-      <div className="shrink-0">
-        <div className="bg-brand text-secondary rounded-full p-1">
-          <Sparkles size={16} />
-        </div>
+    <div className="flex flex-col items-start gap-4 font-inter">
+      <div className="flex items-center gap-x-2 text-sm font-medium font-geist uppercase text-brand">
+        <AgentIcon /> {selectedAgent}
       </div>
       {messageContent}
     </div>
@@ -49,9 +45,14 @@ export const AgentMessage = ({ message }: MessageProps) => {
 
 export const UserMessage = memo(({ message }: MessageProps) => {
   return (
-    <div className="flex flex-row-reverse items-start gap-4 pt-4 text-start max-md:break-words">
-      <div className="text-md font-medium text-primary/80 bg-secondary px-2 py-1 rounded-lg">
-        {message.content}
+    <div className="flex items-start pt-4 text-start max-md:break-words">
+      <div className="flex flex-col gap-y-3">
+        <p className="text-muted flex items-center gap-x-2 text-sm font-medium">
+          <UserIcon /> <span className="uppercase">you</span>{" "}
+        </p>
+        <div className="text-md text-secondary py-1 rounded-lg font-inter">
+          {message.content}
+        </div>
       </div>
     </div>
   );

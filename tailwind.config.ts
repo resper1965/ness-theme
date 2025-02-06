@@ -14,6 +14,7 @@ export default {
         background: "#111113",
         secondary: "#f5f5f5",
         border: "#7d7d7d",
+        muted: "#A1A1AA",
       },
       fontFamily: {
         geist: ["Geist Mono", "monospace"],
