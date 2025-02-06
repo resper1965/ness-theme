@@ -1,15 +1,15 @@
-import { useCallback } from 'react'
-import { toast } from 'sonner'
+import { useCallback } from "react";
+import { toast } from "sonner";
 
 // import { useParams } from 'next/navigation'
 // import { useQueryState } from 'nuqs'
 // import { toast } from 'react-toastify'
 
 // import { deletePlaygroundSessionAPI } from '@/api/playground'
-import { usePlaygroundStore } from '@/stores/PlaygroundStore'
+import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 // import { type DefaultPageParams } from '@/types/globals'
-import { type PlaygroundChatMessage } from '@/types/playground'
-import { getPlaygroundAgentsAPI } from '@/api/playground'
+import { type PlaygroundChatMessage } from "@/types/playground";
+import { getPlaygroundAgentsAPI } from "@/api/playground";
 // import { constructEndpointUrl } from '@/utils/playgroundUtils'
 // import useUser from '../useUser'
 
@@ -17,8 +17,10 @@ const useChatActions = () => {
   // const params = useParams<DefaultPageParams>()
   // const [sessionId, setSessionId] = useQueryState('session')
   // const [selectedAgent] = useQueryState('agent')
-  const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint);
-  const setMessages = usePlaygroundStore((state) => state.setMessages)
+  const selectedEndpoint = usePlaygroundStore(
+    (state) => state.selectedEndpoint,
+  );
+  const setMessages = usePlaygroundStore((state) => state.setMessages);
   // const setHistoryData = usePlaygroundStore((state) => state.setHistoryData)
   // const historyData = usePlaygroundStore((state) => state.historyData)
   // const username = useUser()?.username
@@ -27,16 +29,16 @@ const useChatActions = () => {
   // const userId = teamURL ? `${username}__${teamURL}` : username
 
   const clearChat = useCallback(() => {
-  setMessages([])
+    setMessages([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   const addMessage = useCallback(
     (message: PlaygroundChatMessage) => {
-      setMessages((prevMessages) => [...prevMessages, message])
+      setMessages((prevMessages) => [...prevMessages, message]);
     },
-    [setMessages]
-  )
+    [setMessages],
+  );
 
   const getAgents = useCallback(async () => {
     try {
@@ -47,7 +49,7 @@ const useChatActions = () => {
       console.error("Error in getAgents:", error);
       return [];
     }
-  }, [selectedEndpoint])
+  }, [selectedEndpoint]);
 
   // const deleteSession = useCallback(
   //   async (sessionIdToDelete: string) => {
@@ -92,7 +94,7 @@ const useChatActions = () => {
     addMessage,
     getAgents,
     // deleteSession
-  }
-}
+  };
+};
 
-export default useChatActions
+export default useChatActions;

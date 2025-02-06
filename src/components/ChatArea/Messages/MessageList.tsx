@@ -2,7 +2,6 @@
 // import References from '@/components/common/Chat/References'
 // import Icon from '@/components/ui/icon'
 //   import DetailAction from '@/components/common/Chat/DetailAction'
-import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 
 import type { PlaygroundChatMessage } from "@/types/playground";
 
@@ -31,13 +30,7 @@ interface MessageWrapperProps {
   isLastMessage: boolean;
 }
 
-const AgentMessageWrapper = ({
-  message,
-  isLastMessage,
-}: MessageWrapperProps) => {
-  const isStreaming = usePlaygroundStore((state) => state.isStreaming);
-  const messageIsStreaming = isStreaming && isLastMessage;
-
+const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
   return (
     <div className="flex flex-col gap-y-9">
       {message.extra_data?.reasoning_steps &&
@@ -114,6 +107,8 @@ export const ToolComponent = memo(({ tools }: ToolCallProps) => (
     </div>
   </div>
 ));
+
+ToolComponent.displayName = "ToolComponent";
 
 const MessageList = ({ messages }: MessageListProps) => {
   if (messages.length === 0) {

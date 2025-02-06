@@ -1,57 +1,57 @@
-import { create } from 'zustand'
+import { create } from "zustand";
 
 import {
   type HistoryEntry,
-  type PlaygroundChatMessage
-} from '@/types/playground'
+  type PlaygroundChatMessage,
+} from "@/types/playground";
 
 interface PlaygroundStore {
-  streamingError: boolean
-  setStreamingError: (streamingError: boolean) => void
-  storage: boolean
-  setStorage: (storage: boolean) => void
+  streamingError: boolean;
+  setStreamingError: (streamingError: boolean) => void;
+  storage: boolean;
+  setStorage: (storage: boolean) => void;
   endpoints: {
-    endpoint: string
-    id_playground_endpoint: string
-  }[]
+    endpoint: string;
+    id_playground_endpoint: string;
+  }[];
   setEndpoints: (
     endpoints: {
-      endpoint: string
-      id_playground_endpoint: string
-    }[]
-  ) => void
-  isStreaming: boolean
-  setIsStreaming: (isStreaming: boolean) => void
-  isSidebarCollapsed: boolean
-  setIsSidebarCollapsed: (isSidebarCollapsed: boolean) => void
-  historyLoading: boolean
-  setHistoryLoading: (loading: boolean) => void
-  isEndpointActive: boolean
-  setIsEndpointActive: (isActive: boolean) => void
-  endpointLoading: boolean
-  setEndpointLoading: (loading: boolean) => void
+      endpoint: string;
+      id_playground_endpoint: string;
+    }[],
+  ) => void;
+  isStreaming: boolean;
+  setIsStreaming: (isStreaming: boolean) => void;
+  isSidebarCollapsed: boolean;
+  setIsSidebarCollapsed: (isSidebarCollapsed: boolean) => void;
+  historyLoading: boolean;
+  setHistoryLoading: (loading: boolean) => void;
+  isEndpointActive: boolean;
+  setIsEndpointActive: (isActive: boolean) => void;
+  endpointLoading: boolean;
+  setEndpointLoading: (loading: boolean) => void;
 
-  messages: PlaygroundChatMessage[]
+  messages: PlaygroundChatMessage[];
   setMessages: (
     messages:
       | PlaygroundChatMessage[]
-      | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[])
-  ) => void
+      | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[]),
+  ) => void;
 
-  historyData: HistoryEntry[]
+  historyData: HistoryEntry[];
   setHistoryData: (
     historyData:
       | HistoryEntry[]
-      | ((prevHistoryData: HistoryEntry[]) => HistoryEntry[])
-  ) => void
-  isMonitoring: boolean
-  setIsMonitoring: (isMonitoring: boolean) => void
+      | ((prevHistoryData: HistoryEntry[]) => HistoryEntry[]),
+  ) => void;
+  isMonitoring: boolean;
+  setIsMonitoring: (isMonitoring: boolean) => void;
 
-  chatInputRef: React.RefObject<HTMLTextAreaElement | null>
-  selectedEndpoint: string
-  setSelectedEndpoint: (selectedEndpoint: string) => void
-  selectedAgent: string
-  setSelectedAgent: (selectedAgent: string) => void
+  chatInputRef: React.RefObject<HTMLTextAreaElement | null>;
+  selectedEndpoint: string;
+  setSelectedEndpoint: (selectedEndpoint: string) => void;
+  selectedAgent: string;
+  setSelectedAgent: (selectedAgent: string) => void;
 }
 
 export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
@@ -78,16 +78,16 @@ export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
   setMessages: (messages) =>
     set((state) => ({
       messages:
-        typeof messages === 'function' ? messages(state.messages) : messages
+        typeof messages === "function" ? messages(state.messages) : messages,
     })),
 
   historyData: [],
   setHistoryData: (historyData) =>
     set((state) => ({
       historyData:
-        typeof historyData === 'function'
+        typeof historyData === "function"
           ? historyData(state.historyData)
-          : historyData
+          : historyData,
     })),
 
   isMonitoring: true,
@@ -98,4 +98,4 @@ export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
   setSelectedEndpoint: (selectedEndpoint) => set(() => ({ selectedEndpoint })),
   selectedAgent: "",
   setSelectedAgent: (selectedAgent) => set(() => ({ selectedAgent })),
-}))
+}));
