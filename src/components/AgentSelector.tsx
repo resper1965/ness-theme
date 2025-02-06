@@ -24,10 +24,10 @@ export function AgentSelector() {
   const setMessages = usePlaygroundStore((state) => state.setMessages);
   const { getAgents } = useChatActions();
 
-  const [agentId, setAgentId] = useQueryState('agent', {
+  const [agentId, setAgentId] = useQueryState("agent", {
     parse: (value) => value || undefined,
-    history: 'push'
-  })
+    history: "push",
+  });
 
   useEffect(() => {
     const fetchAgents = async () => {
