@@ -1,36 +1,38 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select"
-import useChatActions from "@/hooks/playground/useChatActions"
-import { usePlaygroundStore } from "@/stores/PlaygroundStore"
-import { useEffect } from "react"
+} from "@/components/ui/select";
+import useChatActions from "@/hooks/playground/useChatActions";
+import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import { useEffect } from "react";
 
 interface Agent {
-  value: string
-  label: string
+  value: string;
+  label: string;
 }
 
 export function AgentSelector() {
-  const [agents, setAgents] = React.useState<Agent[]>([])
-  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent)
-  const setSelectedAgent = usePlaygroundStore((state) => state.setSelectedAgent)
-  const { getAgents } = useChatActions()
+  const [agents, setAgents] = React.useState<Agent[]>([]);
+  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent);
+  const setSelectedAgent = usePlaygroundStore(
+    (state) => state.setSelectedAgent,
+  );
+  const { getAgents } = useChatActions();
 
   // Fetch agents when the component mounts
   useEffect(() => {
     const fetchAgents = async () => {
-      const result: Agent[] = await getAgents()
-      setAgents(result)
-    }
-    fetchAgents()
-  }, [getAgents])
+      const result: Agent[] = await getAgents();
+      setAgents(result);
+    };
+    fetchAgents();
+  }, [getAgents]);
 
   return (
     <Select
@@ -50,5 +52,5 @@ export function AgentSelector() {
         ))}
       </SelectContent>
     </Select>
-  )
-} 
+  );
+}

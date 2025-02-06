@@ -2,7 +2,6 @@
 // import References from '@/components/common/Chat/References'
 // import Icon from '@/components/ui/icon'
 //   import DetailAction from '@/components/common/Chat/DetailAction'
-import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 
 import type { PlaygroundChatMessage } from "@/types/playground";
 
@@ -10,8 +9,12 @@ import { AgentMessage, UserMessage } from "./Messages";
 import Tooltip from "@/components/common/Tooltip";
 import { HammerIcon, BrainCircuitIcon } from "lucide-react";
 import { memo } from "react";
-import { ToolCallProps, ReasoningStepProps, ReasoningProps } from "@/types/playground";
-import React, { type FC } from 'react'
+import {
+  ToolCallProps,
+  ReasoningStepProps,
+  ReasoningProps,
+} from "@/types/playground";
+import React, { type FC } from "react";
 
 // import ChatBlankState from '../../../BlankStates/ChatBlankState'
 // import Tooltip from '@/components/common/Tooltip'
@@ -27,13 +30,7 @@ interface MessageWrapperProps {
   isLastMessage: boolean;
 }
 
-const AgentMessageWrapper = ({
-  message,
-  isLastMessage,
-}: MessageWrapperProps) => {
-  const isStreaming = usePlaygroundStore((state) => state.isStreaming);
-  const messageIsStreaming = isStreaming && isLastMessage;
-
+const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
   return (
     <div className="flex flex-col gap-y-9">
       {message.extra_data?.reasoning_steps &&
@@ -41,13 +38,9 @@ const AgentMessageWrapper = ({
           <div className="flex items-start gap-4">
             <Tooltip
               delayDuration={0}
-              content={
-                <p className="text-accent">
-                  Reasoning
-                </p>
-              }
+              content={<p className="text-accent">Reasoning</p>}
               side="top"
-            >      
+            >
               <BrainCircuitIcon className="h-5 w-5" />
             </Tooltip>
             <div className="flex flex-col gap-3">
@@ -60,11 +53,7 @@ const AgentMessageWrapper = ({
         <div className="flex items-start gap-4">
           <Tooltip
             delayDuration={0}
-            content={
-              <p className="text-accent">
-                Tool Calls
-              </p>
-            }
+            content={<p className="text-accent">Tool Calls</p>}
             side="top"
             className="rounded-sm bg-primary p-1"
           >
@@ -98,7 +87,7 @@ const Reasoning: FC<ReasoningStepProps> = ({ index, stepTitle }) => (
     </div>
     <p className="text-xs">{stepTitle}</p>
   </div>
-)
+);
 const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
   <div className="flex flex-col items-start justify-center gap-2">
     {reasoning.map((title, index) => (
@@ -109,15 +98,17 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
       />
     ))}
   </div>
-)
+);
 
 export const ToolComponent = memo(({ tools }: ToolCallProps) => (
-  <div className="cursor-pointer rounded-md bg-gray-800 px-2  py-1.5 text-xs hover:bg-gray-700">
-      <div className="flex items-center justify-between gap-x-1">
-        <p className="uppercase">{tools.tool_name}</p>
-      </div>
+  <div className="cursor-pointer rounded-md bg-gray-800 px-2 py-1.5 text-xs hover:bg-gray-700">
+    <div className="flex items-center justify-between gap-x-1">
+      <p className="uppercase">{tools.tool_name}</p>
+    </div>
   </div>
-))
+));
+
+ToolComponent.displayName = "ToolComponent";
 
 const MessageList = ({ messages }: MessageListProps) => {
   if (messages.length === 0) {

@@ -5,7 +5,6 @@ import { PlaygroundTextArea } from "./PlaygroundTextArea";
 import { Button } from "@/components/ui/button";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import useAIChatStreamHandler from "@/hooks/playground/useAIStreamHandler";
-import { useQueryState } from "nuqs";
 import { SendIcon } from "lucide-react";
 // import { useAgentsQuery } from '@/hooks/playground/useAgentsQuery'
 const ChatInput = () => {
@@ -16,9 +15,9 @@ const ChatInput = () => {
 
   // const { data: agents = [] } = useAgentsQuery(selectedEndpoint)
   const { handleStreamResponse } = useAIChatStreamHandler();
-  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent)
+  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent);
   const setStreamingError = usePlaygroundStore(
-    (state) => state.setStreamingError
+    (state) => state.setStreamingError,
   );
   const streamingError = usePlaygroundStore((state) => state.streamingError);
   const [inputMessage, setInputMessage] = useState("");
@@ -44,12 +43,12 @@ const ChatInput = () => {
       toast.error(
         `Error in handleSubmit: ${
           error instanceof Error ? error.message : String(error)
-        }`
+        }`,
       );
     }
   };
 
-  const isDisabled = selectedAgent === ""
+  const isDisabled = selectedAgent === "";
 
   return (
     <div className="relative mx-auto flex w-full max-w-2xl justify-center gap-x-2 mb-1">

@@ -1,16 +1,16 @@
-import { useCallback } from 'react'
+import { useCallback } from "react";
 
 // import { useQueryState } from 'nuqs'
 // import { toast } from 'sonner'
 
-import { APIRoutes } from '@/api/routes'
+import { APIRoutes } from "@/api/routes";
 
-import useChatActions from '@/hooks/playground/useChatActions'
-import { usePlaygroundStore } from '@/stores/PlaygroundStore'
-import { RunEvent, type RunResponse } from '@/types/playground'
-import { constructEndpointUrl } from '@/utils/playgroundUtils'
-import useAIResponseStream from '../streaming/useAIResponseStream'
-import { ToolCall } from '@/types/playground'
+import useChatActions from "@/hooks/playground/useChatActions";
+import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import { RunEvent, type RunResponse } from "@/types/playground";
+import { constructEndpointUrl } from "@/utils/playgroundUtils";
+import useAIResponseStream from "../streaming/useAIResponseStream";
+import { ToolCall } from "@/types/playground";
 
 /**
  * useAIChatStreamHandler is responsible for making API calls and handling the stream response.
@@ -21,13 +21,17 @@ const useAIChatStreamHandler = () => {
   // const isMonitoring = usePlaygroundStore((s) => s.isMonitoring)
   // const username = useUser()?.username
   // const setHistoryData = usePlaygroundStore((s) => s.setHistoryData)
-  const setMessages = usePlaygroundStore((state) => state.setMessages)
-  const setStreamingError = usePlaygroundStore((state) => state.setStreamingError)
-  const { addMessage } = useChatActions()
-  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent)
-  const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint)
+  const setMessages = usePlaygroundStore((state) => state.setMessages);
+  const setStreamingError = usePlaygroundStore(
+    (state) => state.setStreamingError,
+  );
+  const { addMessage } = useChatActions();
+  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent);
+  const selectedEndpoint = usePlaygroundStore(
+    (state) => state.selectedEndpoint,
+  );
   // const [sessionId, setSessionId] = useQueryState('session')
-  const { streamResponse } = useAIResponseStream()
+  const { streamResponse } = useAIResponseStream();
   // const setStreamingError = usePlaygroundStore((s) => s.setStreamingError)
   // const setIsStreaming = usePlaygroundStore((s) => s.setIsStreaming)
   // const params = useParams<DefaultPageParams>()
@@ -40,135 +44,133 @@ const useAIChatStreamHandler = () => {
       // setIsStreaming(true)
 
       // Create FormData if input is a string
-      const formData = input instanceof FormData ? input : new FormData()
-      if (typeof input === 'string') {
-        formData.append('message', input)
+      const formData = input instanceof FormData ? input : new FormData();
+      if (typeof input === "string") {
+        formData.append("message", input);
       }
 
       // Remove the last two messages only if they were an errored pair
       setMessages((prevMessages) => {
         if (prevMessages.length >= 2) {
-          const lastMessage = prevMessages[prevMessages.length - 1]
-          const secondLastMessage = prevMessages[prevMessages.length - 2]
+          const lastMessage = prevMessages[prevMessages.length - 1];
+          const secondLastMessage = prevMessages[prevMessages.length - 2];
           if (
-            lastMessage.role === 'agent' &&
+            lastMessage.role === "agent" &&
             lastMessage.streamingError === true && // only remove if an error occurred
-            secondLastMessage.role === 'user'
+            secondLastMessage.role === "user"
           ) {
-            return prevMessages.slice(0, -2)
+            return prevMessages.slice(0, -2);
           }
         }
-        return prevMessages
-      })
+        return prevMessages;
+      });
 
       // Add user message
       addMessage({
-        role: 'user',
-        content: formData.get('message') as string,
-        created_at: Math.floor(Date.now() / 1000)
-      })
+        role: "user",
+        content: formData.get("message") as string,
+        created_at: Math.floor(Date.now() / 1000),
+      });
 
       // Add an empty agent message placeholder with tool_calls array
       addMessage({
-        role: 'agent',
-        content: '',
+        role: "agent",
+        content: "",
         tool_calls: [],
         streamingError: false,
-        created_at: Math.floor(Date.now() / 1000) + 1
-      })
+        created_at: Math.floor(Date.now() / 1000) + 1,
+      });
 
       // Define variable to hold previous content for tool call diffing
-      let lastContent = ''
+      let lastContent = "";
 
       try {
-        const endpointUrl = constructEndpointUrl(selectedEndpoint)
+        const endpointUrl = constructEndpointUrl(selectedEndpoint);
 
         // Build URL with the selected agent's parameter
         const playgroundRunUrl = APIRoutes.AgentRun(endpointUrl).replace(
-          '{agent_id}',
-          selectedAgent
-        )
+          "{agent_id}",
+          selectedAgent,
+        );
 
         // Append required field
-        formData.append('stream', 'true')
+        formData.append("stream", "true");
 
         await streamResponse({
           apiUrl: playgroundRunUrl,
           requestBody: formData,
           onChunk: (chunk: RunResponse) => {
-            console.log('chunk', chunk)
+            console.log("chunk", chunk);
             if (chunk.event === RunEvent.RunResponse) {
               // Update the last (agent) message with new content and tool calls from the stream chunk
               setMessages((prevMessages) => {
-                const newMessages = [...prevMessages]
-                const lastMessage = newMessages[newMessages.length - 1]
+                const newMessages = [...prevMessages];
+                const lastMessage = newMessages[newMessages.length - 1];
                 if (
                   lastMessage &&
-                  lastMessage.role === 'agent' &&
-                  typeof chunk.content === 'string'
+                  lastMessage.role === "agent" &&
+                  typeof chunk.content === "string"
                 ) {
                   // Append only the new part of the content
-                  const uniqueContent = chunk.content.replace(lastContent, '')
-                  lastMessage.content += uniqueContent
-                  lastContent = chunk.content
+                  const uniqueContent = chunk.content.replace(lastContent, "");
+                  lastMessage.content += uniqueContent;
+                  lastContent = chunk.content;
 
                   // Process tool calls from chunk (removing reasoning messages)
-                  const toolCalls: ToolCall[] = [
-                    ...(chunk.tools ?? [])
-                  ]
+                  const toolCalls: ToolCall[] = [...(chunk.tools ?? [])];
                   if (toolCalls.length > 0) {
-                    lastMessage.tool_calls = toolCalls
+                    lastMessage.tool_calls = toolCalls;
                   }
                   if (chunk.extra_data?.reasoning_steps) {
                     lastMessage.extra_data = {
                       ...lastMessage.extra_data,
-                      reasoning_steps: chunk.extra_data.reasoning_steps
-                    }
+                      reasoning_steps: chunk.extra_data.reasoning_steps,
+                    };
                   }
 
-                  console.log('tool calls', toolCalls)
+                  console.log("tool calls", toolCalls);
                   lastMessage.created_at =
-                    chunk.created_at ?? lastMessage.created_at
-                //   if (chunk.extra_data?.reasoning_steps) {
-                //     lastMessage.extra_data = {
-                //       ...(lastMessage.extra_data || {}),
-                //       reasoning_steps: chunk.extra_data.reasoning_steps
-                //     }
-                //   }
-                //   if (chunk.extra_data?.references) {
-                //     lastMessage.extra_data = {
-                //       ...(lastMessage.extra_data || {}),
-                //       references: chunk.extra_data.references
-                //     }
-                //   }
-                //   if (chunk.images) {
-                //     lastMessage.images = chunk.images
-                //   }
-                //   if (chunk.videos) {
-                //     lastMessage.videos = chunk.videos
-                //   }
-                //   if (chunk.audio) {
-                //     lastMessage.audio = chunk.audio
-                //   }
+                    chunk.created_at ?? lastMessage.created_at;
+                  //   if (chunk.extra_data?.reasoning_steps) {
+                  //     lastMessage.extra_data = {
+                  //       ...(lastMessage.extra_data || {}),
+                  //       reasoning_steps: chunk.extra_data.reasoning_steps
+                  //     }
+                  //   }
+                  //   if (chunk.extra_data?.references) {
+                  //     lastMessage.extra_data = {
+                  //       ...(lastMessage.extra_data || {}),
+                  //       references: chunk.extra_data.references
+                  //     }
+                  //   }
+                  //   if (chunk.images) {
+                  //     lastMessage.images = chunk.images
+                  //   }
+                  //   if (chunk.videos) {
+                  //     lastMessage.videos = chunk.videos
+                  //   }
+                  //   if (chunk.audio) {
+                  //     lastMessage.audio = chunk.audio
+                  //   }
                 }
-                return newMessages
-              })
+                return newMessages;
+              });
             } else if (chunk.event === RunEvent.RunCompleted) {
               // Final update on completion of the stream:
               setMessages((prevMessages) => {
                 const newMessages = prevMessages.map((message, index) => {
                   if (
                     index === prevMessages.length - 1 &&
-                    message.role === 'agent'
+                    message.role === "agent"
                   ) {
-                    let updatedContent: string
-                    if (typeof chunk.content === 'string') {
-                      updatedContent = chunk.content
+                    let updatedContent: string;
+                    if (typeof chunk.content === "string") {
+                      updatedContent = chunk.content;
                     } else {
                       try {
-                        updatedContent = JSON.stringify(chunk.content)
+                        updatedContent = JSON.stringify(chunk.content);
                       } catch {
-                        updatedContent = 'Error parsing response'
+                        updatedContent = "Error parsing response";
                       }
                     }
                     return {
@@ -178,49 +180,49 @@ const useAIChatStreamHandler = () => {
                         chunk.tools && chunk.tools.length > 0
                           ? [...chunk.tools]
                           : message.tool_calls,
-                    //   images: chunk.images ?? message.images,
-                    //   videos: chunk.videos ?? message.videos,
+                      //   images: chunk.images ?? message.images,
+                      //   videos: chunk.videos ?? message.videos,
                       created_at: chunk.created_at ?? message.created_at,
                       extra_data: {
-                    //     ...message.extra_data,
+                        //     ...message.extra_data,
                         reasoning_steps:
                           chunk.extra_data?.reasoning_steps ??
                           message.extra_data?.reasoning_steps,
-                    //     references:
-                    //       chunk.extra_data?.references ??
-                    //       message.extra_data?.references
-                      }
-                    }
+                        //     references:
+                        //       chunk.extra_data?.references ??
+                        //       message.extra_data?.references
+                      },
+                    };
                   }
-                  return message
-                })
-                return newMessages
-              })
+                  return message;
+                });
+                return newMessages;
+              });
             }
           },
           onError: (error) => {
             setMessages((prevMessages) => {
-              const newMessages = [...prevMessages]
-              const lastMessage = newMessages[newMessages.length - 1]
-              if (lastMessage && lastMessage.role === 'agent') {
-                lastMessage.streamingError = true
+              const newMessages = [...prevMessages];
+              const lastMessage = newMessages[newMessages.length - 1];
+              if (lastMessage && lastMessage.role === "agent") {
+                lastMessage.streamingError = true;
               }
-              return newMessages
-            })
+              return newMessages;
+            });
             // Update global state to indicate a streaming error occurred
-            setStreamingError(true)
+            setStreamingError(true);
             // Use console.error instead of toast until notification handling is added
             console.error(
               `Error in streamResponse: ${
                 error instanceof Error ? error.message : String(error)
-              }`
-            )
+              }`,
+            );
           },
           onComplete: () => {
             // Reset the global streaming error flag on successful completion
-            setStreamingError(false)
-          }
-        })
+            setStreamingError(false);
+          },
+        });
       } catch {
       } finally {
         // Uncomment when adding streaming state updates
@@ -234,11 +236,11 @@ const useAIChatStreamHandler = () => {
       selectedEndpoint,
       streamResponse,
       selectedAgent,
-      setStreamingError
-    ]
-  )
+      setStreamingError,
+    ],
+  );
 
-  return { handleStreamResponse }
-}
+  return { handleStreamResponse };
+};
 
-export default useAIChatStreamHandler
+export default useAIChatStreamHandler;

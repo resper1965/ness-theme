@@ -11,13 +11,18 @@ export default function Sidebar() {
     <aside className=" h-screen w-64 bg-[#18181B] p-4 flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <AgnoIcon />
-        <span className="text-white text-xs font-medium uppercase font-geist-mono">Agno Chat</span>
+        <span className="text-white text-xs font-medium uppercase font-geist-mono">
+          Agno Chat
+        </span>
       </div>
-      <Button onClick={clearChat} className="bg-secondary text-primary hover:bg-secondary/80 rounded-xl text-xs">
+      <Button
+        onClick={clearChat}
+        className="bg-secondary text-primary hover:bg-secondary/80 rounded-xl text-xs"
+      >
         <PlusIcon />
         <span className="ml-2 uppercase">New Chat</span>
       </Button>
       <AgentSelector />
     </aside>
   );
-} 
+}
