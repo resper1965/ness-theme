@@ -12,6 +12,7 @@ import useChatActions from "@/hooks/playground/useChatActions";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useEffect } from "react";
 import { AgentIcon } from "./ui/Icons";
+import { useQueryState } from "nuqs";
 
 interface Agent {
   value: string;
@@ -20,14 +21,11 @@ interface Agent {
 
 export function AgentSelector() {
   const [agents, setAgents] = React.useState<Agent[]>([]);
-  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent);
-  const setSelectedAgent = usePlaygroundStore(
-    (state) => state.setSelectedAgent,
-  );
   const setMessages = usePlaygroundStore((state) => state.setMessages);
   const { getAgents } = useChatActions();
 
-  // Fetch agents when the component mounts
+  const [queryAgentId, setQueryAgentId] = useQueryState("agent");
+
   useEffect(() => {
     const fetchAgents = async () => {
       const result: Agent[] = await getAgents();
@@ -38,9 +36,10 @@ export function AgentSelector() {
 
   return (
     <Select
-      value={selectedAgent || ""}
+      value={queryAgentId || ""}
       onValueChange={(value) => {
-        setSelectedAgent(value === selectedAgent ? "" : value);
+        const newAgent = value === queryAgentId ? "" : value;
+        setQueryAgentId(newAgent);
         setMessages([]);
       }}
     >

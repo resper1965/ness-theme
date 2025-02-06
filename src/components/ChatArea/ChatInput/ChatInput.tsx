@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import useAIChatStreamHandler from "@/hooks/playground/useAIStreamHandler";
 import { SendIcon } from "lucide-react";
+import { useQueryState } from "nuqs";
 // import { useAgentsQuery } from '@/hooks/playground/useAgentsQuery'
 const ChatInput = () => {
   const { chatInputRef } = usePlaygroundStore();
@@ -15,7 +16,7 @@ const ChatInput = () => {
 
   // const { data: agents = [] } = useAgentsQuery(selectedEndpoint)
   const { handleStreamResponse } = useAIChatStreamHandler();
-  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent);
+  const [selectedAgent] = useQueryState("agent");
   const setStreamingError = usePlaygroundStore(
     (state) => state.setStreamingError,
   );
@@ -48,7 +49,7 @@ const ChatInput = () => {
     }
   };
 
-  const isDisabled = selectedAgent === "";
+  const isDisabled = !selectedAgent;
 
   return (
     <div className="relative mx-auto flex w-full max-w-2xl justify-center items-center gap-x-2 mb-1 font-inter">

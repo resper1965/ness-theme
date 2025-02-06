@@ -11,6 +11,7 @@ import { RunEvent, type RunResponse } from "@/types/playground";
 import { constructEndpointUrl } from "@/utils/playgroundUtils";
 import useAIResponseStream from "../streaming/useAIResponseStream";
 import { ToolCall } from "@/types/playground";
+import { useQueryState } from "nuqs";
 
 /**
  * useAIChatStreamHandler is responsible for making API calls and handling the stream response.
@@ -26,7 +27,7 @@ const useAIChatStreamHandler = () => {
     (state) => state.setStreamingError,
   );
   const { addMessage } = useChatActions();
-  const selectedAgent = usePlaygroundStore((state) => state.selectedAgent);
+  const [agentId] = useQueryState("agent");
   const selectedEndpoint = usePlaygroundStore(
     (state) => state.selectedEndpoint,
   );
@@ -87,10 +88,11 @@ const useAIChatStreamHandler = () => {
       try {
         const endpointUrl = constructEndpointUrl(selectedEndpoint);
 
-        // Build URL with the selected agent's parameter
+        if (!agentId) return;
+        // Build URL with the agent id from the URL query parameter
         const playgroundRunUrl = APIRoutes.AgentRun(endpointUrl).replace(
           "{agent_id}",
-          selectedAgent,
+          agentId,
         );
 
         // Append required field
@@ -235,7 +237,7 @@ const useAIChatStreamHandler = () => {
       addMessage,
       selectedEndpoint,
       streamResponse,
-      selectedAgent,
+      agentId,
       setStreamingError,
     ],
   );
