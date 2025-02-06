@@ -8,6 +8,6 @@ body {
 
 @layer base {
   body {
-    @apply bg-background text-secondary;
+    @apply bg-[#18181b] text-secondary;
   }
 }

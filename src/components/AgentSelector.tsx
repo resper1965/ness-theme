@@ -41,15 +41,23 @@ export function AgentSelector() {
         setSelectedAgent(value === selectedAgent ? "" : value)
       }
     >
-      <SelectTrigger className="w-60 border-border/50 focus:border-border/100">
-        <SelectValue placeholder="Select agent..." />
+      <SelectTrigger className="w-full border-none text-xs font-medium bg-[#27272a] rounded-lg uppercase">
+        <SelectValue placeholder="Select Agent" />
       </SelectTrigger>
-      <SelectContent className="border-border/50 focus:border-border/100">
+      <SelectContent className="border-none bg-[#27272a] rounded-lg">
         {agents.map((agent, index) => (
           <SelectItem key={`${agent.value}-${index}`} value={agent.value}>
             {agent.label}
           </SelectItem>
         ))}
+        {agents.length === 0 && (
+          <SelectItem
+            value="no-agents"
+            className="text-center cursor-not-allowed select-none"
+          >
+            No agents found
+          </SelectItem>
+        )}
       </SelectContent>
     </Select>
   );

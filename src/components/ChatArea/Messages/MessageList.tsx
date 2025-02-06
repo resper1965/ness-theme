@@ -101,7 +101,7 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
 );
 
 export const ToolComponent = memo(({ tools }: ToolCallProps) => (
-  <div className="cursor-pointer rounded-md bg-gray-800 px-2 py-1.5 text-xs hover:bg-gray-700">
+  <div className="cursor-pointer rounded-md bg-gray-800 px-2  py-1.5 text-xs hover:bg-gray-700">
     <div className="flex items-center justify-between gap-x-1">
       <p className="uppercase">{tools.tool_name}</p>
     </div>
@@ -113,8 +113,8 @@ ToolComponent.displayName = "ToolComponent";
 const MessageList = ({ messages }: MessageListProps) => {
   if (messages.length === 0) {
     return (
-      <div className="flex flex-col text-center items-center text-md">
-        <div className="max-w-md flex gap-y-6 flex-col">
+      <div className="flex flex-col text-center items-center text-md font-inter">
+        <div className="max-w-lg flex gap-y-6 flex-col">
           <p>
             This is an <span className="underline">open-source</span> an Agno
             Agent Chat, built with Next.js, Shadcn, and Tailwind CSS.
