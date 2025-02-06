@@ -433,7 +433,7 @@ interface ActionButtonProps {
 }
 
 const ActionButton = ({ href, variant, text }: ActionButtonProps) => {
-  const baseStyles = "px-4 py-2 text-xs transition-colors";
+  const baseStyles = "px-4 py-2 text-sm transition-colors";
   const variantStyles = {
     primary: "border border-border hover:bg-neutral-800 rounded-xl",
   };
