@@ -22,7 +22,7 @@ export function AgentSelector() {
   const [agents, setAgents] = React.useState<Agent[]>([]);
   const selectedAgent = usePlaygroundStore((state) => state.selectedAgent);
   const setSelectedAgent = usePlaygroundStore(
-    (state) => state.setSelectedAgent
+    (state) => state.setSelectedAgent,
   );
   const setMessages = usePlaygroundStore((state) => state.setMessages);
   const { getAgents } = useChatActions();
