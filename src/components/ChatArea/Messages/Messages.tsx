@@ -1,6 +1,6 @@
 import { memo } from "react";
-
-// import Icon from '@/components/ui/icon'
+import dayjs from "dayjs";
+import { UserIcon } from "@/components/ui/Icons";
 
 import MarkdownRenderer from "@/components/ui/typography/MarkdownRenderer";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
@@ -49,9 +49,15 @@ export const AgentMessage = ({ message }: MessageProps) => {
 
 export const UserMessage = memo(({ message }: MessageProps) => {
   return (
-    <div className="flex flex-row-reverse items-start gap-4 pt-4 text-start max-md:break-words">
-      <div className="text-md font-medium text-primary/80 bg-secondary px-2 py-1 rounded-lg">
-        {message.content}
+    <div className="flex items-start pt-4 text-start max-md:break-words">
+      <div className="flex flex-col gap-y-3">
+        <p className="text-muted flex items-center gap-x-2 text-xs font-medium">
+          <UserIcon /> <span className="uppercase">you</span>{" "}
+          <span>[{dayjs().format("HH:mm")}]</span>
+        </p>
+        <div className="text-sm text-secondary py-1 rounded-lg">
+          {message.content}
+        </div>
       </div>
     </div>
   );

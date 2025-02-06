@@ -23,3 +23,24 @@ export const AgnoIcon = ({ size = 16 }: { size?: number }) => {
     </svg>
   );
 };
+
+export const UserIcon = ({ size = 16 }: { size?: number }) => {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="16" height="16" rx="4" fill="#FAFAFA" />
+      <path
+        d="M11.5 12.5V11.5C11.5 10.9696 11.2893 10.4609 10.9142 10.0858C10.5391 9.71071 10.0304 9.5 9.5 9.5H6.5C5.96957 9.5 5.46086 9.71071 5.08579 10.0858C4.71071 10.4609 4.5 10.9696 4.5 11.5V12.5M10 5.5C10 6.60457 9.10457 7.5 8 7.5C6.89543 7.5 6 6.60457 6 5.5C6 4.39543 6.89543 3.5 8 3.5C9.10457 3.5 10 4.39543 10 5.5Z"
+        stroke="#18181B"
+        strokeWidth="0.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
