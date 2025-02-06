@@ -1,5 +1,4 @@
 import { memo } from "react";
-import dayjs from "dayjs";
 import { UserIcon } from "@/components/ui/Icons";
 
 import MarkdownRenderer from "@/components/ui/typography/MarkdownRenderer";
@@ -53,7 +52,6 @@ export const UserMessage = memo(({ message }: MessageProps) => {
       <div className="flex flex-col gap-y-3">
         <p className="text-muted flex items-center gap-x-2 text-xs font-medium">
           <UserIcon /> <span className="uppercase">you</span>{" "}
-          <span>[{dayjs().format("HH:mm")}]</span>
         </p>
         <div className="text-sm text-secondary py-1 rounded-lg">
           {message.content}
