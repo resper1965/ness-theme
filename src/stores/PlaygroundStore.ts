@@ -50,8 +50,6 @@ interface PlaygroundStore {
   chatInputRef: React.RefObject<HTMLTextAreaElement | null>;
   selectedEndpoint: string;
   setSelectedEndpoint: (selectedEndpoint: string) => void;
-  selectedAgent: string;
-  setSelectedAgent: (selectedAgent: string) => void;
 }
 
 export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
@@ -96,6 +94,4 @@ export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
   chatInputRef: { current: null },
   selectedEndpoint: "http://localhost:7777",
   setSelectedEndpoint: (selectedEndpoint) => set(() => ({ selectedEndpoint })),
-  selectedAgent: "",
-  setSelectedAgent: (selectedAgent) => set(() => ({ selectedAgent })),
 }));

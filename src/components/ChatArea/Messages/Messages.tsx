@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { AgentIcon, UserIcon } from "@/components/ui/Icons";
-
+import { useQueryState } from "nuqs";
 import MarkdownRenderer from "@/components/ui/typography/MarkdownRenderer";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 
@@ -11,8 +11,8 @@ interface MessageProps {
 }
 
 export const AgentMessage = ({ message }: MessageProps) => {
-  const { streamingError, selectedAgent } = usePlaygroundStore();
-
+  const { streamingError } = usePlaygroundStore();
+  const [selectedAgent] = useQueryState("agent");
   let messageContent;
   if (message.content) {
     messageContent = (
