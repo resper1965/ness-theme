@@ -8,6 +8,6 @@ body {
 
 @layer base {
   body {
-    @apply bg-background-default text-secondary;
+    @apply bg-primaryAccent text-secondary;
   }
 }

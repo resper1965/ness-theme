@@ -13,7 +13,7 @@ export default {
         primaryAccent: "#18181B",
         brand: "#FF4017",
         background: {
-          default: "#111113",
+          DEFAULT: "#111113",
           secondary: "#27272A",
         },
         secondary: "#f5f5f5",

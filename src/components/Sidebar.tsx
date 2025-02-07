@@ -23,7 +23,7 @@ export default function Sidebar() {
       <Button
         onClick={clearChat}
         disabled={messages.length === 0}
-        className="bg-primary text-background-default hover:bg-primary/80 rounded-xl text-xs"
+        className="bg-primary text-background hover:bg-primary/80 rounded-xl text-xs"
       >
         <PlusIcon />
         <span className="uppercase">New Chat</span>
