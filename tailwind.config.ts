@@ -12,6 +12,7 @@ export default {
         brand: "#FF4017",
         primary: "#18181B",
         background: "#111113",
+        primaryAccent: "#18181B",
         secondary: "#f5f5f5",
         border: "#FAFAFA26",
         "input-border": "#27272A",
