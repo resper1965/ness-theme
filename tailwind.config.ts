@@ -9,14 +9,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: "#FF4017",
-        primary: "#18181B",
-        background: "#111113",
+        primary: "#FAFAFA",
         primaryAccent: "#18181B",
+        brand: "#FF4017",
+        background: {
+          default: "#111113",
+          secondary: "#27272A",
+        },
         secondary: "#f5f5f5",
         border: "#FAFAFA26",
         accent: "#27272A",
         muted: "#A1A1AA",
+        destructive: "#E53935",
+        positive: "#22C55E",
       },
       fontFamily: {
         geist: "var(--font-geist-sans)",

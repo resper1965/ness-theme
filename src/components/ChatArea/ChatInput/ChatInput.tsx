@@ -71,7 +71,7 @@ const ChatInput = () => {
         onClick={handleSubmit}
         disabled={isDisabled}
         size="icon"
-        className="bg-secondary text-primary p-5 rounded-xl"
+        className="bg-primary text-primaryAccent p-5 rounded-xl"
       >
         <SendIcon className="w-5 h-5" />
       </Button>
