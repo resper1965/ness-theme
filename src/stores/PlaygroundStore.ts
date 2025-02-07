@@ -5,6 +5,14 @@ import {
   type PlaygroundChatMessage,
 } from "@/types/playground";
 
+interface Agent {
+  value: string;
+  label: string;
+  model: {
+    provider: string;
+  };
+}
+
 interface PlaygroundStore {
   streamingError: boolean;
   setStreamingError: (streamingError: boolean) => void;
@@ -50,6 +58,9 @@ interface PlaygroundStore {
   chatInputRef: React.RefObject<HTMLTextAreaElement | null>;
   selectedEndpoint: string;
   setSelectedEndpoint: (selectedEndpoint: string) => void;
+
+  agents: Agent[];
+  setAgents: (agents: Agent[]) => void;
 }
 
 export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
@@ -94,4 +105,7 @@ export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
   chatInputRef: { current: null },
   selectedEndpoint: "http://localhost:7777",
   setSelectedEndpoint: (selectedEndpoint) => set(() => ({ selectedEndpoint })),
+
+  agents: [],
+  setAgents: (agents) => set({ agents }),
 }));

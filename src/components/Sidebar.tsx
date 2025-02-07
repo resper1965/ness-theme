@@ -6,11 +6,23 @@ import useChatActions from "@/hooks/playground/useChatActions";
 import { AgnoIcon } from "@/components/ui/Icons";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
+import { useEffect } from "react";
 
 export default function Sidebar() {
-  const { clearChat } = useChatActions();
-  const { messages, selectedEndpoint } = usePlaygroundStore();
+  const { clearChat, loadData } = useChatActions();
+  const { messages, selectedEndpoint, isEndpointActive, setAgents } =
+    usePlaygroundStore();
   const [model] = useQueryState("model");
+
+  useEffect(() => {
+    const initializeData = async () => {
+      if (selectedEndpoint) {
+        const agents = await loadData();
+        setAgents(agents);
+      }
+    };
+    initializeData();
+  }, [selectedEndpoint, loadData, setAgents]);
 
   return (
     <aside className="h-screen w-64 bg-primaryAccent py-4 px-2 flex flex-col gap-4">
@@ -31,21 +43,25 @@ export default function Sidebar() {
       {selectedEndpoint && (
         <>
           <Endpoint />
-          <div className="flex flex-col items-start gap-2">
-            <div className="uppercase text-xs font-medium text-muted">
-              Agent
-            </div>
-            <AgentSelector />
-          </div>
-          {model && (
-            <div className="flex flex-col items-start gap-2">
-              <div className="uppercase text-xs font-medium text-muted">
-                Model
+          {isEndpointActive && (
+            <>
+              <div className="flex flex-col items-start gap-2">
+                <div className="uppercase text-xs font-medium text-muted">
+                  Agent
+                </div>
+                <AgentSelector />
               </div>
-              <div className="w-full border-[#FAFAFA0D] border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
-                {model}
-              </div>
-            </div>
+              {model && (
+                <div className="flex flex-col items-start gap-2">
+                  <div className="uppercase text-xs font-medium text-muted">
+                    Model
+                  </div>
+                  <div className="w-full border-[#FAFAFA0D] border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
+                    {model}
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </>
       )}

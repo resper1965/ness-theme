@@ -8,24 +8,12 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import useChatActions from "@/hooks/playground/useChatActions";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
-import { useEffect } from "react";
 import { AgentIcon } from "./ui/Icons";
 import { useQueryState } from "nuqs";
 
-interface Agent {
-  value: string;
-  label: string;
-  model: {
-    provider: string;
-  };
-}
-
 export function AgentSelector() {
-  const [agents, setAgents] = React.useState<Agent[]>([]);
-  const setMessages = usePlaygroundStore((state) => state.setMessages);
-  const { getAgents } = useChatActions();
+  const { agents, setMessages } = usePlaygroundStore();
 
   const [agentId, setAgentId] = useQueryState("agent", {
     parse: (value) => value || undefined,
@@ -35,21 +23,6 @@ export function AgentSelector() {
   const [, setModel] = useQueryState("model", {
     history: "push",
   });
-
-  useEffect(() => {
-    const fetchAgents = async () => {
-      const result: Agent[] = await getAgents();
-      setAgents(result);
-
-      if (agentId) {
-        const agent = result.find((agent) => agent.value === agentId);
-        if (agent) {
-          setModel(agent.model.provider);
-        }
-      }
-    };
-    fetchAgents();
-  }, [getAgents, agentId, setModel]);
 
   return (
     <Select

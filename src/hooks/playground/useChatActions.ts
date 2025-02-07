@@ -9,7 +9,10 @@ import { toast } from "sonner";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 // import { type DefaultPageParams } from '@/types/globals'
 import { type PlaygroundChatMessage } from "@/types/playground";
-import { getPlaygroundAgentsAPI } from "@/api/playground";
+import {
+  getPlaygroundAgentsAPI,
+  getPlaygroundStatusAPI,
+} from "@/api/playground";
 // import { constructEndpointUrl } from '@/utils/playgroundUtils'
 // import useUser from '../useUser'
 
@@ -21,12 +24,35 @@ const useChatActions = () => {
     (state) => state.selectedEndpoint,
   );
   const setMessages = usePlaygroundStore((state) => state.setMessages);
+  const setIsEndpointActive = usePlaygroundStore(
+    (state) => state.setIsEndpointActive,
+  );
   // const setHistoryData = usePlaygroundStore((state) => state.setHistoryData)
   // const historyData = usePlaygroundStore((state) => state.historyData)
   // const username = useUser()?.username
 
   // const teamURL = params.account !== username ? params.account : undefined
   // const userId = teamURL ? `${username}__${teamURL}` : username
+
+  const getStatus = useCallback(async () => {
+    try {
+      const status = await getPlaygroundStatusAPI(selectedEndpoint);
+      return status;
+    } catch {
+      toast.error("Error fetching status");
+      return 503;
+    }
+  }, [selectedEndpoint]);
+
+  const getAgents = useCallback(async () => {
+    try {
+      const agents = await getPlaygroundAgentsAPI(selectedEndpoint);
+      return agents;
+    } catch {
+      toast.error("Error fetching agents");
+      return [];
+    }
+  }, [selectedEndpoint]);
 
   const clearChat = useCallback(() => {
     setMessages([]);
@@ -40,15 +66,17 @@ const useChatActions = () => {
     [setMessages],
   );
 
-  const getAgents = useCallback(async () => {
-    try {
-      const agents = await getPlaygroundAgentsAPI(selectedEndpoint);
+  const loadData = useCallback(async () => {
+    const status = await getStatus();
+    if (status === 200) {
+      setIsEndpointActive(true);
+      const agents = await getAgents();
       return agents;
-    } catch {
-      toast.error("Error fetching agents");
+    } else {
+      setIsEndpointActive(false);
       return [];
     }
-  }, [selectedEndpoint]);
+  }, [getStatus, getAgents, setIsEndpointActive]);
 
   // const deleteSession = useCallback(
   //   async (sessionIdToDelete: string) => {age
@@ -92,7 +120,7 @@ const useChatActions = () => {
     clearChat,
     addMessage,
     getAgents,
-    // deleteSession
+    loadData,
   };
 };
 

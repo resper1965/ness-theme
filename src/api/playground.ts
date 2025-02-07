@@ -36,3 +36,10 @@ export const getPlaygroundAgentsAPI = async (
     return [];
   }
 };
+
+export const getPlaygroundStatusAPI = async (base: string): Promise<number> => {
+  const response = await fetch(APIRoutes.PlaygroundStatus(base), {
+    method: "GET",
+  });
+  return response.status;
+};
