@@ -15,7 +15,7 @@ export default {
         primaryAccent: "#18181B",
         secondary: "#f5f5f5",
         border: "#FAFAFA26",
-        "input-border": "#27272A",
+        accent: "#27272A",
         muted: "#A1A1AA",
       },
       fontFamily: {
