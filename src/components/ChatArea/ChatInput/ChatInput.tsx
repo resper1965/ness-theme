@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { toast } from "sonner";
-import { PlaygroundTextArea } from "./PlaygroundTextArea";
+import { ChatTextArea } from "./ChatTextArea";
 import { Button } from "@/components/ui/button";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import useAIChatStreamHandler from "@/hooks/playground/useAIStreamHandler";
@@ -53,7 +53,7 @@ const ChatInput = () => {
 
   return (
     <div className="relative mx-auto flex w-full max-w-2xl justify-center items-center gap-x-2 mb-1 font-inter">
-      <PlaygroundTextArea
+      <ChatTextArea
         placeholder={"Ask anything"}
         value={inputMessage}
         onChange={(e) => setInputMessage(e.target.value)}
@@ -63,7 +63,7 @@ const ChatInput = () => {
             handleSubmit();
           }
         }}
-        className="w-full border border-accent pr-10 text-sm focus:border-accent bg-primaryAccent text-muted"
+        className="w-full border border-accent pr-10 text-sm focus:border-accent bg-primaryAccent text-primary"
         disabled={isDisabled}
         ref={chatInputRef}
       />
