@@ -66,8 +66,13 @@ export default function Sidebar() {
 }
 
 const Endpoint = () => {
-  const { selectedEndpoint } = usePlaygroundStore();
+  const { selectedEndpoint, isEndpointActive } = usePlaygroundStore();
   const { loadData } = useChatActions();
+
+  const getStatusColor = (isActive: boolean): string => {
+    if (!isActive) return "bg-destructive";
+    return "bg-positive";
+  };
 
   const handleRefresh = async () => {
     await loadData();
@@ -77,10 +82,20 @@ const Endpoint = () => {
     <div className="flex flex-col items-start gap-2">
       <div className="uppercase text-xs font-medium text-muted">Endpoint</div>
       <div className="flex w-full">
-        <span className="w-full border-[#FAFAFA0D] border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
+        <span className="flex w-full border-border border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
           {selectedEndpoint}
+          <div
+            className={`size-2 mx-2 mt-[3px] rounded-full ${getStatusColor(
+              isEndpointActive,
+            )}`}
+          />
         </span>
-        <Button variant="ghost" size="icon" onClick={handleRefresh} className="hover:bg-transparent">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleRefresh}
+          className="hover:bg-transparent hover:cursor-pointer"
+        >
           <RefreshCcw size={16} />
         </Button>
       </div>
