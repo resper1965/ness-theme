@@ -26,7 +26,26 @@ export default function Sidebar() {
         <PlusIcon />
         <span className="uppercase">New Chat</span>
       </Button>
-      <AgentSelector />
+      <div className="flex flex-col items-start gap-2">
+        <div className="uppercase text-xs font-medium text-muted">Agent</div>
+        <AgentSelector />
+      </div>
+      <Endpoint />
     </aside>
   );
 }
+
+const Endpoint = () => {
+  const { selectedEndpoint } = usePlaygroundStore();
+
+  return (
+    <div className="flex flex-col items-start gap-2">
+      <div className="uppercase text-xs font-medium text-muted">Endpoint</div>
+      <div className="flex w-full">
+        <span className="w-full border-[#FAFAFA0D] border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
+          {selectedEndpoint}
+        </span>
+      </div>
+    </div>
+  );
+};
