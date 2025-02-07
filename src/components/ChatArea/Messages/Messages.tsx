@@ -34,7 +34,7 @@ export const AgentMessage = ({ message }: MessageProps) => {
   }
 
   return (
-    <div className="flex flex-col items-start gap-4 font-inter">
+    <div className="flex flex-col items-start gap-4 font-geist">
       <div className="flex items-center gap-x-2 text-sm font-medium font-geist uppercase text-brand">
         <AgentIcon /> {selectedAgent}
       </div>
@@ -50,7 +50,7 @@ export const UserMessage = memo(({ message }: MessageProps) => {
         <p className="text-muted flex items-center gap-x-2 text-sm font-medium">
           <UserIcon /> <span className="uppercase">you</span>{" "}
         </p>
-        <div className="text-md text-secondary py-1 rounded-lg font-inter">
+        <div className="text-md text-secondary py-1 rounded-lg font-geist">
           {message.content}
         </div>
       </div>
