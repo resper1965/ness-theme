@@ -36,11 +36,8 @@ const NewChatButton = ({
 );
 
 const ModelDisplay = ({ model }: { model: string }) => (
-  <div className="flex flex-col items-start gap-2">
-    <div className="uppercase text-xs font-medium text-muted">Model</div>
-    <div className="w-full border-primary/20 border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
-      {model}
-    </div>
+  <div className="w-full border-primary/20 border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
+    {model}
   </div>
 );
 
@@ -53,7 +50,7 @@ const Endpoint = () => {
 
   return (
     <div className="flex flex-col items-start gap-2">
-      <div className="uppercase text-xs font-medium text-muted">Endpoint</div>
+      <div className="uppercase text-xs font-medium text-primary">Endpoint</div>
       <div className="flex w-full">
         <span className="flex w-full border-primary/20 border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
           {selectedEndpoint}
@@ -97,12 +94,12 @@ export default function Sidebar() {
           {isEndpointActive && (
             <>
               <div className="flex flex-col items-start gap-2">
-                <div className="uppercase text-xs font-medium text-muted">
+                <div className="uppercase text-xs font-medium text-primary">
                   Agent
                 </div>
                 <AgentSelector />
+                {model && <ModelDisplay model={model} />}
               </div>
-              {model && <ModelDisplay model={model} />}
             </>
           )}
         </>
