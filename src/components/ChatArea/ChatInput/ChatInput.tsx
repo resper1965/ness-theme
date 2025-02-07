@@ -18,7 +18,7 @@ const ChatInput = () => {
   const { handleStreamResponse } = useAIChatStreamHandler();
   const [selectedAgent] = useQueryState("agent");
   const setStreamingError = usePlaygroundStore(
-    (state) => state.setStreamingError
+    (state) => state.setStreamingError,
   );
   const streamingError = usePlaygroundStore((state) => state.streamingError);
   const [inputMessage, setInputMessage] = useState("");
@@ -44,7 +44,7 @@ const ChatInput = () => {
       toast.error(
         `Error in handleSubmit: ${
           error instanceof Error ? error.message : String(error)
-        }`
+        }`,
       );
     }
   };
