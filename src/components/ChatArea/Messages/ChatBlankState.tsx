@@ -18,7 +18,7 @@ const AgnoTag = () => {
           rx="8"
           transform="rotate(-3.82708 11.6504 6.56763)"
           fill="#FAFAFA"
-          shapeRendering="crispEdges"
+          shapeRendering="geometricPrecision"
         />
         <g clipPath="url(#clip0_2859_5300)">
           <path
@@ -51,17 +51,17 @@ const AgnoTag = () => {
             result="hardAlpha"
           />
           <feMorphology
-            radius="3"
+            radius="2"
             operator="erode"
             in="SourceAlpha"
             result="effect1_dropShadow_2859_5300"
           />
-          <feOffset dy="10" />
-          <feGaussianBlur stdDeviation="7.5" />
+          <feOffset dy="8" />
+          <feGaussianBlur stdDeviation="6" />
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix
             type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0"
           />
           <feBlend
             mode="normal"
@@ -75,17 +75,17 @@ const AgnoTag = () => {
             result="hardAlpha"
           />
           <feMorphology
-            radius="4"
+            radius="3"
             operator="erode"
             in="SourceAlpha"
             result="effect2_dropShadow_2859_5300"
           />
-          <feOffset dy="4" />
-          <feGaussianBlur stdDeviation="3" />
+          <feOffset dy="3" />
+          <feGaussianBlur stdDeviation="2.5" />
           <feComposite in2="hardAlpha" operator="out" />
           <feColorMatrix
             type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0"
           />
           <feBlend
             mode="normal"
