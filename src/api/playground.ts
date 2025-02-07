@@ -8,6 +8,9 @@ import { Agent } from "@/types/playground";
 interface ComboboxAgent {
   value: string;
   label: string;
+  model: {
+    provider: string;
+  };
 }
 
 export const getPlaygroundAgentsAPI = async (
@@ -25,6 +28,7 @@ export const getPlaygroundAgentsAPI = async (
     const agents: ComboboxAgent[] = data.map((item: Agent) => ({
       value: item.agent_id || "",
       label: item.name || "",
+      model: item.model || "",
     }));
     return agents;
   } catch {

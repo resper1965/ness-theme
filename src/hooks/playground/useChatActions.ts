@@ -43,6 +43,7 @@ const useChatActions = () => {
   const getAgents = useCallback(async () => {
     try {
       const agents = await getPlaygroundAgentsAPI(selectedEndpoint);
+      console.log("agents", agents);
       return agents;
     } catch (error) {
       toast.error("Error fetching agents");
@@ -52,7 +53,7 @@ const useChatActions = () => {
   }, [selectedEndpoint]);
 
   // const deleteSession = useCallback(
-  //   async (sessionIdToDelete: string) => {
+  //   async (sessionIdToDelete: string) => {age
   //     if (!selectedAgent || !selectedEndpoint) {
   //       throw new Error('Selected agent or endpoint is missing')
   //     }

@@ -5,10 +5,12 @@ import { AgentSelector } from "@/components/AgentSelector";
 import useChatActions from "@/hooks/playground/useChatActions";
 import { AgnoIcon } from "@/components/ui/Icons";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import { useQueryState } from "nuqs";
 
 export default function Sidebar() {
   const { clearChat } = useChatActions();
-  const { messages } = usePlaygroundStore();
+  const { messages, selectedEndpoint } = usePlaygroundStore();
+  const [model] = useQueryState("model");
 
   return (
     <aside className="h-screen w-64 bg-primaryAccent py-4 px-2 flex flex-col gap-4">
@@ -26,11 +28,27 @@ export default function Sidebar() {
         <PlusIcon />
         <span className="uppercase">New Chat</span>
       </Button>
-      <Endpoint />
-      <div className="flex flex-col items-start gap-2">
-        <div className="uppercase text-xs font-medium text-muted">Agent</div>
-        <AgentSelector />
-      </div>
+      {selectedEndpoint && (
+        <>
+          <Endpoint />
+          <div className="flex flex-col items-start gap-2">
+            <div className="uppercase text-xs font-medium text-muted">
+              Agent
+            </div>
+            <AgentSelector />
+          </div>
+          {model && (
+            <div className="flex flex-col items-start gap-2">
+              <div className="uppercase text-xs font-medium text-muted">
+                Model
+              </div>
+              <div className="w-full border-[#FAFAFA0D] border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
+                {model}
+              </div>
+            </div>
+          )}
+        </>
+      )}
     </aside>
   );
 }

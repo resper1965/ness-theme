@@ -17,6 +17,9 @@ import { useQueryState } from "nuqs";
 interface Agent {
   value: string;
   label: string;
+  model: {
+    provider: string;
+  };
 }
 
 export function AgentSelector() {
@@ -29,19 +32,34 @@ export function AgentSelector() {
     history: "push",
   });
 
+  const [, setModel] = useQueryState("model", {
+    history: "push",
+  });
+
   useEffect(() => {
     const fetchAgents = async () => {
       const result: Agent[] = await getAgents();
       setAgents(result);
+
+      if (agentId) {
+        const agent = result.find((agent) => agent.value === agentId);
+        if (agent) {
+          setModel(agent.model.provider);
+        }
+      }
     };
     fetchAgents();
-  }, [getAgents]);
+  }, [getAgents, agentId, setModel]);
 
   return (
     <Select
       value={agentId || ""}
       onValueChange={(value) => {
         const newAgent = value === agentId ? "" : value;
+        setModel(
+          agents.find((agent) => agent.value === newAgent)?.model.provider ||
+            "",
+        );
         setAgentId(newAgent);
         setMessages([]);
       }}
