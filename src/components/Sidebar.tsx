@@ -11,11 +11,11 @@ export default function Sidebar() {
   const { messages } = usePlaygroundStore();
 
   return (
-    <aside className=" h-screen w-64 bg-[#18181B] p-4 flex flex-col gap-4">
+    <aside className="h-screen w-64 bg-primaryAccent py-4 px-2 flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <AgnoIcon size={20} />
         <span className="text-white text-xs font-medium uppercase font-geist-mono">
-          Agno Agent Chatbot
+          Agent UI
         </span>
       </div>
       <Button

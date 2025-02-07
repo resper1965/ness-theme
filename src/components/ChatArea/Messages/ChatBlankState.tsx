@@ -457,16 +457,22 @@ export const ChatBlankState = () => {
       <div className="max-w-3xl flex flex-col gap-y-8">
         <h1 className="text-[28px] font-medium">
           <div className="flex items-center justify-center whitespace-nowrap gap-x-2">
-            <span className="flex items-center">This is an open-source</span>
+            <span className="flex items-center tracking-tight">
+              This is an open-source
+            </span>
             <span className="inline-flex items-center translate-y-[10px] scale-125">
               <AgnoTag />
             </span>
-            <span className="flex items-center">Agent UI, built with</span>
+            <span className="flex items-center tracking-tight">
+              Agent UI, built with
+            </span>
             <span className="inline-flex items-center translate-y-[10px] scale-125">
               <TechStackTag />
             </span>
           </div>
-          <p>You can learn more on the Agent Playground.</p>
+          <p className="tracking-tight">
+            You can learn more on the Agent Playground.
+          </p>
         </h1>
 
         <div className="flex gap-4 justify-center">
