@@ -5,11 +5,13 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
+  weight: "400",
   subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  weight: "400",
   subsets: ["latin"],
 });
 

@@ -18,8 +18,8 @@ export default {
         muted: "#A1A1AA",
       },
       fontFamily: {
-        geist: ["Geist"],
-        geist_mono: ["Geist Mono", "monospace"],
+        geist: "var(--font-geist-sans)",
+        geist_mono: "var(--font-geist-mono)",
         dm_mono: "var(--font-dm-mono)",
       },
     },
