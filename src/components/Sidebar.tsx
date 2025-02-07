@@ -7,22 +7,18 @@ import { AgnoIcon } from "@/components/ui/Icons";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
 import { useEffect } from "react";
+import { RefreshCcw } from "lucide-react";
 
 export default function Sidebar() {
   const { clearChat, loadData } = useChatActions();
-  const { messages, selectedEndpoint, isEndpointActive, setAgents } =
-    usePlaygroundStore();
+  const { messages, selectedEndpoint, isEndpointActive } = usePlaygroundStore();
   const [model] = useQueryState("model");
 
   useEffect(() => {
-    const initializeData = async () => {
-      if (selectedEndpoint) {
-        const agents = await loadData();
-        setAgents(agents);
-      }
-    };
-    initializeData();
-  }, [selectedEndpoint, loadData, setAgents]);
+    if (selectedEndpoint) {
+      loadData();
+    }
+  }, [selectedEndpoint, loadData]);
 
   return (
     <aside className="h-screen w-64 bg-primaryAccent py-4 px-2 flex flex-col gap-4">
@@ -71,6 +67,11 @@ export default function Sidebar() {
 
 const Endpoint = () => {
   const { selectedEndpoint } = usePlaygroundStore();
+  const { loadData } = useChatActions();
+
+  const handleRefresh = async () => {
+    await loadData();
+  };
 
   return (
     <div className="flex flex-col items-start gap-2">
@@ -79,6 +80,9 @@ const Endpoint = () => {
         <span className="w-full border-[#FAFAFA0D] border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
           {selectedEndpoint}
         </span>
+        <Button variant="ghost" size="icon" onClick={handleRefresh} className="hover:bg-transparent">
+          <RefreshCcw size={16} />
+        </Button>
       </div>
     </div>
   );

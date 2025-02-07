@@ -27,6 +27,7 @@ const useChatActions = () => {
   const setIsEndpointActive = usePlaygroundStore(
     (state) => state.setIsEndpointActive,
   );
+  const setAgents = usePlaygroundStore((state) => state.setAgents);
   // const setHistoryData = usePlaygroundStore((state) => state.setHistoryData)
   // const historyData = usePlaygroundStore((state) => state.historyData)
   // const username = useUser()?.username
@@ -71,12 +72,14 @@ const useChatActions = () => {
     if (status === 200) {
       setIsEndpointActive(true);
       const agents = await getAgents();
+      setAgents(agents);
       return agents;
     } else {
       setIsEndpointActive(false);
+      setAgents([]);
       return [];
     }
-  }, [getStatus, getAgents, setIsEndpointActive]);
+  }, [getStatus, getAgents, setIsEndpointActive, setAgents]);
 
   // const deleteSession = useCallback(
   //   async (sessionIdToDelete: string) => {age
