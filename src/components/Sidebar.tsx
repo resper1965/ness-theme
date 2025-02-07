@@ -26,11 +26,11 @@ export default function Sidebar() {
         <PlusIcon />
         <span className="uppercase">New Chat</span>
       </Button>
+      <Endpoint />
       <div className="flex flex-col items-start gap-2">
         <div className="uppercase text-xs font-medium text-muted">Agent</div>
         <AgentSelector />
       </div>
-      <Endpoint />
     </aside>
   );
 }
