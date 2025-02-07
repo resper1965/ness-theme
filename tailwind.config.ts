@@ -14,6 +14,7 @@ export default {
         background: "#111113",
         secondary: "#f5f5f5",
         border: "#FAFAFA26",
+        "input-border": "#27272A",
         muted: "#A1A1AA",
       },
       fontFamily: {
