@@ -18,7 +18,13 @@ const SidebarHeader = () => (
   </div>
 );
 
-const NewChatButton = ({ disabled, onClick }: { disabled: boolean; onClick: () => void }) => (
+const NewChatButton = ({
+  disabled,
+  onClick,
+}: {
+  disabled: boolean;
+  onClick: () => void;
+}) => (
   <Button
     onClick={onClick}
     disabled={disabled}
@@ -42,7 +48,7 @@ const Endpoint = () => {
   const { selectedEndpoint, isEndpointActive } = usePlaygroundStore();
   const { loadData } = useChatActions();
 
-  const getStatusColor = (isActive: boolean) => 
+  const getStatusColor = (isActive: boolean) =>
     isActive ? "bg-positive" : "bg-destructive";
 
   return (
@@ -84,14 +90,16 @@ export default function Sidebar() {
     <aside className="h-screen w-64 bg-primaryAccent py-4 px-2 flex flex-col gap-4">
       <SidebarHeader />
       <NewChatButton disabled={messages.length === 0} onClick={clearChat} />
-      
+
       {selectedEndpoint && (
         <>
           <Endpoint />
           {isEndpointActive && (
             <>
               <div className="flex flex-col items-start gap-2">
-                <div className="uppercase text-xs font-medium text-muted">Agent</div>
+                <div className="uppercase text-xs font-medium text-muted">
+                  Agent
+                </div>
                 <AgentSelector />
               </div>
               {model && <ModelDisplay model={model} />}
