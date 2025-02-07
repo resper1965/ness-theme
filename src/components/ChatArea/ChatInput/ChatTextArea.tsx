@@ -11,7 +11,7 @@ type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
 const MIN_HEIGHT = 45;
 const MAX_HEIGHT = 213;
 
-const PlaygroundTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+const ChatTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, value, onChange, ...props }, forwardedRef) => {
     const [showScroll, setShowScroll] = React.useState(false);
     const textareaRef = React.useRef<HTMLTextAreaElement | null>(null);
@@ -98,7 +98,7 @@ const PlaygroundTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   },
 );
 
-PlaygroundTextArea.displayName = "PlaygroundTextArea";
+ChatTextArea.displayName = "ChatTextArea";
 
 export type { TextareaProps };
-export { PlaygroundTextArea };
+export { ChatTextArea };

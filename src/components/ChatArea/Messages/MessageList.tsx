@@ -54,7 +54,7 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
             delayDuration={0}
             content={<p className="text-accent">Tool Calls</p>}
             side="top"
-            className="rounded-sm bg-primary p-1"
+            className="rounded-sm bg-background p-1"
           >
             <HammerIcon size={16} />
           </Tooltip>
@@ -81,7 +81,7 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
 };
 const Reasoning: FC<ReasoningStepProps> = ({ index, stepTitle }) => (
   <div className="flex items-center gap-2 text-secondary">
-    <div className="flex h-[20px] items-center rounded-sm bg-gray-800 p-2">
+    <div className="flex h-[20px] items-center rounded-sm bg-background p-2">
       <p className="text-xs">STEP {index + 1}</p>
     </div>
     <p className="text-xs">{stepTitle}</p>
@@ -100,7 +100,7 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
 );
 
 export const ToolComponent = memo(({ tools }: ToolCallProps) => (
-  <div className="cursor-pointer rounded-md bg-gray-800 px-2  py-1.5 text-xs hover:bg-gray-700">
+  <div className="cursor-pointer rounded-md bg-accent px-2  py-1.5 text-xs hover:bg-accent/80">
     <div className="flex items-center justify-between gap-x-1">
       <p className="uppercase">{tools.tool_name}</p>
     </div>

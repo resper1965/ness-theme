@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { toast } from "sonner";
-import { PlaygroundTextArea } from "./PlaygroundTextArea";
+import { ChatTextArea } from "./ChatTextArea";
 import { Button } from "@/components/ui/button";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import useAIChatStreamHandler from "@/hooks/playground/useAIStreamHandler";
@@ -52,8 +52,8 @@ const ChatInput = () => {
   const isDisabled = !selectedAgent;
 
   return (
-    <div className="relative mx-auto flex w-full max-w-2xl justify-center items-center gap-x-2 mb-1 font-inter">
-      <PlaygroundTextArea
+    <div className="relative mx-auto flex w-full max-w-2xl justify-center items-center gap-x-2 mb-1 font-geist">
+      <ChatTextArea
         placeholder={"Ask anything"}
         value={inputMessage}
         onChange={(e) => setInputMessage(e.target.value)}
@@ -63,7 +63,7 @@ const ChatInput = () => {
             handleSubmit();
           }
         }}
-        className="w-full border border-primary/5 pr-10 text-sm focus:border-primary/5 bg-primaryAccent"
+        className="w-full border border-accent pr-10 text-sm focus:border-accent bg-primaryAccent text-primary"
         disabled={isDisabled}
         ref={chatInputRef}
       />
@@ -71,7 +71,7 @@ const ChatInput = () => {
         onClick={handleSubmit}
         disabled={isDisabled}
         size="icon"
-        className="bg-secondary text-primary p-5 rounded-xl"
+        className="bg-primary text-primaryAccent p-5 rounded-xl"
       >
         <SendIcon className="w-5 h-5" />
       </Button>

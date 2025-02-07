@@ -8,48 +8,39 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import useChatActions from "@/hooks/playground/useChatActions";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
-import { useEffect } from "react";
 import { AgentIcon } from "./ui/Icons";
 import { useQueryState } from "nuqs";
 
-interface Agent {
-  value: string;
-  label: string;
-}
-
 export function AgentSelector() {
-  const [agents, setAgents] = React.useState<Agent[]>([]);
-  const setMessages = usePlaygroundStore((state) => state.setMessages);
-  const { getAgents } = useChatActions();
+  const { agents, setMessages } = usePlaygroundStore();
 
   const [agentId, setAgentId] = useQueryState("agent", {
     parse: (value) => value || undefined,
     history: "push",
   });
 
-  useEffect(() => {
-    const fetchAgents = async () => {
-      const result: Agent[] = await getAgents();
-      setAgents(result);
-    };
-    fetchAgents();
-  }, [getAgents]);
+  const [, setModel] = useQueryState("model", {
+    history: "push",
+  });
 
   return (
     <Select
       value={agentId || ""}
       onValueChange={(value) => {
         const newAgent = value === agentId ? "" : value;
+        setModel(
+          agents.find((agent) => agent.value === newAgent)?.model.provider ||
+            "",
+        );
         setAgentId(newAgent);
         setMessages([]);
       }}
     >
-      <SelectTrigger className="w-full border-none text-xs font-medium bg-[#27272a] rounded-lg uppercase">
+      <SelectTrigger className="w-full border-primary/20 border text-xs font-medium bg-primaryAccent rounded-lg uppercase">
         <SelectValue placeholder="Select Agent" />
       </SelectTrigger>
-      <SelectContent className="border-none bg-[#27272a] rounded-lg">
+      <SelectContent className="border-primary/20 border bg-primaryAccent rounded-lg">
         {agents.map((agent, index) => (
           <SelectItem key={`${agent.value}-${index}`} value={agent.value}>
             <div className="flex items-center gap-2 cursor-pointer uppercase text-xs font-medium">

@@ -12,6 +12,7 @@ import { constructEndpointUrl } from "@/utils/playgroundUtils";
 import useAIResponseStream from "../streaming/useAIResponseStream";
 import { ToolCall } from "@/types/playground";
 import { useQueryState } from "nuqs";
+import { toast } from "sonner";
 
 /**
  * useAIChatStreamHandler is responsible for making API calls and handling the stream response.
@@ -102,7 +103,6 @@ const useAIChatStreamHandler = () => {
           apiUrl: playgroundRunUrl,
           requestBody: formData,
           onChunk: (chunk: RunResponse) => {
-            console.log("chunk", chunk);
             if (chunk.event === RunEvent.RunResponse) {
               // Update the last (agent) message with new content and tool calls from the stream chunk
               setMessages((prevMessages) => {
@@ -130,7 +130,6 @@ const useAIChatStreamHandler = () => {
                     };
                   }
 
-                  console.log("tool calls", toolCalls);
                   lastMessage.created_at =
                     chunk.created_at ?? lastMessage.created_at;
                   //   if (chunk.extra_data?.reasoning_steps) {
@@ -213,8 +212,7 @@ const useAIChatStreamHandler = () => {
             });
             // Update global state to indicate a streaming error occurred
             setStreamingError(true);
-            // Use console.error instead of toast until notification handling is added
-            console.error(
+            toast.error(
               `Error in streamResponse: ${
                 error instanceof Error ? error.message : String(error)
               }`,

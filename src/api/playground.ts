@@ -8,6 +8,9 @@ import { Agent } from "@/types/playground";
 interface ComboboxAgent {
   value: string;
   label: string;
+  model: {
+    provider: string;
+  };
 }
 
 export const getPlaygroundAgentsAPI = async (
@@ -25,10 +28,18 @@ export const getPlaygroundAgentsAPI = async (
     const agents: ComboboxAgent[] = data.map((item: Agent) => ({
       value: item.agent_id || "",
       label: item.name || "",
+      model: item.model || "",
     }));
     return agents;
   } catch {
     toast.error("Error fetching playground agents");
     return [];
   }
+};
+
+export const getPlaygroundStatusAPI = async (base: string): Promise<number> => {
+  const response = await fetch(APIRoutes.PlaygroundStatus(base), {
+    method: "GET",
+  });
+  return response.status;
 };

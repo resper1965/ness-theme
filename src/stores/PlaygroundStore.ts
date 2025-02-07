@@ -1,9 +1,17 @@
 import { create } from "zustand";
 
 import {
-  type HistoryEntry,
+  //   type HistoryEntry,
   type PlaygroundChatMessage,
 } from "@/types/playground";
+
+interface Agent {
+  value: string;
+  label: string;
+  model: {
+    provider: string;
+  };
+}
 
 interface PlaygroundStore {
   streamingError: boolean;
@@ -38,18 +46,21 @@ interface PlaygroundStore {
       | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[]),
   ) => void;
 
-  historyData: HistoryEntry[];
-  setHistoryData: (
-    historyData:
-      | HistoryEntry[]
-      | ((prevHistoryData: HistoryEntry[]) => HistoryEntry[]),
-  ) => void;
-  isMonitoring: boolean;
-  setIsMonitoring: (isMonitoring: boolean) => void;
+  //   historyData: HistoryEntry[];
+  //   setHistoryData: (
+  //     historyData:
+  //       | HistoryEntry[]
+  //       | ((prevHistoryData: HistoryEntry[]) => HistoryEntry[]),
+  //   ) => void;
+  //   isMonitoring: boolean;
+  //   setIsMonitoring: (isMonitoring: boolean) => void;
 
   chatInputRef: React.RefObject<HTMLTextAreaElement | null>;
   selectedEndpoint: string;
   setSelectedEndpoint: (selectedEndpoint: string) => void;
+
+  agents: Agent[];
+  setAgents: (agents: Agent[]) => void;
 }
 
 export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
@@ -79,19 +90,22 @@ export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
         typeof messages === "function" ? messages(state.messages) : messages,
     })),
 
-  historyData: [],
-  setHistoryData: (historyData) =>
-    set((state) => ({
-      historyData:
-        typeof historyData === "function"
-          ? historyData(state.historyData)
-          : historyData,
-    })),
+  //   historyData: [],
+  //   setHistoryData: (historyData) =>
+  //     set((state) => ({
+  //       historyData:
+  //         typeof historyData === "function"
+  //           ? historyData(state.historyData)
+  //           : historyData,
+  //     })),
 
-  isMonitoring: true,
-  setIsMonitoring: (isMonitoring) => set(() => ({ isMonitoring })),
+  //   isMonitoring: true,
+  //   setIsMonitoring: (isMonitoring) => set(() => ({ isMonitoring })),
 
   chatInputRef: { current: null },
   selectedEndpoint: "http://localhost:7777",
   setSelectedEndpoint: (selectedEndpoint) => set(() => ({ selectedEndpoint })),
+
+  agents: [],
+  setAgents: (agents) => set({ agents }),
 }));
