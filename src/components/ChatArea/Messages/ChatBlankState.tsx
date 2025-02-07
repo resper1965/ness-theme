@@ -433,7 +433,8 @@ interface ActionButtonProps {
 }
 
 const ActionButton = ({ href, variant, text }: ActionButtonProps) => {
-  const baseStyles = "px-4 py-2 text-sm transition-colors font-dm_mono";
+  const baseStyles =
+    "px-4 py-2 text-sm transition-colors font-dmmono tracking-tight";
   const variantStyles = {
     primary: "border border-border hover:bg-neutral-800 rounded-xl",
   };
@@ -455,13 +456,17 @@ export const ChatBlankState = () => {
       aria-label="Welcome message"
     >
       <div className="max-w-3xl flex flex-col gap-y-8">
-        <h1 className="text-[28px] font-medium tracking-tight">
-          <div className="flex items-center justify-center whitespace-nowrap gap-x-2">
-            <span className="flex items-center">This is an open-source</span>
+        <h1 className="text-3xl font-[600] tracking-tight">
+          <div className="flex items-center justify-center whitespace-nowrap gap-x-2 font-medium">
+            <span className="flex items-center font-[600]">
+              This is an open-source
+            </span>
             <span className="inline-flex items-center translate-y-[10px] scale-125">
               <AgnoTag />
             </span>
-            <span className="flex items-center">Agent UI, built with</span>
+            <span className="flex items-center font-[600]">
+              Agent UI, built with
+            </span>
             <span className="inline-flex items-center translate-y-[10px] scale-125">
               <TechStackTag />
             </span>

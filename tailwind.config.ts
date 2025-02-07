@@ -25,7 +25,7 @@ export default {
       },
       fontFamily: {
         geist: "var(--font-geist-sans)",
-        dm_mono: "var(--font-dm-mono)",
+        dmmono: "var(--font-dm-mono)",
       },
     },
   },
