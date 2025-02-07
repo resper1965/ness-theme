@@ -19,7 +19,7 @@ export default {
       fontFamily: {
         geist: ["Geist"],
         geist_mono: ["Geist Mono", "monospace"],
-        dm_mono: 'var(--font-dm-mono)'
+        dm_mono: "var(--font-dm-mono)",
       },
     },
   },

@@ -13,12 +13,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const fontDMMono = FontDMMono({
-  subsets: ['latin'],
-  variable: '--font-dm-mono',
-  weight: '400'
-})
-
+const fontDMMono = FontDMMono({
+  subsets: ["latin"],
+  variable: "--font-dm-mono",
+  weight: "400",
+});
 
 export const metadata: Metadata = {
   title: "Agno Chat Template",
@@ -33,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${fontDMMono.variable} antialiased`}
       >
         <NuqsAdapter>{children}</NuqsAdapter>
       </body>
