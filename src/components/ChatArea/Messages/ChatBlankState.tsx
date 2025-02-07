@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const EmptyStateAgnoTag = () => {
+const AgnoTag = () => {
   return (
     <svg
       width="101"
@@ -459,7 +459,7 @@ export const ChatBlankState = () => {
           <div className="flex items-center justify-center whitespace-nowrap gap-x-2">
             <span className="flex items-center">This is an open-source</span>
             <span className="inline-flex items-center translate-y-[10px] scale-125">
-              <EmptyStateAgnoTag />
+              <AgnoTag />
             </span>
             <span className="flex items-center">Agent UI, built with</span>
             <span className="inline-flex items-center translate-y-[10px] scale-125">
