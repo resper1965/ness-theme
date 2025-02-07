@@ -15,8 +15,7 @@ import {
   ReasoningProps,
 } from "@/types/playground";
 import React, { type FC } from "react";
-
-// import ChatBlankState from '../../../BlankStates/ChatBlankState'
+import { ChatBlankState } from "./ChatBlankState";
 // import Tooltip from '@/components/common/Tooltip'
 // import Paragraph from '@/components/ui/typography/Paragraph'
 // import { ToolComponent } from '@/components/common/Chat/Tools/ToolsContent'
@@ -112,26 +111,7 @@ ToolComponent.displayName = "ToolComponent";
 
 const MessageList = ({ messages }: MessageListProps) => {
   if (messages.length === 0) {
-    return (
-      <div className="flex flex-col text-center items-center text-md font-inter">
-        <div className="max-w-lg flex gap-y-6 flex-col">
-          <p>
-            This is an <span className="underline">open-source</span> an Agno
-            Agent Chat, built with Next.js, Shadcn, and Tailwind CSS.
-          </p>
-          <p>
-            You can learn more about Agent Playground{" "}
-            <a
-              className="underline"
-              href="https://docs.agno.com/get-started/playground#agent-playground"
-            >
-              here
-            </a>
-            .
-          </p>
-        </div>
-      </div>
-    );
+    return <ChatBlankState />;
   }
 
   return (
