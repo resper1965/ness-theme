@@ -43,11 +43,9 @@ const useChatActions = () => {
   const getAgents = useCallback(async () => {
     try {
       const agents = await getPlaygroundAgentsAPI(selectedEndpoint);
-      console.log("agents", agents);
       return agents;
-    } catch (error) {
+    } catch {
       toast.error("Error fetching agents");
-      console.error("Error in getAgents:", error);
       return [];
     }
   }, [selectedEndpoint]);
