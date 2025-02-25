@@ -95,7 +95,7 @@ export default function Sidebar() {
     >
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute top-4 right-2 p-1" 
+        className="absolute top-4 right-2 p-1"
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         type="button"
       >
@@ -106,8 +106,8 @@ export default function Sidebar() {
         />
       </button>
       <div
-         className={`space-y-4 transition-[opacity,visibility] duration-200 ${
-          isCollapsed ? 'invisible opacity-0' : 'visible opacity-100'
+        className={`space-y-4 transition-[opacity,visibility] duration-200 ${
+          isCollapsed ? "invisible opacity-0" : "visible opacity-100"
         }`}
       >
         <SidebarHeader />

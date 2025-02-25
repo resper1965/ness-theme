@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
-import  Icon  from "@/components/ui/icon";
+import Icon from "@/components/ui/icon";
 export function AgentSelector() {
   const { agents, setMessages } = usePlaygroundStore();
   const [agentId, setAgentId] = useQueryState("agent", {
@@ -42,7 +42,7 @@ export function AgentSelector() {
         {agents.map((agent, index) => (
           <SelectItem key={`${agent.value}-${index}`} value={agent.value}>
             <div className="flex items-center gap-3 cursor-pointer uppercase text-xs font-medium">
-              <Icon type={'agent'} size="xs" />
+              <Icon type={"agent"} size="xs" />
               {agent.label}
             </div>
           </SelectItem>
