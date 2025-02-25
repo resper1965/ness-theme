@@ -448,6 +448,7 @@ const ActionButton = ({ href, variant, text }: ActionButtonProps) => {
   return (
     <Link
       href={href}
+      target="_blank"
       className={`${baseStyles} ${variant ? variantStyles[variant] : ""}`}
     >
       {text}
