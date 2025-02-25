@@ -6,6 +6,7 @@ import Videos from "./Multimedia/Videos";
 import Images from "./Multimedia/Images";
 import Audios from "./Multimedia/Audios";
 import { memo } from "react";
+import AgentThinkingLoader from "./AgentThinkingLoader";
 
 
 interface MessageProps {
@@ -34,8 +35,7 @@ export const AgentMessage = ({ message }: MessageProps) => {
     if (!message.response_audio.transcript) {
       messageContent = (
         <div className="mt-2 flex items-start">
-          {/* <AgentThinkingLoader /> */}
-          thinking...
+          <AgentThinkingLoader />
         </div>
       );
     } else {
