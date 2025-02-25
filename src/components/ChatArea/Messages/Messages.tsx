@@ -1,10 +1,9 @@
-import { memo } from "react";
-import { useQueryState } from "nuqs";
+import Icon from "@/components/ui/icon";
 import MarkdownRenderer from "@/components/ui/typography/MarkdownRenderer";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
-import Icon from "@/components/ui/icon";
 import type { PlaygroundChatMessage } from "@/types/playground";
-import { Loader } from "lucide-react";
+import { memo } from "react";
+import AgentThinkingLoader from "./AgentThinkingLoader";
 
 interface MessageProps {
   message: PlaygroundChatMessage;
@@ -12,7 +11,6 @@ interface MessageProps {
 
 export const AgentMessage = ({ message }: MessageProps) => {
   const { streamingError } = usePlaygroundStore();
-  const [selectedAgent] = useQueryState("agent");
   let messageContent;
   if (message.content) {
     messageContent = (
@@ -29,21 +27,16 @@ export const AgentMessage = ({ message }: MessageProps) => {
     );
   } else {
     messageContent = (
-      <div className="flex items-center justify-center text-md gap-4">
-        <Loader
-          size={16}
-          className="animate-spin [animation-duration:2s] text-brand"
-        />
-        <p className="text-muted">Thinking...</p>
+      <div className="mt-2">
+        <AgentThinkingLoader />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-start gap-4 font-geist">
-      <div className="flex items-center gap-x-2 text-sm font-medium font-geist uppercase text-brand">
-        <Icon type="agent" size="xs" />
-        {selectedAgent}
+    <div className="flex flex-row items-start gap-4 font-geist">
+      <div className="flex-shrink-0">
+        <Icon type="agent" size="sm" />
       </div>
       {messageContent}
     </div>
@@ -53,10 +46,9 @@ export const AgentMessage = ({ message }: MessageProps) => {
 export const UserMessage = memo(({ message }: MessageProps) => {
   return (
     <div className="flex items-start pt-4 text-start max-md:break-words">
-      <div className="flex flex-col gap-y-3">
+      <div className="flex flex-row gap-x-3">
         <p className="text-muted flex items-center gap-x-2 text-sm font-medium">
-          <Icon type="user" size="xs" />
-          <span className="uppercase">you</span>{" "}
+          <Icon type="user" size="sm" />
         </p>
         <div className="text-md text-secondary py-1 rounded-lg font-geist">
           {message.content}
