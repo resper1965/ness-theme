@@ -3,15 +3,15 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { AgentSelector } from "@/components/AgentSelector";
 import useChatActions from "@/hooks/playground/useChatActions";
-import { AgnoIcon } from "@/components/ui/Icons";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RefreshCcw } from "lucide-react";
-
+import Icon from "@/components/ui/icon";
+import { getProviderIcon } from "@/utils/modelProvider";
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
-    <AgnoIcon size={20} />
+    <Icon type="agno" size="sm" />
     <span className="text-white text-xs font-medium uppercase font-geist-mono">
       Agent UI
     </span>
@@ -28,7 +28,7 @@ const NewChatButton = ({
   <Button
     onClick={onClick}
     disabled={disabled}
-    className="bg-primary text-background hover:bg-primary/80 rounded-xl text-xs"
+    className="bg-primary text-background hover:bg-primary/80 rounded-xl text-xs w-full"
   >
     <PlusIcon />
     <span className="uppercase">New Chat</span>
@@ -36,7 +36,11 @@ const NewChatButton = ({
 );
 
 const ModelDisplay = ({ model }: { model: string }) => (
-  <div className="w-full border-primary/20 border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
+  <div className="w-full border-primary/20 flex items-center gap-3 border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
+    {(() => {
+      const icon = getProviderIcon(model);
+      return icon ? <Icon type={icon} className="shrink-0" size="xs" /> : null;
+    })()}
     {model}
   </div>
 );
@@ -51,13 +55,13 @@ const Endpoint = () => {
   return (
     <div className="flex flex-col items-start gap-2">
       <div className="uppercase text-xs font-medium text-primary">Endpoint</div>
-      <div className="flex w-full">
-        <span className="flex w-full border-primary/20 border text-xs font-medium bg-accent rounded-lg uppercase py-2.5 px-2">
-          {selectedEndpoint}
+      <div className="flex w-full gap-4">
+        <div className="flex w-full items-center justify-between border-primary/20 border bg-accent rounded-lg uppercase py-2.5 px-2">
+          <p className="text-xs font-medium"> {selectedEndpoint}</p>
           <div
-            className={`size-2 mx-2 mt-[3px] rounded-full ${getStatusColor(isEndpointActive)}`}
+            className={`size-2 rounded-full ${getStatusColor(isEndpointActive)}`}
           />
-        </span>
+        </div>
         <Button
           variant="ghost"
           size="icon"
@@ -73,6 +77,7 @@ const Endpoint = () => {
 
 // Main Sidebar component
 export default function Sidebar() {
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const { clearChat, loadData } = useChatActions();
   const { messages, selectedEndpoint, isEndpointActive } = usePlaygroundStore();
   const [model] = useQueryState("model");
@@ -84,15 +89,33 @@ export default function Sidebar() {
   }, [selectedEndpoint, loadData]);
 
   return (
-    <aside className="h-screen w-64 bg-primaryAccent py-4 px-2 flex flex-col gap-4">
-      <SidebarHeader />
-      <NewChatButton disabled={messages.length === 0} onClick={clearChat} />
-
-      {selectedEndpoint && (
-        <>
-          <Endpoint />
-          {isEndpointActive && (
-            <>
+    <aside
+      className={`h-screen relative bg-primaryAccent py-4 pl-3 pr-2 flex flex-col gap-4 shrink-0 grow-0
+        ${isCollapsed ? "w-12" : "w-64"} transition-all duration-300 ease-in-out overflow-hidden`}
+    >
+      <button
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        className="absolute top-4 right-2 p-1" 
+        aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        type="button"
+      >
+        <Icon
+          type="sheet"
+          size="xs"
+          className={`transform ${isCollapsed ? "rotate-180" : "rotate-0"}`}
+        />
+      </button>
+      <div
+         className={`space-y-4 transition-[opacity,visibility] duration-200 ${
+          isCollapsed ? 'invisible opacity-0' : 'visible opacity-100'
+        }`}
+      >
+        <SidebarHeader />
+        <NewChatButton disabled={messages.length === 0} onClick={clearChat} />
+        {selectedEndpoint && (
+          <>
+            <Endpoint />
+            {isEndpointActive && (
               <div className="flex flex-col items-start gap-2">
                 <div className="uppercase text-xs font-medium text-primary">
                   Agent
@@ -100,10 +123,10 @@ export default function Sidebar() {
                 <AgentSelector />
                 {model && <ModelDisplay model={model} />}
               </div>
-            </>
-          )}
-        </>
-      )}
+            )}
+          </>
+        )}
+      </div>
     </aside>
   );
 }

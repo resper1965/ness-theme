@@ -1,0 +1,38 @@
+import {
+  MistralLogo,
+  OpenAILogo,
+  GeminiLogo,
+  AwsLogo,
+  AzureLogo,
+  AnthropicLogo,
+  GroqLogo,
+  FireworksLogo,
+  DeepseekLogo,
+  CohereLogo,
+  OllamaLogo,
+  XaiLogo,
+  AgnoIcon,
+  UserIcon,
+  AgentIcon,
+  SheetIcon,
+} from "./custom-icons";
+import { IconTypeMap } from "./types";
+
+export const ICONS: IconTypeMap = {
+  "open-ai": OpenAILogo,
+  mistral: MistralLogo,
+  gemini: GeminiLogo,
+  aws: AwsLogo,
+  azure: AzureLogo,
+  anthropic: AnthropicLogo,
+  groq: GroqLogo,
+  fireworks: FireworksLogo,
+  deepseek: DeepseekLogo,
+  cohere: CohereLogo,
+  ollama: OllamaLogo,
+  xai: XaiLogo,
+  agno: AgnoIcon,
+  user: UserIcon,
+  agent: AgentIcon,
+  sheet: SheetIcon,
+};
