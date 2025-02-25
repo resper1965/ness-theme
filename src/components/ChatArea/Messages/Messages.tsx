@@ -5,6 +5,9 @@ import MarkdownRenderer from "@/components/ui/typography/MarkdownRenderer";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 
 import type { PlaygroundChatMessage } from "@/types/playground";
+import Audios from "@/components/common/chat/Audios/Audios";
+import Images from "@/components/common/chat/Images/Images";
+import Videos from "@/components/common/chat/Videos/Videos";
 
 interface MessageProps {
   message: PlaygroundChatMessage;
@@ -18,8 +21,37 @@ export const AgentMessage = ({ message }: MessageProps) => {
     messageContent = (
       <div className="flex w-full flex-col gap-4">
         <MarkdownRenderer>{message.content}</MarkdownRenderer>
+        {message.videos && message.videos.length > 0 && (
+          <Videos videos={message.videos} />
+        )}
+        {message.images && message.images.length > 0 && (
+          <Images images={message.images} />
+        )}
+        {message.audio && message.audio.length > 0 && (
+          <Audios audio={message.audio} />
+        )}
       </div>
     );
+  }else if (message.response_audio) {
+    if (!message.response_audio.transcript) {
+      messageContent = (
+        <div className="mt-2 flex items-start">
+          {/* <AgentThinkingLoader /> */}
+          thinking...
+        </div>
+      )
+    } else {
+      messageContent = (
+        <div className="flex w-full flex-col gap-4">
+          <MarkdownRenderer>
+            {message.response_audio.transcript}
+          </MarkdownRenderer>
+          {message.response_audio.content && message.response_audio && (
+            <Audios audio={[message.response_audio]} />
+          )}
+        </div>
+      )
+    }
   } else if (streamingError) {
     messageContent = (
       <p className="text-destructive">
