@@ -1,10 +1,10 @@
 import { memo } from "react";
-import { AgentIcon, UserIcon } from "@/components/ui/Icons";
 import { useQueryState } from "nuqs";
 import MarkdownRenderer from "@/components/ui/typography/MarkdownRenderer";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
-
+import Icon from "@/components/ui/icon";
 import type { PlaygroundChatMessage } from "@/types/playground";
+import { Loader } from "lucide-react";
 
 interface MessageProps {
   message: PlaygroundChatMessage;
@@ -29,14 +29,21 @@ export const AgentMessage = ({ message }: MessageProps) => {
     );
   } else {
     messageContent = (
-      <div className="flex items-start text-md">Thinking...</div>
+      <div className="flex items-center justify-center text-md gap-4">
+        <Loader
+          size={16}
+          className="animate-spin [animation-duration:2s] text-brand"
+        />
+        <p className="text-muted">Thinking...</p>
+      </div>
     );
   }
 
   return (
     <div className="flex flex-col items-start gap-4 font-geist">
       <div className="flex items-center gap-x-2 text-sm font-medium font-geist uppercase text-brand">
-        <AgentIcon /> {selectedAgent}
+        <Icon type="agent" size="xs" />
+        {selectedAgent}
       </div>
       {messageContent}
     </div>
@@ -48,7 +55,8 @@ export const UserMessage = memo(({ message }: MessageProps) => {
     <div className="flex items-start pt-4 text-start max-md:break-words">
       <div className="flex flex-col gap-y-3">
         <p className="text-muted flex items-center gap-x-2 text-sm font-medium">
-          <UserIcon /> <span className="uppercase">you</span>{" "}
+          <Icon type="user" size="xs" />
+          <span className="uppercase">you</span>{" "}
         </p>
         <div className="text-md text-secondary py-1 rounded-lg font-geist">
           {message.content}
