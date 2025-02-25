@@ -1,13 +1,11 @@
-import { memo } from "react";
-import { AgentIcon, UserIcon } from "@/components/ui/Icons";
-import { useQueryState } from "nuqs";
+import Icon from "@/components/ui/icon";
 import MarkdownRenderer from "@/components/ui/typography/MarkdownRenderer";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
-
 import type { PlaygroundChatMessage } from "@/types/playground";
 import Videos from "./Multimedia/Videos";
 import Images from "./Multimedia/Images";
 import Audios from "./Multimedia/Audios";
+import { memo } from "react";
 
 
 interface MessageProps {
@@ -16,7 +14,6 @@ interface MessageProps {
 
 export const AgentMessage = ({ message }: MessageProps) => {
   const { streamingError } = usePlaygroundStore();
-  const [selectedAgent] = useQueryState("agent");
   let messageContent;
   if (message.content) {
     messageContent = (
@@ -62,14 +59,16 @@ export const AgentMessage = ({ message }: MessageProps) => {
     );
   } else {
     messageContent = (
-      <div className="flex items-start text-md">Thinking...</div>
+      <div className="mt-2">
+        <AgentThinkingLoader />
+      </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-start gap-4 font-geist">
-      <div className="flex items-center gap-x-2 text-sm font-medium font-geist uppercase text-brand">
-        <AgentIcon /> {selectedAgent}
+    <div className="flex flex-row items-start gap-4 font-geist">
+      <div className="flex-shrink-0">
+        <Icon type="agent" size="sm" />
       </div>
       {messageContent}
     </div>
@@ -79,9 +78,9 @@ export const AgentMessage = ({ message }: MessageProps) => {
 export const UserMessage = memo(({ message }: MessageProps) => {
   return (
     <div className="flex items-start pt-4 text-start max-md:break-words">
-      <div className="flex flex-col gap-y-3">
+      <div className="flex flex-row gap-x-3">
         <p className="text-muted flex items-center gap-x-2 text-sm font-medium">
-          <UserIcon /> <span className="uppercase">you</span>{" "}
+          <Icon type="user" size="sm" />
         </p>
         <div className="text-md text-secondary py-1 rounded-lg font-geist">
           {message.content}
