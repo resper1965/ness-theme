@@ -67,7 +67,6 @@ const ChatTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     React.useEffect(() => {
       if (textareaRef.current) {
-        textareaRef.current.style.height = `${MIN_HEIGHT}px`;
         adjustHeight();
       }
     }, [value, adjustHeight]);
@@ -87,6 +86,7 @@ const ChatTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         )}
         style={{
           minHeight: `${MIN_HEIGHT}px`,
+          height: `${MIN_HEIGHT}px`,
           maxHeight: `${MAX_HEIGHT}px`,
         }}
         ref={handleRef}

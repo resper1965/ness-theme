@@ -35,10 +35,10 @@ export function AgentSelector() {
         setMessages([]);
       }}
     >
-      <SelectTrigger className="w-full border-primary/20 border text-xs font-medium bg-primaryAccent rounded-lg uppercase">
+      <SelectTrigger className="w-full border-primary/20 border text-xs font-medium bg-primaryAccent rounded-xl uppercase">
         <SelectValue placeholder="Select Agent" />
       </SelectTrigger>
-      <SelectContent className="border-primary/20 border bg-primaryAccent rounded-lg">
+      <SelectContent className="border-primary/20 border bg-primaryAccent">
         {agents.map((agent, index) => (
           <SelectItem key={`${agent.value}-${index}`} value={agent.value}>
             <div className="flex items-center gap-3 cursor-pointer uppercase text-xs font-medium">
