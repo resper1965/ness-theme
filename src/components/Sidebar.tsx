@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { RefreshCcw } from "lucide-react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/utils/modelProvider";
+import { motion } from "framer-motion";
+
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
     <Icon type="agno" size="sm" />
@@ -115,13 +117,18 @@ export default function Sidebar() {
           <>
             <Endpoint />
             {isEndpointActive && (
-              <div className="flex flex-col items-start gap-2">
+              <motion.div
+                className="flex flex-col items-start gap-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              >
                 <div className="uppercase text-xs font-medium text-primary">
                   Agent
                 </div>
                 <AgentSelector />
                 {model && <ModelDisplay model={model} />}
-              </div>
+              </motion.div>
             )}
           </>
         )}
