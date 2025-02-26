@@ -90,7 +90,7 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
 
 export const ToolComponent = memo(({ tools }: ToolCallProps) => (
   <div className="cursor-pointer rounded-full bg-accent px-2  py-1.5 text-xs hover:bg-accent/80">
-      <p className=" text-primary/80">{tools.tool_name}</p>
+    <p className=" text-primary/80">{tools.tool_name}</p>
   </div>
 ));
 
