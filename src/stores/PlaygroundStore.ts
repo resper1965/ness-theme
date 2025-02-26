@@ -26,7 +26,7 @@ interface PlaygroundStore {
     endpoints: {
       endpoint: string;
       id_playground_endpoint: string;
-    }[]
+    }[],
   ) => void;
   isStreaming: boolean;
   setIsStreaming: (isStreaming: boolean) => void;
@@ -43,7 +43,7 @@ interface PlaygroundStore {
   setMessages: (
     messages:
       | PlaygroundChatMessage[]
-      | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[])
+      | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[]),
   ) => void;
 
   //   historyData: HistoryEntry[];
