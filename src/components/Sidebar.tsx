@@ -12,9 +12,7 @@ import { getProviderIcon } from "@/utils/modelProvider";
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
     <Icon type="agno" size="sm" />
-    <span className="text-white text-xs font-medium uppercase font-geist-mono">
-      Agent UI
-    </span>
+    <span className="text-white text-xs font-medium uppercase">Agent UI</span>
   </div>
 );
 
@@ -91,7 +89,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`h-screen relative py-3 pl-2 pr-1 flex flex-col gap-3 shrink-0 grow-0
+      className={`h-screen font-dmmono relative py-3 pl-2 pr-1 flex flex-col gap-3 shrink-0 grow-0
         ${isCollapsed ? "w-12" : "w-auto"} transition-all duration-300 ease-in-out overflow-hidden`}
     >
       <button

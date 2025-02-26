@@ -28,8 +28,7 @@ export function AgentSelector() {
       onValueChange={(value) => {
         const newAgent = value === agentId ? "" : value;
         setModel(
-          agents.find((agent) => agent.value === newAgent)?.model.provider ||
-            "",
+          agents.find((agent) => agent.value === newAgent)?.model.provider || ""
         );
         setAgentId(newAgent);
         setMessages([]);
