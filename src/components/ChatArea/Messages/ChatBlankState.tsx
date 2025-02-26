@@ -1,5 +1,7 @@
-import Link from "next/link";
+"use client";
 
+import Link from "next/link";
+import { motion } from "framer-motion";
 const AgnoTag = () => {
   return (
     <svg
@@ -463,7 +465,12 @@ export const ChatBlankState = () => {
       aria-label="Welcome message"
     >
       <div className="max-w-3xl flex flex-col gap-y-8">
-        <h1 className="text-3xl font-[600] tracking-tight">
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="text-3xl font-[600] tracking-tight"
+        >
           <div className="flex items-center justify-center whitespace-nowrap gap-x-2 font-medium">
             <span className="flex items-center font-[600]">
               This is an open-source
@@ -479,9 +486,14 @@ export const ChatBlankState = () => {
             </span>
           </div>
           <p>You can learn more on the Agent Playground.</p>
-        </h1>
+        </motion.h1>
 
-        <div className="flex gap-4 justify-center">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="flex gap-4 justify-center"
+        >
           <ActionButton
             href={EXTERNAL_LINKS.documentation}
             variant="primary"
@@ -491,7 +503,7 @@ export const ChatBlankState = () => {
             href={EXTERNAL_LINKS.playground}
             text="VISIT AGENT PLAYGROUND"
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );
