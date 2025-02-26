@@ -40,10 +40,8 @@ const ChatInput = () => {
     }
   };
 
-  const isDisabled = !selectedAgent;
-
   return (
-    <div className="relative mx-auto flex w-full max-w-2xl justify-center items-center gap-x-2 mb-1 font-geist">
+    <div className="relative mx-auto flex w-full max-w-2xl justify-center items-end gap-x-2 mb-1 font-geist">
       <ChatTextArea
         placeholder={"Ask anything"}
         value={inputMessage}
@@ -55,12 +53,12 @@ const ChatInput = () => {
           }
         }}
         className="w-full border border-accent px-4 text-sm focus:border-accent bg-primaryAccent text-primary"
-        disabled={isDisabled}
+        disabled={!selectedAgent}
         ref={chatInputRef}
       />
       <Button
         onClick={handleSubmit}
-        disabled={isDisabled}
+        disabled={!selectedAgent || !inputMessage.trim()}
         size="icon"
         className="bg-primary text-primaryAccent p-5 rounded-xl"
       >
