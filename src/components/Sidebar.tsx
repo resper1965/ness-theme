@@ -6,12 +6,12 @@ import useChatActions from "@/hooks/playground/useChatActions";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
-import { RefreshCcw } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/utils/modelProvider";
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
-    <Icon type="agno" size="sm" />
+    <Icon type="agno" size="xs" />
     <span className="text-white text-xs font-medium uppercase font-geist-mono">
       Agent UI
     </span>
@@ -56,7 +56,7 @@ const Endpoint = () => {
   return (
     <div className="flex flex-col items-start gap-2">
       <div className="uppercase text-xs font-medium text-primary">Endpoint</div>
-      <div className="flex w-full gap-4 items-center">
+      <div className="flex w-full gap-1 items-center">
         <div className="flex w-full items-center justify-between border-primary/15 border bg-accent rounded-xl uppercase p-3 h-9">
           <p className="text-xs font-medium text-muted "> {selectedEndpoint}</p>
           <div
@@ -69,7 +69,7 @@ const Endpoint = () => {
           onClick={loadData}
           className="hover:bg-transparent hover:cursor-pointer"
         >
-          <RefreshCcw size={16} />
+          <RefreshCw size={16} />
         </Button>
       </div>
     </div>
@@ -96,7 +96,7 @@ export default function Sidebar() {
     >
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute top-4 right-2 p-1"
+        className="absolute top-2 right-2 p-1"
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         type="button"
       >
