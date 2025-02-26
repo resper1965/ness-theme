@@ -9,12 +9,12 @@ import { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/utils/modelProvider";
+import { motion } from "framer-motion";
+
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
     <Icon type="agno" size="xs" />
-    <span className="text-white text-xs font-medium uppercase font-geist-mono">
-      Agent UI
-    </span>
+    <span className="text-white text-xs font-medium uppercase">Agent UI</span>
   </div>
 );
 
@@ -91,7 +91,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`h-screen relative py-3 pl-2 pr-1 flex flex-col gap-3 shrink-0 grow-0
+      className={`h-screen font-dmmono relative py-3 pl-2 pr-1 flex flex-col gap-3 shrink-0 grow-0
         ${isCollapsed ? "w-12" : "w-auto"} transition-all duration-300 ease-in-out overflow-hidden`}
     >
       <button
@@ -117,13 +117,18 @@ export default function Sidebar() {
           <>
             <Endpoint />
             {isEndpointActive && (
-              <div className="flex flex-col items-start gap-2">
+              <motion.div
+                className="flex flex-col items-start gap-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              >
                 <div className="uppercase text-xs font-medium text-primary">
                   Agent
                 </div>
                 <AgentSelector />
                 {model && <ModelDisplay model={model} />}
-              </div>
+              </motion.div>
             )}
           </>
         )}
