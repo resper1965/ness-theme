@@ -43,7 +43,7 @@ const ChatInput = () => {
   const isDisabled = !selectedAgent;
 
   return (
-    <div className="relative mx-auto flex w-full max-w-2xl justify-center items-center gap-x-2 mb-1 font-geist">
+    <div className="relative mx-auto flex w-full max-w-2xl justify-center items-end gap-x-2 mb-1 font-geist">
       <ChatTextArea
         placeholder={"Ask anything"}
         value={inputMessage}

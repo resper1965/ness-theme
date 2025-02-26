@@ -9,7 +9,7 @@ type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
 };
 
 const MIN_HEIGHT = 45;
-const MAX_HEIGHT = 213;
+const MAX_HEIGHT = 96;
 
 const ChatTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, value, onChange, ...props }, forwardedRef) => {
