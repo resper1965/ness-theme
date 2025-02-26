@@ -26,7 +26,7 @@ interface PlaygroundStore {
     endpoints: {
       endpoint: string;
       id_playground_endpoint: string;
-    }[],
+    }[]
   ) => void;
   isStreaming: boolean;
   setIsStreaming: (isStreaming: boolean) => void;
@@ -43,7 +43,7 @@ interface PlaygroundStore {
   setMessages: (
     messages:
       | PlaygroundChatMessage[]
-      | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[]),
+      | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[])
   ) => void;
 
   //   historyData: HistoryEntry[];
@@ -62,6 +62,18 @@ interface PlaygroundStore {
   agents: Agent[];
   setAgents: (agents: Agent[]) => void;
 }
+
+// Helper function to get the endpoint from localStorage
+const getStoredEndpoint = (): string => {
+  // During server-side rendering, always return the default value
+  // This ensures consistent rendering between server and client
+  if (typeof window === "undefined") {
+    return "http://localhost:7777";
+  }
+
+  // Only access localStorage on the client side
+  return localStorage.getItem("endpoint") || "http://localhost:7777";
+};
 
 export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
   streamingError: false,
@@ -103,8 +115,13 @@ export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
   //   setIsMonitoring: (isMonitoring) => set(() => ({ isMonitoring })),
 
   chatInputRef: { current: null },
-  selectedEndpoint: process.env.NEXT_PUBLIC_BASE_URL || "",
-  setSelectedEndpoint: (selectedEndpoint) => set(() => ({ selectedEndpoint })),
+  selectedEndpoint: getStoredEndpoint(),
+  setSelectedEndpoint: (selectedEndpoint) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("endpoint", selectedEndpoint);
+    }
+    set(() => ({ selectedEndpoint }));
+  },
 
   agents: [],
   setAgents: (agents) => set({ agents }),
