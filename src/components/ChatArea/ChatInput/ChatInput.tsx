@@ -63,7 +63,7 @@ const ChatInput = () => {
             handleSubmit();
           }
         }}
-        className="w-full border border-accent pr-10 text-sm focus:border-accent bg-primaryAccent text-primary"
+        className="w-full border border-accent px-4 text-sm focus:border-accent bg-primaryAccent text-primary"
         disabled={isDisabled}
         ref={chatInputRef}
       />
