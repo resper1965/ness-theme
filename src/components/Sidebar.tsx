@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/utils/modelProvider";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
@@ -90,49 +90,66 @@ export default function Sidebar() {
   }, [selectedEndpoint, loadData]);
 
   return (
-    <aside
-      className={`h-screen font-dmmono relative py-3 pl-2 pr-1 flex flex-col gap-3 shrink-0 grow-0
-        ${isCollapsed ? "w-12" : "w-auto"} transition-all duration-300 ease-in-out overflow-hidden`}
+    <motion.aside
+      className="h-screen font-dmmono relative py-3 pl-2 pr-1 flex flex-col gap-3 shrink-0 grow-0 overflow-hidden"
+      initial={{ width: isCollapsed ? "2.5rem" : "16rem" }}
+      animate={{ width: isCollapsed ? "2.5rem" : "16rem" }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 30,
+      }}
     >
-      <button
+      <motion.button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute top-2 right-2 p-1"
+        className="absolute top-2 right-2 p-1 z-10"
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         type="button"
+        whileTap={{ scale: 0.95 }}
       >
         <Icon
           type="sheet"
           size="xs"
           className={`transform ${isCollapsed ? "rotate-180" : "rotate-0"}`}
         />
-      </button>
-      <div
-        className={`space-y-5 w-60 transition-[opacity,visibility] duration-200 ${
-          isCollapsed ? "invisible opacity-0" : "visible opacity-100"
-        }`}
-      >
-        <SidebarHeader />
-        <NewChatButton disabled={messages.length === 0} onClick={clearChat} />
-        {selectedEndpoint && (
-          <>
-            <Endpoint />
-            {isEndpointActive && (
-              <motion.div
-                className="flex flex-col items-start gap-2"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-              >
-                <div className="uppercase text-xs font-medium text-primary">
-                  Agent
-                </div>
-                <AgentSelector />
-                {model && <ModelDisplay model={model} />}
-              </motion.div>
+      </motion.button>
+
+      <AnimatePresence>
+        {!isCollapsed && (
+          <motion.div
+            className="space-y-5 w-60"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <SidebarHeader />
+            <NewChatButton
+              disabled={messages.length === 0}
+              onClick={clearChat}
+            />
+            {selectedEndpoint && (
+              <>
+                <Endpoint />
+                {isEndpointActive && (
+                  <motion.div
+                    className="flex flex-col items-start gap-2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                  >
+                    <div className="uppercase text-xs font-medium text-primary">
+                      Agent
+                    </div>
+                    <AgentSelector />
+                    {model && <ModelDisplay model={model} />}
+                  </motion.div>
+                )}
+              </>
             )}
-          </>
+          </motion.div>
         )}
-      </div>
-    </aside>
+      </AnimatePresence>
+    </motion.aside>
   );
 }
