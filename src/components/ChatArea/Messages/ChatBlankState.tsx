@@ -10,6 +10,7 @@ const EXTERNAL_LINKS = {
   documentation:
     "https://docs.agno.com/get-started/playground#agent-playground",
   playground: "https://app.agno.com/playground/chat",
+  agno: "https://agno.com",
 };
 
 const TECH_ICONS = [
@@ -122,7 +123,14 @@ export const ChatBlankState = () => {
               This is an open-source
             </span>
             <span className="inline-flex items-center translate-y-[10px] scale-125 hover:rotate-6 transition-transform duration-200">
-              <Icon type="agnoTag" size="default" />
+              <Link
+                href={EXTERNAL_LINKS.agno}
+                target="_blank"
+                rel="noopener"
+                className="cursor-pointer"
+              >
+                <Icon type="agnoTag" size="default" />
+              </Link>
             </span>
             <span className="flex items-center font-[600]">
               Agent UI, built with
