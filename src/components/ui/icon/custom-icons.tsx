@@ -477,9 +477,9 @@ export const SheetIcon: FC = ({ ...props }) => (
 
 export const NextjsTag: FC = ({ ...props }) => (
   <svg
-    width="53"
-    height="52"
-    viewBox="0 0 53 52"
+    width="29"
+    height="30"
+    viewBox="12 0 29 30"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
@@ -587,9 +587,9 @@ export const NextjsTag: FC = ({ ...props }) => (
 
 export const ShadcnTag: FC = ({ ...props }) => (
   <svg
-    width="53"
-    height="52"
-    viewBox="0 0 53 52"
+    width="29"
+    height="30"
+    viewBox="12 0 29 30"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     xlinkHref="http://www.w3.org/1999/xlink"
@@ -706,9 +706,9 @@ export const ShadcnTag: FC = ({ ...props }) => (
 
 export const TailwindTag: FC = ({ ...props }) => (
   <svg
-    width="53"
-    height="52"
-    viewBox="0 0 53 52"
+    width="29"
+    height="30"
+    viewBox="12 0 29 30"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}

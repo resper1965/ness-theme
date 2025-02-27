@@ -79,8 +79,8 @@ export const ChatBlankState = () => {
             <span className="flex items-center font-[600]">
               Agent UI, built with
             </span>
-            <span className="inline-flex items-center translate-y-[10px] scale-125">
-              <div className="relative w-[90px] h-[40px]">
+            <span className="inline-flex items-center scale-125">
+              <div className="relative w-[90px] h-[40px] ml-2">
                 {TECH_ICONS.map((icon) => (
                   <div
                     key={icon.type}
