@@ -20,6 +20,7 @@ import {
   TailwindTag,
   AgnoTag,
   ReasoningIcon,
+  ReferencesIcon,
 } from "./custom-icons";
 import { IconTypeMap } from "./types";
 import {
@@ -72,4 +73,5 @@ export const ICONS: IconTypeMap = {
   "chevron-down": ChevronDown,
   "chevron-up": ChevronUp,
   "plus-icon": PlusIcon,
+  references: ReferencesIcon,
 };

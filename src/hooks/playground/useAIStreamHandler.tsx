@@ -118,20 +118,15 @@ const useAIChatStreamHandler = () => {
                     };
                   }
 
+                  if (chunk.extra_data?.references) {
+                    lastMessage.extra_data = {
+                      ...lastMessage.extra_data,
+                      references: chunk.extra_data.references,
+                    };
+                  }
+
                   lastMessage.created_at =
                     chunk.created_at ?? lastMessage.created_at;
-                  //   if (chunk.extra_data?.reasoning_steps) {
-                  //     lastMessage.extra_data = {
-                  //       ...(lastMessage.extra_data || {}),
-                  //       reasoning_steps: chunk.extra_data.reasoning_steps
-                  //     }
-                  //   }
-                  //   if (chunk.extra_data?.references) {
-                  //     lastMessage.extra_data = {
-                  //       ...(lastMessage.extra_data || {}),
-                  //       references: chunk.extra_data.references
-                  //     }
-                  //   }
                   if (chunk.images) {
                     lastMessage.images = chunk.images;
                   }
@@ -189,9 +184,9 @@ const useAIChatStreamHandler = () => {
                         reasoning_steps:
                           chunk.extra_data?.reasoning_steps ??
                           message.extra_data?.reasoning_steps,
-                        //     references:
-                        //       chunk.extra_data?.references ??
-                        //       message.extra_data?.references
+                        references:
+                          chunk.extra_data?.references ??
+                          message.extra_data?.references,
                       },
                     };
                   }
