@@ -12,13 +12,13 @@ import { useQueryState } from "nuqs";
 
 const useChatActions = () => {
   const selectedEndpoint = usePlaygroundStore(
-    (state) => state.selectedEndpoint,
+    (state) => state.selectedEndpoint
   );
   const [, setAgentId] = useQueryState("agent");
   const [, setModel] = useQueryState("model");
   const setMessages = usePlaygroundStore((state) => state.setMessages);
   const setIsEndpointActive = usePlaygroundStore(
-    (state) => state.setIsEndpointActive,
+    (state) => state.setIsEndpointActive
   );
   const setAgents = usePlaygroundStore((state) => state.setAgents);
 
@@ -51,12 +51,12 @@ const useChatActions = () => {
     (message: PlaygroundChatMessage) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     },
-    [setMessages],
+    [setMessages]
   );
 
-  const clearData = useCallback(() => {
-    setAgentId(null);
-    setModel(null);
+  const resetData = useCallback(({ agent }: { agent: ComboboxAgent }) => {
+    setModel(agent?.model?.provider ?? null);
+    setAgentId(agent?.value ?? null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -69,7 +69,7 @@ const useChatActions = () => {
     } else {
       setIsEndpointActive(false);
     }
-    clearData();
+    resetData({ agent: agents?.[0] });
     setAgents(agents);
     return agents;
   }, [getStatus, getAgents, setIsEndpointActive, setAgents]);
