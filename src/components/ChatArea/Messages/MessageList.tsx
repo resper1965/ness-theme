@@ -7,6 +7,8 @@ import {
   ToolCallProps,
   ReasoningStepProps,
   ReasoningProps,
+  ReferenceData,
+  Reference,
 } from "@/types/playground";
 import React, { type FC } from "react";
 import { ChatBlankState } from "./ChatBlankState";
@@ -20,6 +22,41 @@ interface MessageWrapperProps {
   message: PlaygroundChatMessage;
   isLastMessage: boolean;
 }
+
+interface ReferenceProps {
+  references: ReferenceData[];
+}
+
+interface ReferenceItemProps {
+  reference: Reference;
+}
+
+const ReferenceItem: FC<ReferenceItemProps> = ({ reference }) => (
+  <div className="flex flex-col w-[190px] h-[63px] rounded-md bg-background-secondary p-3 justify-between relative overflow-hidden hover:bg-background-secondary/80 transition-colors cursor-default">
+    <p className="text-sm font-medium text-primary">{reference.name}</p>
+    <p className="text-xs text-primary/40 truncate">{reference.content}</p>
+  </div>
+);
+
+const References: FC<ReferenceProps> = ({ references }) => (
+  <div className="flex flex-col gap-4">
+    {references.map((referenceData, index) => (
+      <div
+        key={`${referenceData.query}-${index}`}
+        className="flex flex-col gap-3"
+      >
+        <div className="flex flex-wrap gap-3">
+          {referenceData.references.map((reference, refIndex) => (
+            <ReferenceItem
+              key={`${reference.name}-${reference.meta_data.chunk}-${refIndex}`}
+              reference={reference}
+            />
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+);
 
 const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
   return (
@@ -37,6 +74,21 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
             <div className="flex flex-col gap-3">
               <p className="text-xs uppercase">Reasoning</p>
               <Reasonings reasoning={message.extra_data.reasoning_steps} />
+            </div>
+          </div>
+        )}
+      {message.extra_data?.references &&
+        message.extra_data.references.length > 0 && (
+          <div className="flex items-start gap-4">
+            <Tooltip
+              delayDuration={0}
+              content={<p className="text-accent">References</p>}
+              side="top"
+            >
+              <Icon type="references" size="sm" />
+            </Tooltip>
+            <div className="flex flex-col gap-3">
+              <References references={message.extra_data.references} />
             </div>
           </div>
         )}

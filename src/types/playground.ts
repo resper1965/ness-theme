@@ -103,11 +103,12 @@ export interface RunResponse {
 export interface AgentExtraData {
   reasoning_steps?: ReasoningSteps[];
   reasoning_messages?: ReasoningMessage[];
-  // references?: ReferencesData[]
+  references?: ReferenceData[];
 }
 
 export interface PlaygroundAgentExtraData extends AgentExtraData {
   reasoning_messages?: ReasoningMessage[];
+  references?: ReferenceData[];
 }
 
 export interface ReasoningMessage {
@@ -131,6 +132,7 @@ export interface PlaygroundChatMessage {
   extra_data?: {
     reasoning_steps?: ReasoningSteps[];
     reasoning_messages?: ReasoningMessage[];
+    references?: ReferenceData[];
   };
   images?: ImageData[];
   videos?: VideoData[];
@@ -191,4 +193,19 @@ export interface AudioData {
   content?: string;
   channels?: number;
   sample_rate?: number;
+}
+
+export interface ReferenceData {
+  query: string;
+  references: Reference[];
+  time?: number;
+}
+
+export interface Reference {
+  content: string;
+  meta_data: {
+    chunk: number;
+    chunk_size: number;
+  };
+  name: string;
 }
