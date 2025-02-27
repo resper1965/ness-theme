@@ -96,7 +96,7 @@ const Endpoint = () => {
           </Button>
         </div>
       ) : (
-        <div className="flex w-full items-center">
+        <div className="flex w-full items-center gap-1">
           <motion.div
             className="flex w-full items-center justify-between border-primary/15 border bg-accent rounded-xl uppercase p-3 h-9 relative cursor-pointer"
             onMouseEnter={() => setIsHovering(true)}
