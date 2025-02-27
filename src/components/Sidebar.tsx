@@ -71,7 +71,7 @@ const Endpoint = () => {
   const handleRefresh = async () => {
     setIsRotating(true);
     await loadData();
-    setTimeout(() => setIsRotating(false), 500); 
+    setTimeout(() => setIsRotating(false), 500);
   };
 
   return (
@@ -144,7 +144,7 @@ const Endpoint = () => {
             className="hover:bg-transparent hover:cursor-pointer"
           >
             <motion.div
-              key={isRotating ? "rotating" : "idle"} 
+              key={isRotating ? "rotating" : "idle"}
               animate={{ rotate: isRotating ? 360 : 0 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
