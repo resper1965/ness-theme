@@ -46,9 +46,9 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
             delayDuration={0}
             content={<p className="text-accent">Tool Calls</p>}
             side="top"
-            className="bg-background p-1 border border-border rounded-lg"
+            className="bg-background p-1 rounded-lg"
           >
-            <Icon type="hammer" size="xs" color="primary/80" />
+            <Icon type="hammer" size="sm" color="primary/80" />
           </Tooltip>
 
           <div className="flex flex-wrap gap-2">
@@ -90,7 +90,7 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
 
 export const ToolComponent = memo(({ tools }: ToolCallProps) => (
   <div className="cursor-default rounded-full bg-accent px-2  py-1.5 text-xs">
-    <p className=" text-primary/80">{tools.tool_name}</p>
+    <p className=" text-primary/80 uppercase font-dmmono">{tools.tool_name}</p>
   </div>
 ));
 

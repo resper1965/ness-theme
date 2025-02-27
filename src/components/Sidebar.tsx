@@ -173,7 +173,7 @@ const Endpoint = () => {
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const { clearChat, loadData } = useChatActions();
+  const { clearChat, focusChatInput, loadData } = useChatActions();
   const { messages, selectedEndpoint, isEndpointActive, selectedModel } =
     usePlaygroundStore();
   const [isMounted, setIsMounted] = useState(false);
@@ -185,6 +185,10 @@ export default function Sidebar() {
     }
   }, [selectedEndpoint, loadData]);
 
+  const handleNewChat = () => {
+    clearChat();
+    focusChatInput();
+  };
   return (
     <motion.aside
       className="h-screen font-dmmono relative py-3 pl-2 pr-1 flex flex-col gap-3 shrink-0 grow-0 overflow-hidden"
@@ -221,7 +225,7 @@ export default function Sidebar() {
             <SidebarHeader />
             <NewChatButton
               disabled={messages.length === 0}
-              onClick={clearChat}
+              onClick={handleNewChat}
             />
             {isMounted && selectedEndpoint && (
               <>

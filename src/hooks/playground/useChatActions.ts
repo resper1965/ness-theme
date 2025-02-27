@@ -11,6 +11,7 @@ import {
 import { useQueryState } from "nuqs";
 
 const useChatActions = () => {
+  const { chatInputRef } = usePlaygroundStore();
   const selectedEndpoint = usePlaygroundStore(
     (state) => state.selectedEndpoint,
   );
@@ -49,6 +50,11 @@ const useChatActions = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const focusChatInput = useCallback(() => {
+    chatInputRef?.current?.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const addMessage = useCallback(
     (message: PlaygroundChatMessage) => {
       setMessages((prevMessages) => [...prevMessages, message]);
@@ -80,6 +86,7 @@ const useChatActions = () => {
     clearChat,
     addMessage,
     getAgents,
+    focusChatInput,
     loadData,
   };
 };

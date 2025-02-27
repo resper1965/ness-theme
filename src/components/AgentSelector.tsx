@@ -12,9 +12,11 @@ import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
 import Icon from "@/components/ui/icon";
 import { useEffect } from "react";
+import useChatActions from "@/hooks/playground/useChatActions";
 
 export function AgentSelector() {
   const { agents, setMessages, setSelectedModel } = usePlaygroundStore();
+  const { focusChatInput } = useChatActions();
   const [agentId, setAgentId] = useQueryState("agent", {
     parse: (value) => value || undefined,
     history: "push",
@@ -26,22 +28,31 @@ export function AgentSelector() {
       const agent = agents.find((agent) => agent.value === agentId);
       if (agent) {
         setSelectedModel(agent.model.provider || "");
+        focusChatInputTimeout();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agentId, agents, setSelectedModel]);
+
+  const focusChatInputTimeout = () => {
+    setTimeout(() => {
+      requestAnimationFrame(() => focusChatInput());
+    }, 0);
+  };
+  const handleOnValueChange = (value: string) => {
+    const newAgent = value === agentId ? "" : value;
+    setSelectedModel(
+      agents.find((agent) => agent.value === newAgent)?.model.provider || "",
+    );
+    setAgentId(newAgent);
+    setMessages([]);
+    focusChatInputTimeout();
+  };
 
   return (
     <Select
       value={agentId || ""}
-      onValueChange={(value) => {
-        const newAgent = value === agentId ? "" : value;
-        setSelectedModel(
-          agents.find((agent) => agent.value === newAgent)?.model.provider ||
-            "",
-        );
-        setAgentId(newAgent);
-        setMessages([]);
-      }}
+      onValueChange={(value) => handleOnValueChange(value)}
     >
       <SelectTrigger className="w-full h-9 border-primary/15 border text-xs font-medium bg-primaryAccent rounded-xl uppercase">
         <SelectValue placeholder="Select Agent" />

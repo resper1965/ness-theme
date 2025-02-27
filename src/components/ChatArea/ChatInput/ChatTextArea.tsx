@@ -75,11 +75,11 @@ const ChatTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       <textarea
         className={cn(
           "w-full resize-none bg-transparent shadow-sm",
-          "rounded-xl border border-border",
+          "rounded-xl border border-border ",
           "py-2 px-3 ",
           "text-sm leading-5",
           "placeholder:text-muted-foreground",
-          "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+          "focus-visible:outline-none focus-visible:ring-0.5 focus-visible:ring-ring focus-visible:border-primary/50",
           "disabled:cursor-not-allowed disabled:opacity-50",
           showScroll ? "overflow-y-auto" : "overflow-hidden",
           className,
