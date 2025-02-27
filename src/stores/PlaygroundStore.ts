@@ -1,9 +1,7 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-import {
-  //   type HistoryEntry,
-  type PlaygroundChatMessage,
-} from "@/types/playground";
+import { type PlaygroundChatMessage } from "@/types/playground";
 
 interface Agent {
   value: string;
@@ -26,7 +24,7 @@ interface PlaygroundStore {
     endpoints: {
       endpoint: string;
       id_playground_endpoint: string;
-    }[],
+    }[]
   ) => void;
   isStreaming: boolean;
   setIsStreaming: (isStreaming: boolean) => void;
@@ -43,17 +41,8 @@ interface PlaygroundStore {
   setMessages: (
     messages:
       | PlaygroundChatMessage[]
-      | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[]),
+      | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[])
   ) => void;
-
-  //   historyData: HistoryEntry[];
-  //   setHistoryData: (
-  //     historyData:
-  //       | HistoryEntry[]
-  //       | ((prevHistoryData: HistoryEntry[]) => HistoryEntry[]),
-  //   ) => void;
-  //   isMonitoring: boolean;
-  //   setIsMonitoring: (isMonitoring: boolean) => void;
 
   chatInputRef: React.RefObject<HTMLTextAreaElement | null>;
   selectedEndpoint: string;
@@ -63,66 +52,52 @@ interface PlaygroundStore {
   setAgents: (agents: Agent[]) => void;
 }
 
-// Helper function to get the endpoint from localStorage
-const getStoredEndpoint = (): string => {
-  // During server-side rendering, always return the default value
-  // This ensures consistent rendering between server and client
-  if (typeof window === "undefined") {
-    return "http://localhost:7777";
-  }
+export const usePlaygroundStore = create<PlaygroundStore>()(
+  persist(
+    (set) => ({
+      streamingError: false,
+      setStreamingError: (streamingError) => set(() => ({ streamingError })),
+      storage: false,
+      setStorage: (storage) => set(() => ({ storage })),
+      endpoints: [],
+      setEndpoints: (endpoints) => set(() => ({ endpoints })),
+      isStreaming: false,
+      setIsStreaming: (isStreaming) => set(() => ({ isStreaming })),
+      isSidebarCollapsed: true,
+      setIsSidebarCollapsed: (isSidebarCollapsed) =>
+        set(() => ({ isSidebarCollapsed })),
+      historyLoading: false,
+      setHistoryLoading: (loading) => set(() => ({ historyLoading: loading })),
+      isEndpointActive: false,
+      setIsEndpointActive: (isActive) =>
+        set(() => ({ isEndpointActive: isActive })),
+      endpointLoading: true,
+      setEndpointLoading: (loading) =>
+        set(() => ({ endpointLoading: loading })),
 
-  // Only access localStorage on the client side
-  return localStorage.getItem("endpoint") || "http://localhost:7777";
-};
+      messages: [],
+      setMessages: (messages) =>
+        set((state) => ({
+          messages:
+            typeof messages === "function"
+              ? messages(state.messages)
+              : messages,
+        })),
 
-export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
-  streamingError: false,
-  setStreamingError: (streamingError) => set(() => ({ streamingError })),
-  storage: false,
-  setStorage: (storage) => set(() => ({ storage })),
-  endpoints: [],
-  setEndpoints: (endpoints) => set(() => ({ endpoints })),
-  isStreaming: false,
-  setIsStreaming: (isStreaming) => set(() => ({ isStreaming })),
-  isSidebarCollapsed: true,
-  setIsSidebarCollapsed: (isSidebarCollapsed) =>
-    set(() => ({ isSidebarCollapsed })),
-  historyLoading: false,
-  setHistoryLoading: (loading) => set(() => ({ historyLoading: loading })),
-  isEndpointActive: false,
-  setIsEndpointActive: (isActive) =>
-    set(() => ({ isEndpointActive: isActive })),
-  endpointLoading: true,
-  setEndpointLoading: (loading) => set(() => ({ endpointLoading: loading })),
+      chatInputRef: { current: null },
+      selectedEndpoint: "http://localhost:7777",
+      setSelectedEndpoint: (selectedEndpoint) =>
+        set(() => ({ selectedEndpoint })),
 
-  messages: [],
-  setMessages: (messages) =>
-    set((state) => ({
-      messages:
-        typeof messages === "function" ? messages(state.messages) : messages,
-    })),
-
-  //   historyData: [],
-  //   setHistoryData: (historyData) =>
-  //     set((state) => ({
-  //       historyData:
-  //         typeof historyData === "function"
-  //           ? historyData(state.historyData)
-  //           : historyData,
-  //     })),
-
-  //   isMonitoring: true,
-  //   setIsMonitoring: (isMonitoring) => set(() => ({ isMonitoring })),
-
-  chatInputRef: { current: null },
-  selectedEndpoint: getStoredEndpoint(),
-  setSelectedEndpoint: (selectedEndpoint) => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("endpoint", selectedEndpoint);
+      agents: [],
+      setAgents: (agents) => set({ agents }),
+    }),
+    {
+      name: "endpoint-storage",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        selectedEndpoint: state.selectedEndpoint,
+      }),
     }
-    set(() => ({ selectedEndpoint }));
-  },
-
-  agents: [],
-  setAgents: (agents) => set({ agents }),
-}));
+  )
+);

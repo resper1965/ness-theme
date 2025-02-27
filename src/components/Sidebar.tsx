@@ -10,7 +10,6 @@ import { RefreshCw, Edit, Save } from "lucide-react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/utils/modelProvider";
 import { motion, AnimatePresence } from "framer-motion";
-import { useInitializeEndpoint } from "@/hooks/useInitializeEndpoint";
 
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
@@ -153,8 +152,6 @@ export default function Sidebar() {
   const { messages, selectedEndpoint, isEndpointActive } = usePlaygroundStore();
   const [model] = useQueryState("model");
   const [isMounted, setIsMounted] = useState(false);
-
-  useInitializeEndpoint();
 
   useEffect(() => {
     setIsMounted(true);
