@@ -46,7 +46,7 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
             delayDuration={0}
             content={<p className="text-accent">Tool Calls</p>}
             side="top"
-            className="rounded-sm bg-background p-1"
+            className="bg-background p-1 border border-border rounded-lg"
           >
             <HammerIcon size={16} className="text-primary/80" />
           </Tooltip>
@@ -89,7 +89,7 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
 );
 
 export const ToolComponent = memo(({ tools }: ToolCallProps) => (
-  <div className="cursor-pointer rounded-full bg-accent px-2  py-1.5 text-xs hover:bg-accent/80">
+  <div className="cursor-default rounded-full bg-accent px-2  py-1.5 text-xs">
     <p className=" text-primary/80">{tools.tool_name}</p>
   </div>
 ));

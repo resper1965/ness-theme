@@ -4,12 +4,11 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { AgentSelector } from "@/components/AgentSelector";
 import useChatActions from "@/hooks/playground/useChatActions";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
-import { useQueryState } from "nuqs";
-import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 import { RefreshCw, Edit, Save } from "lucide-react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/utils/modelProvider";
-import { motion, AnimatePresence } from "framer-motion";
 
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
@@ -161,8 +160,8 @@ const Endpoint = () => {
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { clearChat, loadData } = useChatActions();
-  const { messages, selectedEndpoint, isEndpointActive } = usePlaygroundStore();
-  const [model] = useQueryState("model");
+  const { messages, selectedEndpoint, isEndpointActive, selectedModel } =
+    usePlaygroundStore();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -224,7 +223,7 @@ export default function Sidebar() {
                       Agent
                     </div>
                     <AgentSelector />
-                    {model && <ModelDisplay model={model} />}
+                    {selectedModel && <ModelDisplay model={selectedModel} />}
                   </motion.div>
                 )}
               </>

@@ -50,6 +50,9 @@ interface PlaygroundStore {
 
   agents: Agent[];
   setAgents: (agents: Agent[]) => void;
+
+  selectedModel: string;
+  setSelectedModel: (model: string) => void;
 }
 
 export const usePlaygroundStore = create<PlaygroundStore>()(
@@ -91,6 +94,9 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
 
       agents: [],
       setAgents: (agents) => set({ agents }),
+
+      selectedModel: "",
+      setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
     }),
     {
       name: "endpoint-storage",
