@@ -1,12 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "@radix-ui/react-icons";
 import { AgentSelector } from "@/components/AgentSelector";
 import useChatActions from "@/hooks/playground/useChatActions";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { RefreshCw, Edit, Save } from "lucide-react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/utils/modelProvider";
 
@@ -30,7 +28,7 @@ const NewChatButton = ({
     size="lg"
     className="bg-primary h-9 text-background hover:bg-primary/80 rounded-xl text-xs font-medium w-full"
   >
-    <PlusIcon />
+    <Icon type="plus-icon" size="xs" className="text-background" />
     <span className="uppercase">New Chat</span>
   </Button>
 );
@@ -68,6 +66,21 @@ const Endpoint = () => {
     setIsEditing(false);
     setIsHovering(false);
   };
+
+  const handleCancel = () => {
+    setEndpointValue(selectedEndpoint);
+    setIsEditing(false);
+    setIsHovering(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSave();
+    } else if (e.key === "Escape") {
+      handleCancel();
+    }
+  };
+
   const handleRefresh = async () => {
     setIsRotating(true);
     await loadData();
@@ -83,6 +96,7 @@ const Endpoint = () => {
             type="text"
             value={endpointValue}
             onChange={(e) => setEndpointValue(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="flex w-full items-center border-primary/15 border bg-accent rounded-xl p-3 h-9 text-xs font-medium text-muted"
             autoFocus
           />
@@ -92,7 +106,7 @@ const Endpoint = () => {
             onClick={handleSave}
             className="hover:bg-transparent hover:cursor-pointer"
           >
-            <Save size={16} />
+            <Icon type="save" size="xs" />
           </Button>
         </div>
       ) : (
@@ -115,7 +129,7 @@ const Endpoint = () => {
                   transition={{ duration: 0.2 }}
                 >
                   <p className="text-xs font-medium text-primary flex items-center gap-2">
-                    <Edit size={14} /> EDIT ENDPOINT
+                    <Icon type="edit" size="xxs" /> EDIT ENDPOINT
                   </p>
                 </motion.div>
               ) : (
@@ -148,7 +162,7 @@ const Endpoint = () => {
               animate={{ rotate: isRotating ? 360 : 0 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <RefreshCw size={16} />
+              <Icon type="refresh" size="xs" />
             </motion.div>
           </Button>
         </div>

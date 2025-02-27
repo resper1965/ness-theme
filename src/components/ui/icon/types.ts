@@ -16,15 +16,25 @@ export type IconType =
   | "user"
   | "agent"
   | "open-ai"
-  | "agno"
-  | "user"
-  | "agent"
   | "sheet"
   | "nextjs"
   | "shadcn"
   | "tailwind"
-  | "agnoTag"
-  | "reasoning";
+  | "reasoning"
+  | "agno-tag"
+  | "refresh"
+  | "edit"
+  | "save"
+  | "x"
+  | "arrow-down"
+  | "send"
+  | "download"
+  | "hammer"
+  | "brain-circuit"
+  | "check"
+  | "chevron-down"
+  | "chevron-up"
+  | "plus-icon";
 
 export interface IconProps {
   type: IconType;

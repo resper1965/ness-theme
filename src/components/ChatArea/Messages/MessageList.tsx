@@ -2,8 +2,6 @@ import type { PlaygroundChatMessage } from "@/types/playground";
 
 import { AgentMessage, UserMessage } from "./Messages";
 import Tooltip from "@/components/common/Tooltip";
-import { HammerIcon } from "lucide-react";
-import Icon from "@/components/ui/icon";
 import { memo } from "react";
 import {
   ToolCallProps,
@@ -12,6 +10,7 @@ import {
 } from "@/types/playground";
 import React, { type FC } from "react";
 import { ChatBlankState } from "./ChatBlankState";
+import Icon from "@/components/ui/icon";
 
 interface MessageListProps {
   messages: PlaygroundChatMessage[];
@@ -49,7 +48,7 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
             side="top"
             className="bg-background p-1 border border-border rounded-lg"
           >
-            <HammerIcon size={16} className="text-primary/80" />
+            <Icon type="hammer" size="xs" color="primary/80" />
           </Tooltip>
 
           <div className="flex flex-wrap gap-2">
