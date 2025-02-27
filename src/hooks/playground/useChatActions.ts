@@ -14,8 +14,8 @@ const useChatActions = () => {
   const selectedEndpoint = usePlaygroundStore(
     (state) => state.selectedEndpoint,
   );
-  const [,setAgentId] = useQueryState("agent");
-  const [,setModel] = useQueryState("model");
+  const [, setAgentId] = useQueryState("agent");
+  const [, setModel] = useQueryState("model");
   const setMessages = usePlaygroundStore((state) => state.setMessages);
   const setIsEndpointActive = usePlaygroundStore(
     (state) => state.setIsEndpointActive,
@@ -62,7 +62,7 @@ const useChatActions = () => {
 
   const loadData = useCallback(async () => {
     const status = await getStatus();
-    let agents:ComboboxAgent[] = [];
+    let agents: ComboboxAgent[] = [];
     if (status === 200) {
       setIsEndpointActive(true);
       agents = await getAgents();

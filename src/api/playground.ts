@@ -6,7 +6,6 @@ import { Agent, ComboboxAgent } from "@/types/playground";
 
 // Define a local type to shape the agent data for the combobox.
 
-
 export const getPlaygroundAgentsAPI = async (
   endpoint: string,
 ): Promise<ComboboxAgent[]> => {
