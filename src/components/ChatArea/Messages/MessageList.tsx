@@ -32,7 +32,7 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
               content={<p className="text-accent">Reasoning</p>}
               side="top"
             >
-              <Icon type="brain-circuit" className="h-5 w-5" />
+              <Icon type="reasoning" size="sm" />
             </Tooltip>
             <div className="flex flex-col gap-3">
               <p className="text-xs uppercase">Reasoning</p>
@@ -70,7 +70,7 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
 };
 const Reasoning: FC<ReasoningStepProps> = ({ index, stepTitle }) => (
   <div className="flex items-center gap-2 text-secondary">
-    <div className="flex h-[20px] items-center rounded-sm bg-background p-2">
+    <div className="flex h-[20px] items-center rounded-md bg-background-secondary p-2">
       <p className="text-xs">STEP {index + 1}</p>
     </div>
     <p className="text-xs">{stepTitle}</p>

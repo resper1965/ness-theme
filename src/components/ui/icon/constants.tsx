@@ -19,6 +19,7 @@ import {
   ShadcnTag,
   TailwindTag,
   AgnoTag,
+  ReasoningIcon,
 } from "./custom-icons";
 import { IconTypeMap } from "./types";
 import {
@@ -30,7 +31,6 @@ import {
   SendIcon,
   Download,
   HammerIcon,
-  BrainCircuitIcon,
   Check,
   ChevronDown,
   ChevronUp,
@@ -58,6 +58,7 @@ export const ICONS: IconTypeMap = {
   nextjs: NextjsTag,
   shadcn: ShadcnTag,
   tailwind: TailwindTag,
+  reasoning: ReasoningIcon,
   "agno-tag": AgnoTag,
   refresh: RefreshCw,
   edit: Edit,
@@ -67,7 +68,6 @@ export const ICONS: IconTypeMap = {
   send: SendIcon,
   download: Download,
   hammer: HammerIcon,
-  "brain-circuit": BrainCircuitIcon,
   check: Check,
   "chevron-down": ChevronDown,
   "chevron-up": ChevronUp,
