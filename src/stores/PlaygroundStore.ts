@@ -24,7 +24,7 @@ interface PlaygroundStore {
     endpoints: {
       endpoint: string;
       id_playground_endpoint: string;
-    }[],
+    }[]
   ) => void;
   isStreaming: boolean;
   setIsStreaming: (isStreaming: boolean) => void;
@@ -41,7 +41,7 @@ interface PlaygroundStore {
   setMessages: (
     messages:
       | PlaygroundChatMessage[]
-      | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[]),
+      | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[])
   ) => void;
 
   chatInputRef: React.RefObject<HTMLTextAreaElement | null>;
@@ -50,6 +50,9 @@ interface PlaygroundStore {
 
   agents: Agent[];
   setAgents: (agents: Agent[]) => void;
+
+  selectedModel: string;
+  setSelectedModel: (model: string) => void;
 }
 
 export const usePlaygroundStore = create<PlaygroundStore>()(
@@ -91,13 +94,17 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
 
       agents: [],
       setAgents: (agents) => set({ agents }),
+
+      selectedModel: "",
+      setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
     }),
     {
       name: "endpoint-storage",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         selectedEndpoint: state.selectedEndpoint,
+        selectedModel: state.selectedModel,
       }),
-    },
-  ),
+    }
+  )
 );

@@ -11,25 +11,32 @@ import {
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
 import Icon from "@/components/ui/icon";
+import { useEffect } from "react";
+
 export function AgentSelector() {
-  const { agents, setMessages } = usePlaygroundStore();
+  const { agents, setMessages, setSelectedModel } = usePlaygroundStore();
   const [agentId, setAgentId] = useQueryState("agent", {
     parse: (value) => value || undefined,
     history: "push",
   });
 
-  const [, setModel] = useQueryState("model", {
-    history: "push",
-  });
+  // Set the model when the component mounts if an agent is already selected
+  useEffect(() => {
+    if (agentId && agents.length > 0) {
+      const agent = agents.find((agent) => agent.value === agentId);
+      if (agent) {
+        setSelectedModel(agent.model.provider || "");
+      }
+    }
+  }, [agentId, agents, setSelectedModel]);
 
   return (
     <Select
       value={agentId || ""}
       onValueChange={(value) => {
         const newAgent = value === agentId ? "" : value;
-        setModel(
-          agents.find((agent) => agent.value === newAgent)?.model.provider ||
-            "",
+        setSelectedModel(
+          agents.find((agent) => agent.value === newAgent)?.model.provider || ""
         );
         setAgentId(newAgent);
         setMessages([]);

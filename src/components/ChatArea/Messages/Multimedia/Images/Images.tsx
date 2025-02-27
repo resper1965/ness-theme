@@ -7,7 +7,7 @@ const Images = ({ images }: { images: ImageData[] }) => (
   <div
     className={cn(
       "grid max-w-xl gap-4",
-      images.length > 1 ? "grid-cols-2" : "grid-cols-1",
+      images.length > 1 ? "grid-cols-2" : "grid-cols-1"
     )}
   >
     {images.map((image) => (
@@ -31,11 +31,6 @@ const Images = ({ images }: { images: ImageData[] }) => (
             }
           }}
         />
-        {image.revised_prompt && (
-          <div className="text-dmmono absolute inset-x-0 bottom-0 rounded-b-lg bg-secondary/80 p-2 font-dmmono text-xs text-gray-600 opacity-0 transition-opacity group-hover:opacity-100">
-            {image.revised_prompt}
-          </div>
-        )}
       </div>
     ))}
   </div>
