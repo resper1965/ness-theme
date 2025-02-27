@@ -178,10 +178,10 @@ export const ChatBlankState = () => {
             <span className="inline-flex items-center translate-y-[10px] scale-125">
               <div className="relative w-[90px] h-[40px]">
                 <div className="absolute left-0 top-0 z-30 group">
-                  <a
+                  <Link
                     href={TECH_LINKS.nextjs}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener"
                     className="block cursor-pointer"
                   >
                     <div className="transform transition-transform duration-200 group-hover:-translate-y-2">
@@ -190,13 +190,13 @@ export const ChatBlankState = () => {
                     <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-transparent text-primary text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
                       Next.js
                     </div>
-                  </a>
+                  </Link>
                 </div>
                 <div className="absolute left-[20px] top-0 z-20 group">
-                  <a
+                  <Link
                     href={TECH_LINKS.shadcn}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener"
                     className="block cursor-pointer"
                   >
                     <div className="transform transition-transform duration-200 group-hover:-translate-y-2">
@@ -205,13 +205,13 @@ export const ChatBlankState = () => {
                     <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-transparent text-primary text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
                       shadcn/ui
                     </div>
-                  </a>
+                  </Link>
                 </div>
                 <div className="absolute left-[40px] top-0 z-10 group">
-                  <a
+                  <Link
                     href={TECH_LINKS.tailwind}
                     target="_blank"
-                    rel="noopener noreferrer"
+                    rel="noopener"
                     className="block cursor-pointer"
                   >
                     <div className="transform transition-transform duration-200 group-hover:-translate-y-2">
@@ -220,7 +220,7 @@ export const ChatBlankState = () => {
                     <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-transparent text-primary text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
                       Tailwind CSS
                     </div>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </span>
