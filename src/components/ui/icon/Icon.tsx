@@ -26,6 +26,7 @@ const Icon: FC<IconProps> = ({
         size === "md" && "size-[42px]",
         size === "lg" && "size-7",
         size === "dot" && "size-[5.07px]",
+        size === "default" && " ",
       )}
     />
   );

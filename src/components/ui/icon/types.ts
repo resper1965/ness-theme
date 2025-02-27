@@ -19,11 +19,15 @@ export type IconType =
   | "agno"
   | "user"
   | "agent"
-  | "sheet";
+  | "sheet"
+  | "nextjs"
+  | "shadcn"
+  | "tailwind"
+  | "agnoTag";
 
 export interface IconProps {
   type: IconType;
-  size?: "xs" | "sm" | "md" | "lg" | "dot" | "xxs";
+  size?: "xs" | "sm" | "md" | "lg" | "dot" | "xxs" | "default";
   className?: string;
   color?: string;
   disabled?: boolean;
