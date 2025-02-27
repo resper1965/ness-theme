@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Icon from "@/components/ui/icon";
+import { IconType } from "@/components/ui/icon/types";
 
 const AgnoTag = () => {
   return (
@@ -122,11 +123,26 @@ const EXTERNAL_LINKS = {
   playground: "https://app.agno.com/playground/chat",
 };
 
-const TECH_LINKS = {
-  nextjs: "https://nextjs.org",
-  shadcn: "https://ui.shadcn.com",
-  tailwind: "https://tailwindcss.com",
-};
+const TECH_ICONS = [
+  {
+    type: "nextjs" as IconType,
+    position: "left-0 top-0 z-10",
+    link: "https://nextjs.org",
+    name: "Next.js",
+  },
+  {
+    type: "shadcn" as IconType,
+    position: "left-[15px] top-0 z-20",
+    link: "https://ui.shadcn.com",
+    name: "shadcn/ui",
+  },
+  {
+    type: "tailwind" as IconType,
+    position: "left-[30px] top-0 z-30",
+    link: "https://tailwindcss.com",
+    name: "Tailwind CSS",
+  },
+];
 
 interface ActionButtonProps {
   href: string;
@@ -177,51 +193,26 @@ export const ChatBlankState = () => {
             </span>
             <span className="inline-flex items-center translate-y-[10px] scale-125">
               <div className="relative w-[90px] h-[40px]">
-                <div className="absolute left-0 top-0 z-30 group">
-                  <Link
-                    href={TECH_LINKS.nextjs}
-                    target="_blank"
-                    rel="noopener"
-                    className="block cursor-pointer"
+                {TECH_ICONS.map((icon) => (
+                  <div
+                    key={icon.type}
+                    className={`absolute ${icon.position} group`}
                   >
-                    <div className="transform transition-transform duration-200 group-hover:-translate-y-2">
-                      <Icon type="nextjs" size="default" />
-                    </div>
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-transparent text-primary text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                      Next.js
-                    </div>
-                  </Link>
-                </div>
-                <div className="absolute left-[20px] top-0 z-20 group">
-                  <Link
-                    href={TECH_LINKS.shadcn}
-                    target="_blank"
-                    rel="noopener"
-                    className="block cursor-pointer"
-                  >
-                    <div className="transform transition-transform duration-200 group-hover:-translate-y-2">
-                      <Icon type="shadcn" size="default" />
-                    </div>
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-transparent text-primary text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                      shadcn/ui
-                    </div>
-                  </Link>
-                </div>
-                <div className="absolute left-[40px] top-0 z-10 group">
-                  <Link
-                    href={TECH_LINKS.tailwind}
-                    target="_blank"
-                    rel="noopener"
-                    className="block cursor-pointer"
-                  >
-                    <div className="transform transition-transform duration-200 group-hover:-translate-y-2">
-                      <Icon type="tailwind" size="default" />
-                    </div>
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-transparent text-primary text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
-                      Tailwind CSS
-                    </div>
-                  </Link>
-                </div>
+                    <Link
+                      href={icon.link}
+                      target="_blank"
+                      rel="noopener"
+                      className="block cursor-pointer"
+                    >
+                      <div className="transform transition-transform duration-200 group-hover:-translate-y-2">
+                        <Icon type={icon.type} size="default" />
+                      </div>
+                      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-transparent text-primary text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+                        {icon.name}
+                      </div>
+                    </Link>
+                  </div>
+                ))}
               </div>
             </span>
           </div>
