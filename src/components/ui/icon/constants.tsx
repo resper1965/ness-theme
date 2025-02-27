@@ -21,6 +21,20 @@ import {
   AgnoTag,
 } from "./custom-icons";
 import { IconTypeMap } from "./types";
+import {
+  RefreshCw,
+  Edit,
+  Save,
+  X,
+  ArrowDown,
+  SendIcon,
+  Download,
+  HammerIcon,
+  BrainCircuitIcon,
+  Check,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 
 export const ICONS: IconTypeMap = {
   "open-ai": OpenAILogo,
@@ -43,4 +57,16 @@ export const ICONS: IconTypeMap = {
   shadcn: ShadcnTag,
   tailwind: TailwindTag,
   agnoTag: AgnoTag,
+  refresh:RefreshCw,
+  Edit,
+  Save,
+  X,
+  ArrowDown,
+  SendIcon,
+  Download,
+  HammerIcon,
+  BrainCircuitIcon,
+  Check,
+  ChevronDown,
+  ChevronUp,
 };
