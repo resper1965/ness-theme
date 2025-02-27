@@ -1,12 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "@radix-ui/react-icons";
 import { AgentSelector } from "@/components/AgentSelector";
 import useChatActions from "@/hooks/playground/useChatActions";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { RefreshCw, Edit, Save } from "lucide-react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/utils/modelProvider";
 
@@ -30,7 +28,7 @@ const NewChatButton = ({
     size="lg"
     className="bg-primary h-9 text-background hover:bg-primary/80 rounded-xl text-xs font-medium w-full"
   >
-    <PlusIcon />
+    <Icon type="plus-icon" size="xs" className="text-background" />
     <span className="uppercase">New Chat</span>
   </Button>
 );
@@ -108,7 +106,7 @@ const Endpoint = () => {
             onClick={handleSave}
             className="hover:bg-transparent hover:cursor-pointer"
           >
-            <Save size={16} />
+            <Icon type="save" size="xs" />
           </Button>
         </div>
       ) : (
@@ -131,7 +129,7 @@ const Endpoint = () => {
                   transition={{ duration: 0.2 }}
                 >
                   <p className="text-xs font-medium text-primary flex items-center gap-2">
-                    <Edit size={14} /> EDIT ENDPOINT
+                    <Icon type="edit" size="xxs" /> EDIT ENDPOINT
                   </p>
                 </motion.div>
               ) : (
@@ -164,7 +162,7 @@ const Endpoint = () => {
               animate={{ rotate: isRotating ? 360 : 0 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <RefreshCw size={16} />
+              <Icon type="refresh" size="xs" />
             </motion.div>
           </Button>
         </div>
@@ -175,7 +173,7 @@ const Endpoint = () => {
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const { clearChat, loadData } = useChatActions();
+  const { clearChat, focusChatInput, loadData } = useChatActions();
   const { messages, selectedEndpoint, isEndpointActive, selectedModel } =
     usePlaygroundStore();
   const [isMounted, setIsMounted] = useState(false);
@@ -187,6 +185,10 @@ export default function Sidebar() {
     }
   }, [selectedEndpoint, loadData]);
 
+  const handleNewChat = () => {
+    clearChat();
+    focusChatInput();
+  };
   return (
     <motion.aside
       className="h-screen font-dmmono relative py-3 pl-2 pr-1 flex flex-col gap-3 shrink-0 grow-0 overflow-hidden"
@@ -223,7 +225,7 @@ export default function Sidebar() {
             <SidebarHeader />
             <NewChatButton
               disabled={messages.length === 0}
-              onClick={clearChat}
+              onClick={handleNewChat}
             />
             {isMounted && selectedEndpoint && (
               <>

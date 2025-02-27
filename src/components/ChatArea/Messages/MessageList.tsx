@@ -2,7 +2,6 @@ import type { PlaygroundChatMessage } from "@/types/playground";
 
 import { AgentMessage, UserMessage } from "./Messages";
 import Tooltip from "@/components/common/Tooltip";
-import { HammerIcon, BrainCircuitIcon } from "lucide-react";
 import { memo } from "react";
 import {
   ToolCallProps,
@@ -11,6 +10,7 @@ import {
 } from "@/types/playground";
 import React, { type FC } from "react";
 import { ChatBlankState } from "./ChatBlankState";
+import Icon from "@/components/ui/icon";
 
 interface MessageListProps {
   messages: PlaygroundChatMessage[];
@@ -32,7 +32,7 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
               content={<p className="text-accent">Reasoning</p>}
               side="top"
             >
-              <BrainCircuitIcon className="h-5 w-5" />
+              <Icon type="reasoning" size="sm" />
             </Tooltip>
             <div className="flex flex-col gap-3">
               <p className="text-xs uppercase">Reasoning</p>
@@ -46,9 +46,9 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
             delayDuration={0}
             content={<p className="text-accent">Tool Calls</p>}
             side="top"
-            className="bg-background p-1 border border-border rounded-lg"
+            className="bg-background p-1 rounded-lg"
           >
-            <HammerIcon size={16} className="text-primary/80" />
+            <Icon type="hammer" size="sm" color="primary/80" />
           </Tooltip>
 
           <div className="flex flex-wrap gap-2">
@@ -70,7 +70,7 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
 };
 const Reasoning: FC<ReasoningStepProps> = ({ index, stepTitle }) => (
   <div className="flex items-center gap-2 text-secondary">
-    <div className="flex h-[20px] items-center rounded-sm bg-background p-2">
+    <div className="flex h-[20px] items-center rounded-md bg-background-secondary p-2">
       <p className="text-xs">STEP {index + 1}</p>
     </div>
     <p className="text-xs">{stepTitle}</p>
@@ -90,7 +90,7 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
 
 export const ToolComponent = memo(({ tools }: ToolCallProps) => (
   <div className="cursor-default rounded-full bg-accent px-2  py-1.5 text-xs">
-    <p className=" text-primary/80">{tools.tool_name}</p>
+    <p className=" text-primary/80 uppercase font-dmmono">{tools.tool_name}</p>
   </div>
 ));
 

@@ -19,6 +19,7 @@ import {
   ShadcnTag,
   TailwindTag,
   AgnoTag,
+  ReasoningIcon,
 } from "./custom-icons";
 import { IconTypeMap } from "./types";
 import {
@@ -30,11 +31,12 @@ import {
   SendIcon,
   Download,
   HammerIcon,
-  BrainCircuitIcon,
   Check,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+
+import { PlusIcon } from "@radix-ui/react-icons";
 
 export const ICONS: IconTypeMap = {
   "open-ai": OpenAILogo,
@@ -56,17 +58,18 @@ export const ICONS: IconTypeMap = {
   nextjs: NextjsTag,
   shadcn: ShadcnTag,
   tailwind: TailwindTag,
-  agnoTag: AgnoTag,
-  refresh:RefreshCw,
-  Edit,
-  Save,
-  X,
-  ArrowDown,
-  SendIcon,
-  Download,
-  HammerIcon,
-  BrainCircuitIcon,
-  Check,
-  ChevronDown,
-  ChevronUp,
+  reasoning: ReasoningIcon,
+  "agno-tag": AgnoTag,
+  refresh: RefreshCw,
+  edit: Edit,
+  save: Save,
+  x: X,
+  "arrow-down": ArrowDown,
+  send: SendIcon,
+  download: Download,
+  hammer: HammerIcon,
+  check: Check,
+  "chevron-down": ChevronDown,
+  "chevron-up": ChevronUp,
+  "plus-icon": PlusIcon,
 };
