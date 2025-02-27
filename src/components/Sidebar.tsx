@@ -53,6 +53,7 @@ const Endpoint = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [endpointValue, setEndpointValue] = useState("");
   const [isMounted, setIsMounted] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
   // Set initial state after component mounts to avoid hydration mismatch
   useEffect(() => {
@@ -78,6 +79,7 @@ const Endpoint = () => {
             value={endpointValue}
             onChange={(e) => setEndpointValue(e.target.value)}
             className="flex w-full items-center border-primary/15 border bg-accent rounded-xl p-3 h-9 text-xs font-medium text-muted"
+            autoFocus
           />
           <Button
             variant="ghost"
@@ -89,23 +91,46 @@ const Endpoint = () => {
           </Button>
         </div>
       ) : (
-        <div className="flex w-full gap-1 items-center">
-          <div className="flex w-full items-center justify-between border-primary/15 border bg-accent rounded-xl uppercase p-3 h-9">
-            <p className="text-xs font-medium text-muted">
-              {isMounted ? selectedEndpoint : "http://localhost:7777"}
-            </p>
-            <div
-              className={`size-2 rounded-full ${getStatusColor(isEndpointActive)}`}
-            />
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
+        <div className="flex w-full items-center">
+          <motion.div
+            className="flex w-full items-center justify-between border-primary/15 border bg-accent rounded-xl uppercase p-3 h-9 relative cursor-pointer"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
             onClick={() => setIsEditing(true)}
-            className="hover:bg-transparent hover:cursor-pointer"
+            // whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <Edit size={16} />
-          </Button>
+            <AnimatePresence mode="wait">
+              {isHovering ? (
+                <motion.p
+                  key="edit-text"
+                  className="text-xs font-medium text-primary flex items-center gap-2 w-full justify-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Edit size={14} /> EDIT ENDPOINT
+                </motion.p>
+              ) : (
+                <motion.div
+                  key="endpoint-display"
+                  className="flex w-full items-center justify-between"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <p className="text-xs font-medium text-muted">
+                    {isMounted ? selectedEndpoint : "http://localhost:7777"}
+                  </p>
+                  <div
+                    className={`size-2 rounded-full ${getStatusColor(isEndpointActive)}`}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
           <Button
             variant="ghost"
             size="icon"
@@ -159,7 +184,6 @@ export default function Sidebar() {
           className={`transform ${isCollapsed ? "rotate-180" : "rotate-0"}`}
         />
       </motion.button>
-
       <AnimatePresence>
         {!isCollapsed && (
           <motion.div
