@@ -30,7 +30,6 @@ export type IconType =
   | "send"
   | "download"
   | "hammer"
-  | "brain-circuit"
   | "check"
   | "chevron-down"
   | "chevron-up"
