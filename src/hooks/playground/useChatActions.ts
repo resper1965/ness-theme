@@ -14,8 +14,8 @@ const useChatActions = () => {
   const selectedEndpoint = usePlaygroundStore(
     (state) => state.selectedEndpoint
   );
+  const setSelectedModel = usePlaygroundStore((state) => state.setSelectedModel);
   const [, setAgentId] = useQueryState("agent");
-  const [, setModel] = useQueryState("model");
   const setMessages = usePlaygroundStore((state) => state.setMessages);
   const setIsEndpointActive = usePlaygroundStore(
     (state) => state.setIsEndpointActive
@@ -55,7 +55,7 @@ const useChatActions = () => {
   );
 
   const resetData = useCallback(({ agent }: { agent: ComboboxAgent }) => {
-    setModel(agent?.model?.provider ?? null);
+    if (!agent) setSelectedModel("");
     setAgentId(agent?.value ?? null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
