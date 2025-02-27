@@ -73,7 +73,7 @@ export const ChatBlankState = () => {
             <span className="flex items-center font-[600]">
               This is an open-source
             </span>
-            <span className="inline-flex items-center translate-y-[10px] scale-125">
+            <span className="inline-flex items-center translate-y-[10px] scale-125 hover:rotate-6 transition-transform duration-200">
               <Icon type="agnoTag" size="default" />
             </span>
             <span className="flex items-center font-[600]">
