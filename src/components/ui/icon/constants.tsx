@@ -15,6 +15,9 @@ import {
   UserIcon,
   AgentIcon,
   SheetIcon,
+  NextjsTag,
+  ShadcnTag,
+  TailwindTag,
 } from "./custom-icons";
 import { IconTypeMap } from "./types";
 
@@ -35,4 +38,7 @@ export const ICONS: IconTypeMap = {
   user: UserIcon,
   agent: AgentIcon,
   sheet: SheetIcon,
+  nextjs: NextjsTag,
+  shadcn: ShadcnTag,
+  tailwind: TailwindTag,
 };
