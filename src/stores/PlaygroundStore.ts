@@ -1,9 +1,7 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-import {
-  //   type HistoryEntry,
-  type PlaygroundChatMessage,
-} from "@/types/playground";
+import { type PlaygroundChatMessage } from "@/types/playground";
 
 interface Agent {
   value: string;
@@ -46,15 +44,6 @@ interface PlaygroundStore {
       | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[]),
   ) => void;
 
-  //   historyData: HistoryEntry[];
-  //   setHistoryData: (
-  //     historyData:
-  //       | HistoryEntry[]
-  //       | ((prevHistoryData: HistoryEntry[]) => HistoryEntry[]),
-  //   ) => void;
-  //   isMonitoring: boolean;
-  //   setIsMonitoring: (isMonitoring: boolean) => void;
-
   chatInputRef: React.RefObject<HTMLTextAreaElement | null>;
   selectedEndpoint: string;
   setSelectedEndpoint: (selectedEndpoint: string) => void;
@@ -63,49 +52,52 @@ interface PlaygroundStore {
   setAgents: (agents: Agent[]) => void;
 }
 
-export const usePlaygroundStore = create<PlaygroundStore>((set) => ({
-  streamingError: false,
-  setStreamingError: (streamingError) => set(() => ({ streamingError })),
-  storage: false,
-  setStorage: (storage) => set(() => ({ storage })),
-  endpoints: [],
-  setEndpoints: (endpoints) => set(() => ({ endpoints })),
-  isStreaming: false,
-  setIsStreaming: (isStreaming) => set(() => ({ isStreaming })),
-  isSidebarCollapsed: true,
-  setIsSidebarCollapsed: (isSidebarCollapsed) =>
-    set(() => ({ isSidebarCollapsed })),
-  historyLoading: false,
-  setHistoryLoading: (loading) => set(() => ({ historyLoading: loading })),
-  isEndpointActive: false,
-  setIsEndpointActive: (isActive) =>
-    set(() => ({ isEndpointActive: isActive })),
-  endpointLoading: true,
-  setEndpointLoading: (loading) => set(() => ({ endpointLoading: loading })),
+export const usePlaygroundStore = create<PlaygroundStore>()(
+  persist(
+    (set) => ({
+      streamingError: false,
+      setStreamingError: (streamingError) => set(() => ({ streamingError })),
+      storage: false,
+      setStorage: (storage) => set(() => ({ storage })),
+      endpoints: [],
+      setEndpoints: (endpoints) => set(() => ({ endpoints })),
+      isStreaming: false,
+      setIsStreaming: (isStreaming) => set(() => ({ isStreaming })),
+      isSidebarCollapsed: true,
+      setIsSidebarCollapsed: (isSidebarCollapsed) =>
+        set(() => ({ isSidebarCollapsed })),
+      historyLoading: false,
+      setHistoryLoading: (loading) => set(() => ({ historyLoading: loading })),
+      isEndpointActive: false,
+      setIsEndpointActive: (isActive) =>
+        set(() => ({ isEndpointActive: isActive })),
+      endpointLoading: true,
+      setEndpointLoading: (loading) =>
+        set(() => ({ endpointLoading: loading })),
 
-  messages: [],
-  setMessages: (messages) =>
-    set((state) => ({
-      messages:
-        typeof messages === "function" ? messages(state.messages) : messages,
-    })),
+      messages: [],
+      setMessages: (messages) =>
+        set((state) => ({
+          messages:
+            typeof messages === "function"
+              ? messages(state.messages)
+              : messages,
+        })),
 
-  //   historyData: [],
-  //   setHistoryData: (historyData) =>
-  //     set((state) => ({
-  //       historyData:
-  //         typeof historyData === "function"
-  //           ? historyData(state.historyData)
-  //           : historyData,
-  //     })),
+      chatInputRef: { current: null },
+      selectedEndpoint: "http://localhost:7777",
+      setSelectedEndpoint: (selectedEndpoint) =>
+        set(() => ({ selectedEndpoint })),
 
-  //   isMonitoring: true,
-  //   setIsMonitoring: (isMonitoring) => set(() => ({ isMonitoring })),
-
-  chatInputRef: { current: null },
-  selectedEndpoint: "http://localhost:7777",
-  setSelectedEndpoint: (selectedEndpoint) => set(() => ({ selectedEndpoint })),
-
-  agents: [],
-  setAgents: (agents) => set({ agents }),
-}));
+      agents: [],
+      setAgents: (agents) => set({ agents }),
+    }),
+    {
+      name: "endpoint-storage",
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({
+        selectedEndpoint: state.selectedEndpoint,
+      }),
+    },
+  ),
+);
