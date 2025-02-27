@@ -24,7 +24,7 @@ const ChatTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       const { scrollHeight } = textarea;
       const newHeight = Math.min(
         Math.max(scrollHeight, MIN_HEIGHT),
-        MAX_HEIGHT
+        MAX_HEIGHT,
       );
       textarea.style.height = `${newHeight}px`;
       setShowScroll(scrollHeight > MAX_HEIGHT);
@@ -39,12 +39,12 @@ const ChatTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           if (textareaRef.current) {
             textareaRef.current.setSelectionRange(
               cursorPosition,
-              cursorPosition
+              cursorPosition,
             );
           }
         });
       },
-      [onChange, adjustHeight]
+      [onChange, adjustHeight],
     );
 
     const handleRef = React.useCallback(
@@ -62,7 +62,7 @@ const ChatTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
         textareaRef.current = node;
       },
-      [forwardedRef]
+      [forwardedRef],
     );
 
     React.useEffect(() => {
@@ -82,7 +82,7 @@ const ChatTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           "focus-visible:outline-none focus-visible:ring-0.5 focus-visible:ring-ring focus-visible:border-primary/50",
           "disabled:cursor-not-allowed disabled:opacity-50",
           showScroll ? "overflow-y-auto" : "overflow-hidden",
-          className
+          className,
         )}
         style={{
           minHeight: `${MIN_HEIGHT}px`,
@@ -95,7 +95,7 @@ const ChatTextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 ChatTextArea.displayName = "ChatTextArea";

@@ -31,6 +31,7 @@ export function AgentSelector() {
         focusChatInputTimeout();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agentId, agents, setSelectedModel]);
 
   const focusChatInputTimeout = () => {
