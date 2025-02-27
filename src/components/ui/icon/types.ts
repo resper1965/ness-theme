@@ -22,7 +22,8 @@ export type IconType =
   | "sheet"
   | "nextjs"
   | "shadcn"
-  | "tailwind";
+  | "tailwind"
+  | "agnoTag";
 
 export interface IconProps {
   type: IconType;

@@ -18,6 +18,7 @@ import {
   NextjsTag,
   ShadcnTag,
   TailwindTag,
+  AgnoTag,
 } from "./custom-icons";
 import { IconTypeMap } from "./types";
 
@@ -41,4 +42,5 @@ export const ICONS: IconTypeMap = {
   nextjs: NextjsTag,
   shadcn: ShadcnTag,
   tailwind: TailwindTag,
+  agnoTag: AgnoTag,
 };
