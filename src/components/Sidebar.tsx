@@ -10,6 +10,7 @@ import { RefreshCw, Edit, Save } from "lucide-react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/utils/modelProvider";
 import { motion, AnimatePresence } from "framer-motion";
+import { useInitializeEndpoint } from "@/hooks/useInitializeEndpoint";
 
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
@@ -55,7 +56,6 @@ const Endpoint = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
-  // Set initial state after component mounts to avoid hydration mismatch
   useEffect(() => {
     setEndpointValue(selectedEndpoint);
     setIsMounted(true);
@@ -67,6 +67,7 @@ const Endpoint = () => {
   const handleSave = () => {
     setSelectedEndpoint(endpointValue);
     setIsEditing(false);
+    setIsHovering(false);
   };
 
   return (
@@ -97,21 +98,22 @@ const Endpoint = () => {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             onClick={() => setIsEditing(true)}
-            // whileHover={{ scale: 1.02 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
             <AnimatePresence mode="wait">
               {isHovering ? (
-                <motion.p
-                  key="edit-text"
-                  className="text-xs font-medium text-primary flex items-center gap-2 w-full justify-center"
+                <motion.div
+                  key="endpoint-display-hover"
+                  className="flex w-full items-center justify-center"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Edit size={14} /> EDIT ENDPOINT
-                </motion.p>
+                  <p className="text-xs font-medium text-primary flex items-center gap-2">
+                    <Edit size={14} /> EDIT ENDPOINT
+                  </p>
+                </motion.div>
               ) : (
                 <motion.div
                   key="endpoint-display"
@@ -145,13 +147,14 @@ const Endpoint = () => {
   );
 };
 
-// Main Sidebar component
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { clearChat, loadData } = useChatActions();
   const { messages, selectedEndpoint, isEndpointActive } = usePlaygroundStore();
   const [model] = useQueryState("model");
   const [isMounted, setIsMounted] = useState(false);
+
+  useInitializeEndpoint();
 
   useEffect(() => {
     setIsMounted(true);
