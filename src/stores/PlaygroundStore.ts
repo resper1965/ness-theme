@@ -103,7 +103,6 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         selectedEndpoint: state.selectedEndpoint,
-        selectedModel: state.selectedModel,
       }),
     }
   )
