@@ -19,6 +19,7 @@ import {
   ShadcnTag,
   TailwindTag,
   AgnoTag,
+  ReasoningIcon,
 } from "./custom-icons";
 import { IconTypeMap } from "./types";
 
@@ -43,4 +44,5 @@ export const ICONS: IconTypeMap = {
   shadcn: ShadcnTag,
   tailwind: TailwindTag,
   agnoTag: AgnoTag,
+  reasoning: ReasoningIcon,
 };

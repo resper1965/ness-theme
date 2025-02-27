@@ -23,7 +23,8 @@ export type IconType =
   | "nextjs"
   | "shadcn"
   | "tailwind"
-  | "agnoTag";
+  | "agnoTag"
+  | "reasoning";
 
 export interface IconProps {
   type: IconType;
