@@ -3,16 +3,19 @@ import { toast } from "sonner";
 
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 
-import { type PlaygroundChatMessage } from "@/types/playground";
+import { ComboboxAgent, type PlaygroundChatMessage } from "@/types/playground";
 import {
   getPlaygroundAgentsAPI,
   getPlaygroundStatusAPI,
 } from "@/api/playground";
+import { useQueryState } from "nuqs";
 
 const useChatActions = () => {
   const selectedEndpoint = usePlaygroundStore(
     (state) => state.selectedEndpoint,
   );
+  const [,setAgentId] = useQueryState("agent");
+  const [,setModel] = useQueryState("model");
   const setMessages = usePlaygroundStore((state) => state.setMessages);
   const setIsEndpointActive = usePlaygroundStore(
     (state) => state.setIsEndpointActive,
@@ -51,18 +54,24 @@ const useChatActions = () => {
     [setMessages],
   );
 
+  const clearData = useCallback(() => {
+    setAgentId(null);
+    setModel(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const loadData = useCallback(async () => {
     const status = await getStatus();
+    let agents:ComboboxAgent[] = [];
     if (status === 200) {
       setIsEndpointActive(true);
-      const agents = await getAgents();
-      setAgents(agents);
-      return agents;
+      agents = await getAgents();
     } else {
       setIsEndpointActive(false);
-      setAgents([]);
-      return [];
     }
+    clearData();
+    setAgents(agents);
+    return agents;
   }, [getStatus, getAgents, setIsEndpointActive, setAgents]);
 
   return {
