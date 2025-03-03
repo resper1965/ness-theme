@@ -4,11 +4,7 @@ import { APIRoutes } from "@/api/routes";
 
 import useChatActions from "@/hooks/playground/useChatActions";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
-import {
-  PlaygroundChatMessage,
-  RunEvent,
-  type RunResponse,
-} from "@/types/playground";
+import { RunEvent, type RunResponse } from "@/types/playground";
 import { constructEndpointUrl } from "@/utils/playgroundUtils";
 import useAIResponseStream from "../streaming/useAIResponseStream";
 import { ToolCall } from "@/types/playground";
@@ -210,14 +206,12 @@ const useAIChatStreamHandler = () => {
           onComplete: () => {},
         });
       } catch (error) {
-
-  updateMessagesWithErrorState();
+        updateMessagesWithErrorState();
         setStreamingErrorMessage(
           error instanceof Error ? error.message : String(error),
         );
       } finally {
         setIsStreaming(false);
-      
       }
     },
     [
