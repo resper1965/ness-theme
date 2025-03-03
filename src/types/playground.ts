@@ -141,24 +141,6 @@ export interface PlaygroundChatMessage {
   response_audio?: ResponseAudio;
 }
 
-export interface Model {
-  name: string;
-  model: string;
-  provider: string;
-}
-
-export interface Agent {
-  agent_id: string;
-  name: string;
-  description: string;
-  created_at: string;
-  updated_at: string;
-  model: Model;
-  enable_rag: boolean;
-  memory: string | null;
-  instructions: string[] | null;
-}
-
 export interface ComboboxAgent {
   value: string;
   label: string;
