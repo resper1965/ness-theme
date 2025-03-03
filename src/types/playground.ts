@@ -55,6 +55,19 @@ interface ModelMessage {
   }> | null;
 }
 
+export interface Model {
+  name: string;
+  model: string;
+  provider: string;
+}
+
+export interface Agent {
+  agent_id: string;
+  name: string;
+  description: string;
+  model: Model;
+}
+
 interface MessageContext {
   query: string;
   docs?: Array<Record<string, object>>;
