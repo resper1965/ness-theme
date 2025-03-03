@@ -238,7 +238,6 @@ const useAIChatStreamHandler = () => {
         setStreamingErrorMessage(
           error instanceof Error ? error.message : String(error),
         );
-        setIsStreaming(false);
       } finally {
         setIsStreaming(false);
       }
