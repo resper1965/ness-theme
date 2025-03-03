@@ -164,7 +164,6 @@ const useAIChatStreamHandler = () => {
               });
               const errorContent = chunk.content as string;
               setStreamingErrorMessage(errorContent);
-              setIsStreaming(false);
             } else if (chunk.event === RunEvent.RunCompleted) {
               // Final update on completion of the stream:
               setMessages((prevMessages) => {
@@ -222,7 +221,6 @@ const useAIChatStreamHandler = () => {
               return newMessages;
             });
             setStreamingErrorMessage(error.message);
-            setIsStreaming(false);
           },
           onComplete: () => {},
         });
