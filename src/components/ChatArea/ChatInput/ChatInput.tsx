@@ -14,7 +14,7 @@ const ChatInput = () => {
   const { handleStreamResponse } = useAIChatStreamHandler();
   const [selectedAgent] = useQueryState("agent");
   const [inputMessage, setInputMessage] = useState("");
-
+  const isStreaming = usePlaygroundStore((state) => state.isStreaming);
   const handleSubmit = async () => {
     if (!inputMessage.trim()) return;
 
@@ -50,7 +50,7 @@ const ChatInput = () => {
       />
       <Button
         onClick={handleSubmit}
-        disabled={!selectedAgent || !inputMessage.trim()}
+        disabled={!selectedAgent || !inputMessage.trim() || isStreaming}
         size="icon"
         className="bg-primary text-primaryAccent p-5 rounded-xl"
       >

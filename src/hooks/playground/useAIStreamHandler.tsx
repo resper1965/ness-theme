@@ -28,13 +28,16 @@ const useAIChatStreamHandler = () => {
   const setStreamingErrorMessage = usePlaygroundStore(
     (state) => state.setStreamingErrorMessage,
   );
+  const setIsStreaming = usePlaygroundStore(
+    (state) => state.setIsStreaming,
+  );
 
   const { streamResponse } = useAIResponseStream();
 
   const handleStreamResponse = useCallback(
     async (input: string | FormData) => {
       // Uncomment if you want to use streaming loading state later:
-      // setIsStreaming(true)
+      setIsStreaming(true)
 
       // Create FormData if input is a string
       const formData = input instanceof FormData ? input : new FormData();
@@ -163,6 +166,7 @@ const useAIChatStreamHandler = () => {
               });
               const errorContent = chunk.content as string;
               setStreamingErrorMessage(errorContent);
+              setIsStreaming(false);
             } else if (chunk.event === RunEvent.RunCompleted) {
               // Final update on completion of the stream:
               setMessages((prevMessages) => {
@@ -220,6 +224,7 @@ const useAIChatStreamHandler = () => {
               return newMessages;
             });
             setStreamingErrorMessage(error.message);
+            setIsStreaming(false);
           },
           onComplete: () => {},
         });
@@ -235,10 +240,13 @@ const useAIChatStreamHandler = () => {
         setStreamingErrorMessage(
           error instanceof Error ? error.message : String(error),
         );
+        setIsStreaming(false);
+      }
+      finally {
+        setIsStreaming(false);
       }
     },
     [
-      // setIsStreaming, // not used for now
       setMessages,
       addMessage,
       selectedEndpoint,
