@@ -13,18 +13,10 @@ const ChatInput = () => {
 
   const { handleStreamResponse } = useAIChatStreamHandler();
   const [selectedAgent] = useQueryState("agent");
-  const setStreamingError = usePlaygroundStore(
-    (state) => state.setStreamingError,
-  );
-  const streamingError = usePlaygroundStore((state) => state.streamingError);
   const [inputMessage, setInputMessage] = useState("");
 
   const handleSubmit = async () => {
     if (!inputMessage.trim()) return;
-
-    if (streamingError) {
-      setStreamingError(false);
-    }
 
     const currentMessage = inputMessage;
     setInputMessage("");

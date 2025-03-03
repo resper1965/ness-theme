@@ -12,8 +12,8 @@ interface Agent {
 }
 
 interface PlaygroundStore {
-  streamingError: boolean;
-  setStreamingError: (streamingError: boolean) => void;
+  streamingErrorMessage: string;
+  setStreamingErrorMessage: (streamingErrorMessage: string) => void;
   storage: boolean;
   setStorage: (storage: boolean) => void;
   endpoints: {
@@ -58,8 +58,9 @@ interface PlaygroundStore {
 export const usePlaygroundStore = create<PlaygroundStore>()(
   persist(
     (set) => ({
-      streamingError: false,
-      setStreamingError: (streamingError) => set(() => ({ streamingError })),
+      streamingErrorMessage: "",
+      setStreamingErrorMessage: (streamingErrorMessage) =>
+        set(() => ({ streamingErrorMessage })),
       storage: false,
       setStorage: (storage) => set(() => ({ storage })),
       endpoints: [],

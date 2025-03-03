@@ -4,12 +4,15 @@ import { APIRoutes } from "@/api/routes";
 
 import useChatActions from "@/hooks/playground/useChatActions";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
-import { RunEvent, type RunResponse } from "@/types/playground";
+import {
+  PlaygroundChatMessage,
+  RunEvent,
+  type RunResponse,
+} from "@/types/playground";
 import { constructEndpointUrl } from "@/utils/playgroundUtils";
 import useAIResponseStream from "../streaming/useAIResponseStream";
 import { ToolCall } from "@/types/playground";
 import { useQueryState } from "nuqs";
-import { toast } from "sonner";
 
 /**
  * useAIChatStreamHandler is responsible for making API calls and handling the stream response.
@@ -17,13 +20,13 @@ import { toast } from "sonner";
  */
 const useAIChatStreamHandler = () => {
   const setMessages = usePlaygroundStore((state) => state.setMessages);
-  const setStreamingError = usePlaygroundStore(
-    (state) => state.setStreamingError,
-  );
   const { addMessage } = useChatActions();
   const [agentId] = useQueryState("agent");
   const selectedEndpoint = usePlaygroundStore(
     (state) => state.selectedEndpoint,
+  );
+  const setStreamingErrorMessage = usePlaygroundStore(
+    (state) => state.setStreamingErrorMessage,
   );
 
   const { streamResponse } = useAIResponseStream();
@@ -46,7 +49,7 @@ const useAIChatStreamHandler = () => {
           const secondLastMessage = prevMessages[prevMessages.length - 2];
           if (
             lastMessage.role === "agent" &&
-            lastMessage.streamingError === true && // only remove if an error occurred
+            lastMessage.streamingError &&
             secondLastMessage.role === "user"
           ) {
             return prevMessages.slice(0, -2);
@@ -149,6 +152,17 @@ const useAIChatStreamHandler = () => {
                 }
                 return newMessages;
               });
+            } else if (chunk.event === RunEvent.RunError) {
+              setMessages((prevMessages) => {
+                const newMessages = [...prevMessages];
+                const lastMessage = newMessages[newMessages.length - 1];
+                if (lastMessage && lastMessage.role === "agent") {
+                  lastMessage.streamingError = true;
+                }
+                return newMessages;
+              });
+              const errorContent = chunk.content as string;
+              setStreamingErrorMessage(errorContent);
             } else if (chunk.event === RunEvent.RunCompleted) {
               // Final update on completion of the stream:
               setMessages((prevMessages) => {
@@ -205,23 +219,22 @@ const useAIChatStreamHandler = () => {
               }
               return newMessages;
             });
-            // Update global state to indicate a streaming error occurred
-            setStreamingError(true);
-            toast.error(
-              `Error in streamResponse: ${
-                error instanceof Error ? error.message : String(error)
-              }`,
-            );
+            setStreamingErrorMessage(error.message);
           },
-          onComplete: () => {
-            // Reset the global streaming error flag on successful completion
-            setStreamingError(false);
-          },
+          onComplete: () => {},
         });
-      } catch {
-      } finally {
-        // Uncomment when adding streaming state updates
-        // setIsStreaming(false)
+      } catch (error) {
+        setMessages((prevMessages: PlaygroundChatMessage[]) => {
+          const newMessages = [...prevMessages];
+          const lastMessage = newMessages[newMessages.length - 1];
+          if (lastMessage && lastMessage.role === "agent") {
+            lastMessage.streamingError = true;
+          }
+          return newMessages;
+        });
+        setStreamingErrorMessage(
+          error instanceof Error ? error.message : String(error),
+        );
       }
     },
     [
@@ -231,7 +244,7 @@ const useAIChatStreamHandler = () => {
       selectedEndpoint,
       streamResponse,
       agentId,
-      setStreamingError,
+      setStreamingErrorMessage,
     ],
   );
 
