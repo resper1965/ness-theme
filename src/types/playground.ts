@@ -55,6 +55,19 @@ interface ModelMessage {
   }> | null;
 }
 
+export interface Model {
+  name: string;
+  model: string;
+  provider: string;
+}
+
+export interface Agent {
+  agent_id: string;
+  name: string;
+  description: string;
+  model: Model;
+}
+
 interface MessageContext {
   query: string;
   docs?: Array<Record<string, object>>;
@@ -139,33 +152,6 @@ export interface PlaygroundChatMessage {
   videos?: VideoData[];
   audio?: AudioData[];
   response_audio?: ResponseAudio;
-}
-
-export interface HistoryEntry {
-  session_id: string;
-  title: string;
-  created_at: number;
-}
-
-export interface Model {
-  name: string;
-  model: string;
-  provider: string;
-}
-
-export interface Agent {
-  agent_id: string;
-  name: string;
-  description: string;
-  created_at: string;
-  updated_at: string;
-  model: Model;
-  enable_rag: boolean;
-  // tools: Tool[]
-  storage: Storage;
-  // knowledge: Knowledge
-  memory: string | null;
-  instructions: string[] | null;
 }
 
 export interface ComboboxAgent {
