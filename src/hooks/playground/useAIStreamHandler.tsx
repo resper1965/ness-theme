@@ -41,7 +41,6 @@ const useAIChatStreamHandler = () => {
 
   const handleStreamResponse = useCallback(
     async (input: string | FormData) => {
-      // Uncomment if you want to use streaming loading state later:
       setIsStreaming(true);
 
       const formData = input instanceof FormData ? input : new FormData();

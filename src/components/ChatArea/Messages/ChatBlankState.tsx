@@ -62,7 +62,6 @@ const ActionButton = ({ href, variant, text }: ActionButtonProps) => {
 };
 
 export const ChatBlankState = () => {
-  // Create state to track which icon is being hovered
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
 
   // Animation variants for the icon
