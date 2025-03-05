@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Agent UI
+
+A modern chat interface for AI agents built with Next.js, Tailwind CSS, and TypeScript. This template provides a ready-to-use UI for interacting with Agno agents.
+
+![Agent UI Screenshot](https://via.placeholder.com/800x450.png?text=Agent+UI+Screenshot)
+
+## Features
+
+- 💬 **Modern Chat Interface**: Clean, responsive design with message streaming support
+- 🔄 **Real-time Streaming**: Stream AI responses as they're generated
+- 🧩 **Tool Calls Support**: Visualize agent tool calls and their results
+- 🧠 **Reasoning Steps**: Display agent reasoning process (when available)
+- 🔌 **API Integration**: Connect to any compatible AI agent backend
+- 🎨 **Customizable UI**: Built with Tailwind CSS for easy styling
+- 📱 **Responsive Design**: Works on desktop and mobile devices
+- 🔍 **Agent Selection**: Switch between different AI agents
+- 🌙 **Dark Mode Support**: Toggle between light and dark themes
+- 🧰 **Built with Modern Stack**: Next.js, TypeScript, Zustand, and more
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18.x or later
+- npm, yarn, or pnpm
+
+### Installation
+
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/agno-agi/agent-ui.git
+cd agent-ui
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Start the development server:
 
-## Learn More
+```bash
+pnpm dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Connecting to an Agent Backend
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This UI template is designed to connect to any compatible AI agent backend that exposes a REST API. By default, it connects to `http://localhost:7777`, but you can change this in the UI or update the default in the code.
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Contributions are welcome! Please feel free to submit a Pull Request or raise an issue.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. For bugs and feature requests, please raise a ticket first
+2. Fork the repository
+3. Create your feature branch (`git checkout -b feature/amazing-feature`)
+4. Commit your changes (`git commit -m 'Add some amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
