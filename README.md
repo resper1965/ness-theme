@@ -2,7 +2,7 @@
 
 A modern chat interface for AI agents built with Next.js, Tailwind CSS, and TypeScript. This template provides a ready-to-use UI for interacting with Agno agents.
 
-![image (1)](https://github.com/user-attachments/assets/7dfb6c34-7164-4497-a961-0030d684ecab)
+![agent-ui](https://github.com/user-attachments/assets/7b87e46c-25bc-4178-82b9-12720fa50c92)
 
 ## Features
 
