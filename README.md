@@ -16,8 +16,6 @@ A modern chat interface for AI agents built with Next.js, Tailwind CSS, and Type
 
 ## Getting Started
 
-### Prerequisites
-
 ### Installation
 
 1. Clone the repository:
