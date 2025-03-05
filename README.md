@@ -18,6 +18,10 @@ A modern chat interface for AI agents built with Next.js, Tailwind CSS, and Type
 
 ## Getting Started
 
+### Prerequisites
+
+Before setting up this UI, you may want to have an Agno agent backend running. If you haven't set up the Agno Playground yet, follow the [official guide](https://docs.agno.com/get-started/playground#running-playground-locally) to run the Playground locally.
+
 ### Installation
 
 1. Clone the repository:
