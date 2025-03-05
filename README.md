@@ -45,20 +45,9 @@ pnpm dev
 
 4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Connecting to an Agent Backend
-
-This UI template is designed to connect to any compatible AI agent backend that exposes a REST API. By default, it connects to `http://localhost:7777`, but you can change this in the UI or update the default in the code.
-
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request or raise an issue.
-
-1. For bugs and feature requests, please raise a ticket first
-2. Fork the repository
-3. Create your feature branch (`git checkout -b feature/amazing-feature`)
-4. Commit your changes (`git commit -m 'Add some amazing feature'`)
-5. Push to the branch (`git push origin feature/amazing-feature`)
-6. Open a Pull Request
+Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.
 
 ## License
 
