@@ -14,7 +14,7 @@ A modern chat interface for AI agents built with Next.js, Tailwind CSS, and Type
 - 📚 **References Support**: Show sources used by the agent
 - 🖼️ **Multi-modality Support**: Handle various content types including images, video, and audio
 - 🎨 **Customizable UI**: Built with Tailwind CSS for easy styling
-- 🧰 **Built with Modern Stack**: Next.js, TypeScript, Zustand, and more
+- 🧰 **Built with Modern Stack**: Next.js, TypeScript, shadcn/ui, Framer Motion, and more
 
 ## Getting Started
 
