@@ -45,6 +45,12 @@ pnpm dev
 
 4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Connecting to an Agent Backend
+
+By default Agent UI connects to `http://localhost:7777`. You can easily change this by hovering over the endpoint URL and clicking the edit option.
+
+The default endpoint works with the standard Agno Playground setup described in the [official documentation](https://docs.agno.com/get-started/playground#running-playground-locally).
+
 ## Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.
