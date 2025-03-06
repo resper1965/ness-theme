@@ -34,7 +34,6 @@ export function AgentSelector() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agentId, agents, setSelectedModel]);
 
-  
   const handleOnValueChange = (value: string) => {
     const newAgent = value === agentId ? "" : value;
     setSelectedModel(
