@@ -16,7 +16,7 @@ import { useQueryState } from "nuqs";
  */
 const useAIChatStreamHandler = () => {
   const setMessages = usePlaygroundStore((state) => state.setMessages);
-  const { addMessage } = useChatActions();
+  const { addMessage, focusChatInput } = useChatActions();
   const [agentId] = useQueryState("agent");
   const selectedEndpoint = usePlaygroundStore(
     (state) => state.selectedEndpoint,
@@ -210,6 +210,7 @@ const useAIChatStreamHandler = () => {
           error instanceof Error ? error.message : String(error),
         );
       } finally {
+        focusChatInput();
         setIsStreaming(false);
       }
     },
@@ -222,6 +223,7 @@ const useAIChatStreamHandler = () => {
       agentId,
       setStreamingErrorMessage,
       setIsStreaming,
+      focusChatInput,
     ],
   );
 
