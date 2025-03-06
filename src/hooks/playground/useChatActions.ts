@@ -51,7 +51,9 @@ const useChatActions = () => {
   }, []);
 
   const focusChatInput = useCallback(() => {
-    chatInputRef?.current?.focus();
+    setTimeout(() => {
+      requestAnimationFrame(() => chatInputRef?.current?.focus());
+    }, 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

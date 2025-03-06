@@ -28,17 +28,13 @@ export function AgentSelector() {
       const agent = agents.find((agent) => agent.value === agentId);
       if (agent) {
         setSelectedModel(agent.model.provider || "");
-        focusChatInputTimeout();
+        focusChatInput();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agentId, agents, setSelectedModel]);
 
-  const focusChatInputTimeout = () => {
-    setTimeout(() => {
-      requestAnimationFrame(() => focusChatInput());
-    }, 0);
-  };
+  
   const handleOnValueChange = (value: string) => {
     const newAgent = value === agentId ? "" : value;
     setSelectedModel(
@@ -46,7 +42,7 @@ export function AgentSelector() {
     );
     setAgentId(newAgent);
     setMessages([]);
-    focusChatInputTimeout();
+    focusChatInput();
   };
 
   return (
