@@ -49,8 +49,7 @@ export const SessionTab = () => {
             setHistoryData(response);
           },
         );
-      } catch {
-      }
+      } catch {}
     }
   }, [selectedEndpoint, agentId, setHistoryData]);
 

@@ -35,21 +35,25 @@ export const SessionItem = ({ title, session_id }: SessionHistoryItemProps) => {
 
   const handleDeleteSession = async () => {
     if (agentId) {
-      const response = await deletePlaygroundSessionAPI(
-        selectedEndpoint,
-        agentId,
-        session_id,
-      );
-      console.log("res status", response.status);
-      if (response.status === 200) {
-        setHistoryData(
-          historyData.filter((session) => session.session_id !== session_id),
+      try {
+        const response = await deletePlaygroundSessionAPI(
+          selectedEndpoint,
+          agentId,
+          session_id,
         );
-        setIsDeleteModalOpen(false);
-        toast.success("Session deleted");
-      } else {
-        setIsDeleteModalOpen(false);
+        console.log("res status", response.status);
+        if (response.status === 200) {
+          setHistoryData(
+            historyData.filter((session) => session.session_id !== session_id),
+          );
+          toast.success("Session deleted");
+        } else {
+          toast.error("Failed to delete session");
+        }
+      } catch {
         toast.error("Failed to delete session");
+      } finally {
+        setIsDeleteModalOpen(false);
       }
     }
   };
