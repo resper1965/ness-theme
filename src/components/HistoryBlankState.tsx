@@ -97,7 +97,7 @@ const HistoryBlankState = () => {
         return "Select an agent to see the history.";
 
       default:
-        return "History will appear here once you run an agent.";
+        return "No session records yet. Start a conversation to create one.";
     }
   })();
 
