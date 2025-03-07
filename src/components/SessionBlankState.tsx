@@ -85,7 +85,7 @@ const HistoryBlankStateIcon = () => (
   </svg>
 );
 
-const HistoryBlankState = () => {
+const SessionBlankState = () => {
   const { selectedEndpoint } = usePlaygroundStore();
   const [agentId] = useQueryState("agent");
 
@@ -116,4 +116,4 @@ const HistoryBlankState = () => {
   );
 };
 
-export default HistoryBlankState;
+export default SessionBlankState;

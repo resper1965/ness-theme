@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/utils/modelProvider";
-import { HistoryTab } from "./HistoryTab";
+import { SessionTab } from "./SessionTab";
 
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
@@ -247,7 +247,7 @@ export default function Sidebar() {
                 )}
               </>
             )}
-            <HistoryTab />
+            <SessionTab />
           </motion.div>
         )}
       </AnimatePresence>

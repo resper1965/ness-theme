@@ -114,7 +114,6 @@ const useSessionLoader = () => {
           }
         }
       } catch (error) {
-        console.error("Error loading session:", error);
         return null;
       }
     },

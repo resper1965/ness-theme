@@ -6,8 +6,8 @@ import { getAllPlaygroundSessionsAPI } from "@/api/playground";
 import { HistoryEntry } from "@/types/playground";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
-import { HistoryItem } from "./HistoryItem";
-import HistoryBlankState from "./HistoryBlankState";
+import { SessionItem } from "./SessionItem";
+import SessionBlankState from "./SessionBlankState";
 
 dayjs.extend(utc);
 
@@ -25,7 +25,7 @@ const formatDate = (
     : date.format("YYYY-MM-DD HH:mm:ss");
 };
 
-export const HistoryTab = () => {
+export const SessionTab = () => {
   const [agentId] = useQueryState("agent", {
     parse: (value) => value || undefined,
     history: "push",
@@ -73,7 +73,7 @@ export const HistoryTab = () => {
   return (
     <div className="h-[calc(100vh-325px)] overflow-y-auto">
       {historyData.length === 0 ? (
-        <HistoryBlankState />
+        <SessionBlankState />
       ) : (
         <div className="flex flex-col space-y-6 p-2 pb-6">
           {Object.entries(groupedHistory).map(([group, entries]) => (
@@ -81,7 +81,7 @@ export const HistoryTab = () => {
               <h3 className="text-xs text-muted-foreground">{group}</h3>
               <div className="space-y-2">
                 {entries.map((entry) => (
-                  <HistoryItem key={entry.session_id} {...entry} />
+                  <SessionItem key={entry.session_id} {...entry} />
                 ))}
               </div>
             </div>
