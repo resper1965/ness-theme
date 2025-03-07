@@ -71,7 +71,7 @@ export const SessionTab = () => {
   }, [historyData]);
 
   return (
-    <div className="h-[calc(100vh-325px)] overflow-y-auto">
+    <div className="h-[calc(100vh-325px)] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-background font-geist">
       {historyData.length === 0 ? (
         <SessionBlankState />
       ) : (
