@@ -36,7 +36,7 @@ export const SessionTab = () => {
 
   const handleScroll = () => {
     setIsScrolling(true);
-    let scrollTimer = setTimeout(() => {
+    setTimeout(() => {
       setIsScrolling(false);
     }, 1000);
   };
