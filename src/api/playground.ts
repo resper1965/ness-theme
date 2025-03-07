@@ -35,11 +35,18 @@ export const getPlaygroundStatusAPI = async (base: string): Promise<number> => {
   return response.status;
 };
 
-export const getPlaygroundSessionsAPI = async (
+export const getAllPlaygroundSessionsAPI = async (
   base: string,
   agentId: string,
 ): Promise<HistoryEntry[]> => {
   const response = await fetch(APIRoutes.GetPlaygroundSessions(base, agentId), {
+    method: "GET",
+  });
+  return response.json();
+};
+
+export const getPlaygroundSessionAPI = async (base: string, agentId: string, sessionId: string) => {
+  const response = await fetch(APIRoutes.GetPlaygroundSession(base, agentId, sessionId), {
     method: "GET",
   });
   return response.json();

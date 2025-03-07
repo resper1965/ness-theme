@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
-import { getPlaygroundSessionsAPI } from "@/api/playground";
+import { getAllPlaygroundSessionsAPI, getPlaygroundSessionAPI } from "@/api/playground";
 import { HistoryEntry } from "@/types/playground";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
@@ -35,8 +35,12 @@ export const HistoryTab = () => {
 
   useEffect(() => {
     if (selectedEndpoint && agentId) {
-      getPlaygroundSessionsAPI(selectedEndpoint, agentId).then((response) => {
+    getAllPlaygroundSessionsAPI(selectedEndpoint, agentId).then((response) => {
         setSessions(response);
+      });
+
+      getPlaygroundSessionAPI(selectedEndpoint, agentId, "8b42eb88-f3e3-4607-a4c2-2a2da76de04c").then((response) => {
+        console.log(response);
       });
     }
   }, [selectedEndpoint, agentId]);
@@ -68,11 +72,6 @@ export const HistoryTab = () => {
     }, {});
   }, [sessions]);
 
-  const handleLoadSession = (sessionId: string) => {
-    // TODO: Implement session load functionality
-    console.log("Load session", sessionId);
-  };
-
   return (
     <div className="h-[calc(100vh-325px)] overflow-y-auto">
       {sessions.length === 0 ? (
@@ -87,7 +86,6 @@ export const HistoryTab = () => {
                   <HistoryItem
                     key={entry.session_id}
                     {...entry}
-                    onLoadSession={handleLoadSession}
                   />
                 ))}
               </div>
