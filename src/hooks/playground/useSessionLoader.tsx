@@ -113,7 +113,7 @@ const useSessionLoader = () => {
             return processedMessages;
           }
         }
-      } catch (error) {
+      } catch {
         return null;
       }
     },
