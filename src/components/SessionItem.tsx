@@ -47,7 +47,7 @@ export const SessionItem = ({ title, session_id }: SessionHistoryItemProps) => {
   return (
     <>
       <div
-        className="flex w-full items-center h-12 justify-between rounded-lg bg-background-secondary hover:bg-background-secondary/50 p-3 cursor-pointer group"
+        className="flex w-full items-center h-11 justify-between rounded-lg bg-background-secondary hover:bg-background-secondary/50 px-2 cursor-pointer group"
         onClick={handleLoadSession}
       >
         <div className="flex flex-col gap-1">

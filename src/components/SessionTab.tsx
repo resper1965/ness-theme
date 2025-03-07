@@ -52,7 +52,7 @@ export const SessionTab = () => {
       let group: string;
 
       if (entryDate.isAfter(yesterday)) {
-        group = entryDate.isSame(now, "day") ? "Most recent" : "Yesterday";
+        group = entryDate.isSame(now, "day") ? "Most Recent" : "Yesterday";
       } else {
         group = "Older";
       }
@@ -75,7 +75,7 @@ export const SessionTab = () => {
       {historyData.length === 0 ? (
         <SessionBlankState />
       ) : (
-        <div className="flex flex-col space-y-6 p-2 pb-6">
+        <div className="flex flex-col space-y-6 pt-2 pb-6">
           {Object.entries(groupedHistory).map(([group, entries]) => (
             <div key={group} className="space-y-2">
               <h3 className="text-xs text-muted-foreground">{group}</h3>
