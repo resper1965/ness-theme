@@ -43,11 +43,14 @@ export const SessionTab = () => {
 
   useEffect(() => {
     if (selectedEndpoint && agentId) {
-      getAllPlaygroundSessionsAPI(selectedEndpoint, agentId).then(
-        (response) => {
-          setHistoryData(response);
-        },
-      );
+      try {
+        getAllPlaygroundSessionsAPI(selectedEndpoint, agentId).then(
+          (response) => {
+            setHistoryData(response);
+          },
+        );
+      } catch {
+      }
     }
   }, [selectedEndpoint, agentId, setHistoryData]);
 

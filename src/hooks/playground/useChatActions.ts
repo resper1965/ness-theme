@@ -31,7 +31,6 @@ const useChatActions = () => {
       const status = await getPlaygroundStatusAPI(selectedEndpoint);
       return status;
     } catch {
-      toast.error("Error fetching status");
       return 503;
     }
   }, [selectedEndpoint]);
