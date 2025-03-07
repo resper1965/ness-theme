@@ -7,7 +7,7 @@ import { HistoryEntry } from "@/types/playground";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
 import { HistoryItem } from "./HistoryItem";
-import { HistoryBlankState } from "./HistoryBlankState";
+import HistoryBlankState from "./HistoryBlankState";
 
 dayjs.extend(utc);
 
