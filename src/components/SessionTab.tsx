@@ -8,6 +8,7 @@ import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
 import { SessionItem } from "./SessionItem";
 import SessionBlankState from "./SessionBlankState";
+import useSessionLoader from "@/hooks/playground/useSessionLoader";
 
 dayjs.extend(utc);
 
@@ -30,9 +31,11 @@ export const SessionTab = () => {
     parse: (value) => value || undefined,
     history: "push",
   });
+  const [sessionId] = useQueryState("session");
   const { selectedEndpoint } = usePlaygroundStore();
   const { historyData, setHistoryData } = usePlaygroundStore();
   const [isScrolling, setIsScrolling] = useState(false);
+  const { loadSession } = useSessionLoader();
 
   const handleScroll = () => {
     setIsScrolling(true);
@@ -40,6 +43,12 @@ export const SessionTab = () => {
       setIsScrolling(false);
     }, 1000);
   };
+
+  useEffect(() => {
+    if (sessionId && agentId && selectedEndpoint) {
+      loadSession(sessionId, agentId);
+    }
+  }, [sessionId, agentId, selectedEndpoint, loadSession]);
 
   useEffect(() => {
     if (selectedEndpoint && agentId) {
