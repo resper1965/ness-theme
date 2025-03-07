@@ -17,7 +17,7 @@ interface GroupedHistory {
 
 const formatDate = (
   timestamp: number,
-  format: "natural" | "full" = "full",
+  format: "natural" | "full" = "full"
 ): string => {
   const date = dayjs.unix(timestamp).utc();
   return format === "natural"
@@ -38,7 +38,7 @@ export const SessionTab = () => {
       getAllPlaygroundSessionsAPI(selectedEndpoint, agentId).then(
         (response) => {
           setHistoryData(response);
-        },
+        }
       );
     }
   }, [selectedEndpoint, agentId, setHistoryData]);
@@ -71,23 +71,26 @@ export const SessionTab = () => {
   }, [historyData]);
 
   return (
-    <div className="h-[calc(100vh-325px)] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-background font-geist">
-      {historyData.length === 0 ? (
-        <SessionBlankState />
-      ) : (
-        <div className="flex flex-col space-y-6 pt-2 pb-6">
-          {Object.entries(groupedHistory).map(([group, entries]) => (
-            <div key={group} className="space-y-2">
-              <h3 className="text-xs text-muted-foreground">{group}</h3>
-              <div className="space-y-2">
-                {entries.map((entry) => (
-                  <SessionItem key={entry.session_id} {...entry} />
-                ))}
+    <div>
+      <div className="text-xs font-medium uppercase mb-2">Sessions</div>
+      <div className="h-[calc(100vh-325px)] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-background font-geist">
+        {historyData.length === 0 ? (
+          <SessionBlankState />
+        ) : (
+          <div className="flex flex-col space-y-6 pt-2 pb-6">
+            {Object.entries(groupedHistory).map(([group, entries]) => (
+              <div key={group} className="space-y-2">
+                <h3 className="text-xs text-muted-foreground">{group}</h3>
+                <div className="space-y-2">
+                  {entries.map((entry) => (
+                    <SessionItem key={entry.session_id} {...entry} />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
