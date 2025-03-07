@@ -13,4 +13,11 @@ export const APIRoutes = {
     sessionId: string,
   ) =>
     `${PlaygroundApiUrl}/v1/playground/agents/${agentId}/sessions/${sessionId}`,
+
+  DeletePlaygroundSession: (
+    PlaygroundApiUrl: string,
+    agentId: string,
+    sessionId: string,
+  ) =>
+    `${PlaygroundApiUrl}/v1/playground/agents/${agentId}/sessions/${sessionId}`,
 };

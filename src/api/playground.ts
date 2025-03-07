@@ -58,3 +58,17 @@ export const getPlaygroundSessionAPI = async (
   );
   return response.json();
 };
+
+export const deletePlaygroundSessionAPI = async (
+  base: string,
+  agentId: string,
+  sessionId: string,
+) => {
+  const response = await fetch(
+    APIRoutes.DeletePlaygroundSession(base, agentId, sessionId),
+    {
+      method: "DELETE",
+    },
+  );
+  return response.json();
+};

@@ -2,6 +2,12 @@ import { useQueryState } from "nuqs";
 import { HistoryEntry } from "@/types/playground";
 import { Button } from "./ui/button";
 import useSessionLoader from "@/hooks/playground/useSessionLoader";
+import { deletePlaygroundSessionAPI } from "@/api/playground";
+import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import { toast } from "sonner";
+import Icon from "./ui/icon";
+import { useState } from "react";
+import SessionHistoryItemDeleteModal from "./SessionHistoryItemDeleteModal";
 
 type SessionHistoryItemProps = HistoryEntry;
 
@@ -16,6 +22,9 @@ export const SessionItem = ({ title, session_id }: SessionHistoryItemProps) => {
   const [agentId] = useQueryState("agent");
   const { loadSession } = useSessionLoader();
   const [, setSessionId] = useQueryState("session");
+  const { selectedEndpoint, historyData, setHistoryData } =
+    usePlaygroundStore();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleLoadSession = async () => {
     if (agentId) {
@@ -24,16 +33,46 @@ export const SessionItem = ({ title, session_id }: SessionHistoryItemProps) => {
     }
   };
 
+  const handleDeleteSession = async () => {
+    if (agentId) {
+      await deletePlaygroundSessionAPI(selectedEndpoint, agentId, session_id);
+      setHistoryData(
+        historyData.filter((session) => session.session_id !== session_id),
+      );
+      toast.success("Session deleted");
+      setIsDeleteModalOpen(false);
+    }
+  };
+
   return (
-    <Button
-      className="flex w-full items-center h-12 justify-start rounded-lg bg-background-secondary p-3 hover:bg-background-secondary/50"
-      variant="default"
-      size="icon"
-      onClick={handleLoadSession}
-    >
-      <div className="flex flex-col gap-1">
-        <h4 className="text-sm font-medium">{truncateTitle(title, 20)}</h4>
+    <>
+      <div
+        className="flex w-full items-center h-12 justify-between rounded-lg bg-background-secondary hover:bg-background-secondary/50 p-3 cursor-pointer group"
+        onClick={handleLoadSession}
+      >
+        <div className="flex flex-col gap-1">
+          <h4 className="text-sm font-medium">{truncateTitle(title, 16)}</h4>
+        </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="transform transition-all duration-200 ease-in-out opacity-0 group-hover:opacity-100 hover:bg-primaryAccent/50"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsDeleteModalOpen(true);
+          }}
+        >
+          <div className="flex items-center justify-center">
+            <Icon type="trash" size="xs" />
+          </div>
+        </Button>
       </div>
-    </Button>
+      <SessionHistoryItemDeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onDelete={handleDeleteSession}
+        isDeleting={false}
+      />
+    </>
   );
 };

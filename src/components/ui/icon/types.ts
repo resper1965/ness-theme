@@ -34,7 +34,8 @@ export type IconType =
   | "chevron-down"
   | "chevron-up"
   | "plus-icon"
-  | "references";
+  | "references"
+  | "trash";
 
 export interface IconProps {
   type: IconType;
