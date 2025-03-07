@@ -2,7 +2,7 @@ import { toast } from "sonner";
 
 import { APIRoutes } from "./routes";
 
-import { Agent, ComboboxAgent } from "@/types/playground";
+import { Agent, ComboboxAgent, HistoryEntry } from "@/types/playground";
 
 export const getPlaygroundAgentsAPI = async (
   endpoint: string,
@@ -33,4 +33,14 @@ export const getPlaygroundStatusAPI = async (base: string): Promise<number> => {
     method: "GET",
   });
   return response.status;
+};
+
+export const getPlaygroundSessionsAPI = async (
+  base: string,
+  agentId: string,
+): Promise<HistoryEntry[]> => {
+  const response = await fetch(APIRoutes.GetPlaygroundSessions(base, agentId), {
+    method: "GET",
+  });
+  return response.json();
 };

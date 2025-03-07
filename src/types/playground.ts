@@ -196,3 +196,9 @@ export interface Reference {
   };
   name: string;
 }
+
+export interface HistoryEntry {
+  session_id: string;
+  title: string;
+  created_at: number;
+}

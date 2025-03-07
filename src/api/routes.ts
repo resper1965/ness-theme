@@ -5,4 +5,6 @@ export const APIRoutes = {
     `${PlaygroundApiUrl}/v1/playground/agents/{agent_id}/runs`,
   PlaygroundStatus: (PlaygroundApiUrl: string) =>
     `${PlaygroundApiUrl}/v1/playground/status`,
+  GetPlaygroundSessions: (PlaygroundApiUrl: string, agentId: string) =>
+    `${PlaygroundApiUrl}/v1/playground/agents/${agentId}/sessions`,
 };
