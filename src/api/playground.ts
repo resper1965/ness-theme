@@ -70,5 +70,5 @@ export const deletePlaygroundSessionAPI = async (
       method: "DELETE",
     },
   );
-  return response.json();
+  return response;
 };
