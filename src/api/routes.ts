@@ -7,6 +7,10 @@ export const APIRoutes = {
     `${PlaygroundApiUrl}/v1/playground/status`,
   GetPlaygroundSessions: (PlaygroundApiUrl: string, agentId: string) =>
     `${PlaygroundApiUrl}/v1/playground/agents/${agentId}/sessions`,
-  GetPlaygroundSession: (PlaygroundApiUrl: string, agentId: string, sessionId: string) =>
+  GetPlaygroundSession: (
+    PlaygroundApiUrl: string,
+    agentId: string,
+    sessionId: string,
+  ) =>
     `${PlaygroundApiUrl}/v1/playground/agents/${agentId}/sessions/${sessionId}`,
 };

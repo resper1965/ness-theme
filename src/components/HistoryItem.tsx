@@ -12,16 +12,15 @@ const truncateTitle = (text: string, limit: number) => {
   return "";
 };
 
-export const HistoryItem = ({
-  title,
-  session_id,
-}: SessionHistoryItemProps) => {
+export const HistoryItem = ({ title, session_id }: SessionHistoryItemProps) => {
   const [agentId] = useQueryState("agent");
   const { loadSession } = useSessionLoader();
+  const [, setSessionId] = useQueryState("session");
 
   const handleLoadSession = async () => {
     if (agentId) {
       await loadSession(session_id, agentId);
+      setSessionId(session_id);
     }
   };
 

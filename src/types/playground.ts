@@ -202,3 +202,27 @@ export interface HistoryEntry {
   title: string;
   created_at: number;
 }
+
+export interface ChatEntry {
+  message: {
+    role: "user" | "system" | "tool" | "assistant";
+    content: string;
+    created_at: number;
+  };
+  response: {
+    content: string;
+    tools?: ToolCall[];
+    extra_data?: {
+      reasoning_steps?: ReasoningSteps[];
+      reasoning_messages?: ReasoningMessage[];
+      references?: ReferenceData[];
+    };
+    images?: ImageData[];
+    videos?: VideoData[];
+    audio?: AudioData[];
+    response_audio?: {
+      transcript?: string;
+    };
+    created_at: number;
+  };
+}

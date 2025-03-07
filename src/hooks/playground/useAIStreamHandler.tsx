@@ -18,6 +18,7 @@ const useAIChatStreamHandler = () => {
   const setMessages = usePlaygroundStore((state) => state.setMessages);
   const { addMessage, focusChatInput } = useChatActions();
   const [agentId] = useQueryState("agent");
+  const [sessionId, setSessionId] = useQueryState("session");
   const selectedEndpoint = usePlaygroundStore(
     (state) => state.selectedEndpoint,
   );
@@ -25,7 +26,7 @@ const useAIChatStreamHandler = () => {
     (state) => state.setStreamingErrorMessage,
   );
   const setIsStreaming = usePlaygroundStore((state) => state.setIsStreaming);
-
+  const setHistoryData = usePlaygroundStore((state) => state.setHistoryData);
   const { streamResponse } = useAIResponseStream();
 
   const updateMessagesWithErrorState = useCallback(() => {
@@ -78,7 +79,7 @@ const useAIChatStreamHandler = () => {
       });
 
       let lastContent = "";
-
+      let newSessionId = sessionId;
       try {
         const endpointUrl = constructEndpointUrl(selectedEndpoint);
 
@@ -197,12 +198,28 @@ const useAIChatStreamHandler = () => {
                 return newMessages;
               });
             }
+            if (chunk.session_id && chunk.session_id !== newSessionId) {
+              newSessionId = chunk.session_id;
+              setSessionId(chunk.session_id);
+            }
           },
           onError: (error) => {
             updateMessagesWithErrorState();
             setStreamingErrorMessage(error.message);
           },
-          onComplete: () => {},
+          onComplete: () => {
+            if (newSessionId && newSessionId !== sessionId) {
+              const placeHolderSessionData = {
+                session_id: newSessionId,
+                title: formData.get("message") as string,
+                created_at: Math.floor(Date.now() / 1000),
+              };
+              setHistoryData((prevHistoryData) => [
+                placeHolderSessionData,
+                ...prevHistoryData,
+              ]);
+            }
+          },
         });
       } catch (error) {
         updateMessagesWithErrorState();
@@ -224,6 +241,9 @@ const useAIChatStreamHandler = () => {
       setStreamingErrorMessage,
       setIsStreaming,
       focusChatInput,
+      setHistoryData,
+      sessionId,
+      setSessionId,
     ],
   );
 

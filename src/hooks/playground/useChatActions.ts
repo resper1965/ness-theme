@@ -19,6 +19,7 @@ const useChatActions = () => {
     (state) => state.setSelectedModel,
   );
   const [, setAgentId] = useQueryState("agent");
+  const [, setSessionId] = useQueryState("session");
   const setMessages = usePlaygroundStore((state) => state.setMessages);
   const setIsEndpointActive = usePlaygroundStore(
     (state) => state.setIsEndpointActive,
@@ -47,6 +48,7 @@ const useChatActions = () => {
 
   const clearChat = useCallback(() => {
     setMessages([]);
+    setSessionId(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

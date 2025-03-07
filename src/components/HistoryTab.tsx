@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
-import { getAllPlaygroundSessionsAPI, getPlaygroundSessionAPI } from "@/api/playground";
+import { getAllPlaygroundSessionsAPI } from "@/api/playground";
 import { HistoryEntry } from "@/types/playground";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
@@ -31,25 +31,23 @@ export const HistoryTab = () => {
     history: "push",
   });
   const { selectedEndpoint } = usePlaygroundStore();
-  const [sessions, setSessions] = useState<HistoryEntry[]>([]);
+  const { historyData, setHistoryData } = usePlaygroundStore();
 
   useEffect(() => {
     if (selectedEndpoint && agentId) {
-    getAllPlaygroundSessionsAPI(selectedEndpoint, agentId).then((response) => {
-        setSessions(response);
-      });
-
-      getPlaygroundSessionAPI(selectedEndpoint, agentId, "8b42eb88-f3e3-4607-a4c2-2a2da76de04c").then((response) => {
-        console.log(response);
-      });
+      getAllPlaygroundSessionsAPI(selectedEndpoint, agentId).then(
+        (response) => {
+          setHistoryData(response);
+        },
+      );
     }
-  }, [selectedEndpoint, agentId]);
+  }, [selectedEndpoint, agentId, setHistoryData]);
 
   const groupedHistory = useMemo(() => {
     const now = dayjs().utc();
     const yesterday = now.subtract(1, "day").startOf("day");
 
-    return sessions.reduce((acc: GroupedHistory, entry) => {
+    return historyData.reduce((acc: GroupedHistory, entry) => {
       const entryDate = dayjs.unix(entry.created_at).utc();
       let group: string;
 
@@ -70,11 +68,11 @@ export const HistoryTab = () => {
       acc[group].push(formattedEntry);
       return acc;
     }, {});
-  }, [sessions]);
+  }, [historyData]);
 
   return (
     <div className="h-[calc(100vh-325px)] overflow-y-auto">
-      {sessions.length === 0 ? (
+      {historyData.length === 0 ? (
         <HistoryBlankState />
       ) : (
         <div className="flex flex-col space-y-6 p-2 pb-6">
@@ -83,10 +81,7 @@ export const HistoryTab = () => {
               <h3 className="text-xs text-muted-foreground">{group}</h3>
               <div className="space-y-2">
                 {entries.map((entry) => (
-                  <HistoryItem
-                    key={entry.session_id}
-                    {...entry}
-                  />
+                  <HistoryItem key={entry.session_id} {...entry} />
                 ))}
               </div>
             </div>

@@ -1,53 +1,29 @@
 import { useCallback } from "react";
 import { getPlaygroundSessionAPI } from "@/api/playground";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
-import { PlaygroundChatMessage, ToolCall } from "@/types/playground";
-
-interface ReasoningMessage {
-  role: string;
-  content: string;
-  tool_call_id?: string;
-  tool_name?: string;
-  tool_args?: Record<string, string>;
-  tool_call_error?: boolean;
-  metrics?: { time: number };
-  created_at?: number;
-}
+import {
+  PlaygroundChatMessage,
+  ToolCall,
+  ReasoningMessage,
+  ChatEntry,
+} from "@/types/playground";
 
 interface SessionResponse {
   session_id: string;
   agent_id: string;
   user_id: string | null;
   memory: {
-    runs?: Array<{
-      message: {
-        role: string;
-        content: string;
-        created_at: number;
-      };
-      response: {
-        content: string;
-        tools?: ToolCall[];
-        extra_data?: {
-          reasoning_messages?: ReasoningMessage[];
-        };
-        images?: string[];
-        videos?: string[];
-        audio?: string[];
-        response_audio?: {
-          transcript?: string;
-        };
-        created_at: number;
-      };
-    }>;
-    chats?: any[];
+    runs?: ChatEntry[];
+    chats?: ChatEntry[];
   };
-  agent_data: Record<string, any>;
+  agent_data: Record<string, unknown>;
 }
 
 const useSessionLoader = () => {
   const setMessages = usePlaygroundStore((state) => state.setMessages);
-  const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint);
+  const selectedEndpoint = usePlaygroundStore(
+    (state) => state.selectedEndpoint,
+  );
 
   const loadSession = useCallback(
     async (sessionId: string, agentId: string) => {
@@ -56,11 +32,11 @@ const useSessionLoader = () => {
       }
 
       try {
-        const response = await getPlaygroundSessionAPI(
+        const response = (await getPlaygroundSessionAPI(
           selectedEndpoint,
           agentId,
-          sessionId
-        ) as SessionResponse;
+          sessionId,
+        )) as SessionResponse;
 
         if (response && response.memory) {
           const chatHistory = response.memory.runs ?? response.memory.chats;
@@ -91,12 +67,13 @@ const useSessionLoader = () => {
                           tool_args: msg.tool_args ?? {},
                           tool_call_error: msg.tool_call_error ?? false,
                           metrics: msg.metrics ?? { time: 0 },
-                          created_at: msg.created_at ?? Math.floor(Date.now() / 1000),
+                          created_at:
+                            msg.created_at ?? Math.floor(Date.now() / 1000),
                         });
                       }
                       return acc;
                     },
-                    []
+                    [],
                   ),
                 ];
 
@@ -129,20 +106,19 @@ const useSessionLoader = () => {
                   };
                 }
                 return message;
-              }
+              },
             );
 
             setMessages(processedMessages);
             return processedMessages;
           }
         }
-        throw new Error("Invalid session data structure");
       } catch (error) {
         console.error("Error loading session:", error);
         return null;
       }
     },
-    [selectedEndpoint, setMessages]
+    [selectedEndpoint, setMessages],
   );
 
   return { loadSession };

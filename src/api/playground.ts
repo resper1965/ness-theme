@@ -45,9 +45,16 @@ export const getAllPlaygroundSessionsAPI = async (
   return response.json();
 };
 
-export const getPlaygroundSessionAPI = async (base: string, agentId: string, sessionId: string) => {
-  const response = await fetch(APIRoutes.GetPlaygroundSession(base, agentId, sessionId), {
-    method: "GET",
-  });
+export const getPlaygroundSessionAPI = async (
+  base: string,
+  agentId: string,
+  sessionId: string,
+) => {
+  const response = await fetch(
+    APIRoutes.GetPlaygroundSession(base, agentId, sessionId),
+    {
+      method: "GET",
+    },
+  );
   return response.json();
 };

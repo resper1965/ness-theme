@@ -1,7 +1,10 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import { type PlaygroundChatMessage } from "@/types/playground";
+import {
+  type PlaygroundChatMessage,
+  type HistoryEntry,
+} from "@/types/playground";
 
 interface Agent {
   value: string;
@@ -44,6 +47,12 @@ interface PlaygroundStore {
 
   selectedModel: string;
   setSelectedModel: (model: string) => void;
+  historyData: HistoryEntry[];
+  setHistoryData: (
+    historyData:
+      | HistoryEntry[]
+      | ((prevHistory: HistoryEntry[]) => HistoryEntry[]),
+  ) => void;
 }
 
 export const usePlaygroundStore = create<PlaygroundStore>()(
@@ -75,10 +84,19 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
 
       agents: [],
       setAgents: (agents) => set({ agents }),
+      historyData: [],
+      setHistoryData: (historyData) =>
+        set((state) => ({
+          historyData:
+            typeof historyData === "function"
+              ? historyData(state.historyData)
+              : historyData,
+        })),
 
       selectedModel: "",
       setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
     }),
+
     {
       name: "endpoint-storage",
       storage: createJSONStorage(() => localStorage),
