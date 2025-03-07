@@ -51,7 +51,7 @@ export const SessionItem = ({ title, session_id }: SessionHistoryItemProps) => {
         onClick={handleLoadSession}
       >
         <div className="flex flex-col gap-1">
-          <h4 className="text-sm font-medium">{truncateTitle(title, 23)}</h4>
+          <h4 className="text-sm font-medium">{truncateTitle(title, 20)}</h4>
         </div>
         <Button
           variant="ghost"
