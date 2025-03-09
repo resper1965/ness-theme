@@ -1,5 +1,5 @@
 import { useQueryState } from "nuqs";
-import { HistoryEntry } from "@/types/playground";
+import { SessionEntry } from "@/types/playground";
 import { Button } from "./ui/button";
 import useSessionLoader from "@/hooks/playground/useSessionLoader";
 import { deletePlaygroundSessionAPI } from "@/api/playground";
@@ -9,8 +9,6 @@ import Icon from "./ui/icon";
 import { useState } from "react";
 import SessionHistoryItemDeleteModal from "./SessionHistoryItemDeleteModal";
 
-type SessionHistoryItemProps = HistoryEntry;
-
 const truncateTitle = (text: string, limit: number) => {
   if (text) {
     return text.length > limit ? `${text.slice(0, limit)}...` : text;
@@ -18,7 +16,7 @@ const truncateTitle = (text: string, limit: number) => {
   return "";
 };
 
-export const SessionItem = ({ title, session_id }: SessionHistoryItemProps) => {
+export const SessionItem = ({ title, session_id }: SessionEntry) => {
   const [agentId] = useQueryState("agent");
   const { loadSession } = useSessionLoader();
   const [, setSessionId] = useQueryState("session");

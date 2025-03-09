@@ -197,7 +197,7 @@ export interface Reference {
   name: string;
 }
 
-export interface HistoryEntry {
+export interface SessionEntry {
   session_id: string;
   title: string;
   created_at: number;

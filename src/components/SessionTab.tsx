@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
 import { getAllPlaygroundSessionsAPI } from "@/api/playground";
-import { HistoryEntry } from "@/types/playground";
+import { SessionEntry } from "@/types/playground";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
 import { SessionItem } from "./SessionItem";
@@ -13,7 +13,7 @@ import useSessionLoader from "@/hooks/playground/useSessionLoader";
 dayjs.extend(utc);
 
 interface GroupedHistory {
-  [key: string]: HistoryEntry[];
+  [key: string]: SessionEntry[];
 }
 
 const formatDate = (

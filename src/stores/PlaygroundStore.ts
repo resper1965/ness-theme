@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 import {
   type PlaygroundChatMessage,
-  type HistoryEntry,
+  type SessionEntry,
 } from "@/types/playground";
 
 interface Agent {
@@ -47,11 +47,11 @@ interface PlaygroundStore {
 
   selectedModel: string;
   setSelectedModel: (model: string) => void;
-  historyData: HistoryEntry[];
+  historyData: SessionEntry[];
   setHistoryData: (
     historyData:
-      | HistoryEntry[]
-      | ((prevHistory: HistoryEntry[]) => HistoryEntry[]),
+      | SessionEntry[]
+      | ((prevHistory: SessionEntry[]) => SessionEntry[]),
   ) => void;
 }
 
