@@ -24,7 +24,7 @@ const SessionHistoryItemDeleteModal: FC<SessionHistoryItemDeleteModalProps> = ({
   isDeleting,
 }) => (
   <Dialog open={isOpen} onOpenChange={onClose}>
-    <DialogContent>
+    <DialogContent className="font-geist">
       <DialogHeader>
         <DialogTitle>Confirm delete session</DialogTitle>
         <DialogDescription>
@@ -35,13 +35,18 @@ const SessionHistoryItemDeleteModal: FC<SessionHistoryItemDeleteModalProps> = ({
       <DialogFooter>
         <Button
           variant="outline"
-          className=" border-border"
+          className=" border-border rounded-xl font-geist"
           onClick={onClose}
           disabled={isDeleting}
         >
           CANCEL
         </Button>
-        <Button variant="destructive" onClick={onDelete} disabled={isDeleting}>
+        <Button
+          variant="destructive"
+          onClick={onDelete}
+          disabled={isDeleting}
+          className="rounded-xl font-geist"
+        >
           DELETE
         </Button>
       </DialogFooter>

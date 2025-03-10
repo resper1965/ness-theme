@@ -19,7 +19,7 @@ export default {
           secondary: "#27272A",
         },
         secondary: "#f5f5f5",
-        border: "#FAFAFA26",
+        border: "rgba(var(--color-border-default))",
         accent: "#27272A",
         muted: "#A1A1AA",
         destructive: "#E53935",

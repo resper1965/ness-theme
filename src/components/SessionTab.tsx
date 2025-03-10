@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useState, useRef } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -37,6 +39,7 @@ export const SessionTab = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const { loadSession } = useSessionLoader();
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const [isSessionsLoading, setIsSessionsLoading] = useState<boolean>(false);
 
   const handleScroll = () => {
     setIsScrolling(true);
@@ -68,16 +71,22 @@ export const SessionTab = () => {
   useEffect(() => {
     if (selectedEndpoint && agentId) {
       try {
+        setIsSessionsLoading(true);
         getAllPlaygroundSessionsAPI(selectedEndpoint, agentId).then(
           (response) => {
             setHistoryData(response);
           },
         );
-      } catch {}
+      } catch {
+      } finally {
+        setIsSessionsLoading(false);
+      }
     }
   }, [selectedEndpoint, agentId, setHistoryData]);
 
   const groupedHistory = useMemo(() => {
+    if (!historyData.length) return {};
+
     const now = dayjs().utc();
     const yesterday = now.subtract(1, "day").startOf("day");
 
@@ -114,7 +123,7 @@ export const SessionTab = () => {
         onMouseOver={() => setIsScrolling(true)}
         onMouseLeave={handleScroll}
       >
-        {historyData.length === 0 ? (
+        {historyData.length === 0 && !isSessionsLoading ? (
           <SessionBlankState />
         ) : (
           <div className="flex flex-col space-y-6 pb-6 pr-1">
