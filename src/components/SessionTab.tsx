@@ -11,6 +11,27 @@ import { useQueryState } from "nuqs";
 import { SessionItem } from "./SessionItem";
 import SessionBlankState from "./SessionBlankState";
 import useSessionLoader from "@/hooks/playground/useSessionLoader";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/utils/cn";
+import { FC } from "react";
+
+interface SkeletonListProps {
+  skeletonCount: number;
+}
+
+const SkeletonList: FC<SkeletonListProps> = ({ skeletonCount }) => {
+  const skeletons = useMemo(
+    () => Array.from({ length: skeletonCount }, (_, i) => i),
+    [skeletonCount],
+  );
+
+  return skeletons.map((skeleton, index) => (
+    <Skeleton
+      key={skeleton}
+      className={cn("mx-3 mb-2 h-10", index > 0 && "bg-secondary")}
+    />
+  ));
+};
 
 dayjs.extend(utc);
 
@@ -69,23 +90,22 @@ export const SessionTab = () => {
   }, [sessionId, agentId, selectedEndpoint, loadSession]);
 
   useEffect(() => {
-    if (selectedEndpoint && agentId) {
-      try {
-        setIsSessionsLoading(true);
-        getAllPlaygroundSessionsAPI(selectedEndpoint, agentId).then(
-          (response) => {
-            setHistoryData(response);
-          },
-        );
-      } catch {
-      } finally {
-        setIsSessionsLoading(false);
-      }
+    if (!selectedEndpoint || !agentId) return;
+    try {
+      setIsSessionsLoading(true);
+      getAllPlaygroundSessionsAPI(selectedEndpoint, agentId).then(
+        (response) => {
+          setHistoryData(response);
+        },
+      );
+    } catch {
+    } finally {
+      setIsSessionsLoading(false);
     }
   }, [selectedEndpoint, agentId, setHistoryData]);
 
   const groupedHistory = useMemo(() => {
-    if (!historyData.length) return {};
+    if (!historyData) return {};
 
     const now = dayjs().utc();
     const yesterday = now.subtract(1, "day").startOf("day");
@@ -113,6 +133,13 @@ export const SessionTab = () => {
     }, {});
   }, [historyData]);
 
+  if (isSessionsLoading)
+    return (
+      <div className="mt-4 h-[calc(100vh-325px)] overflow-y-auto">
+        <SkeletonList skeletonCount={5} />
+      </div>
+    );
+
   return (
     <div>
       <div className="text-xs font-medium uppercase mb-2">Sessions</div>
@@ -123,7 +150,7 @@ export const SessionTab = () => {
         onMouseOver={() => setIsScrolling(true)}
         onMouseLeave={handleScroll}
       >
-        {historyData.length === 0 && !isSessionsLoading ? (
+        {!isSessionsLoading && historyData && historyData.length === 0 ? (
           <SessionBlankState />
         ) : (
           <div className="flex flex-col space-y-6 pb-6 pr-1">

@@ -216,7 +216,7 @@ const useAIChatStreamHandler = () => {
               };
               setHistoryData((prevHistoryData) => [
                 placeHolderSessionData,
-                ...prevHistoryData,
+                ...(prevHistoryData ?? []),
               ]);
             }
           },

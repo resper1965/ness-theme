@@ -47,11 +47,11 @@ interface PlaygroundStore {
 
   selectedModel: string;
   setSelectedModel: (model: string) => void;
-  historyData: SessionEntry[];
+  historyData: SessionEntry[] | null;
   setHistoryData: (
     historyData:
       | SessionEntry[]
-      | ((prevHistory: SessionEntry[]) => SessionEntry[]),
+      | ((prevHistory: SessionEntry[] | null) => SessionEntry[] | null),
   ) => void;
 }
 
@@ -84,7 +84,7 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
 
       agents: [],
       setAgents: (agents) => set({ agents }),
-      historyData: [],
+      historyData: null,
       setHistoryData: (historyData) =>
         set((state) => ({
           historyData:
@@ -96,7 +96,6 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
       selectedModel: "",
       setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
     }),
-
     {
       name: "endpoint-storage",
       storage: createJSONStorage(() => localStorage),

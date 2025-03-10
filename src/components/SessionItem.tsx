@@ -39,8 +39,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
           agentId,
           session_id,
         );
-        console.log("res status", response.status);
-        if (response.status === 200) {
+        if (response.status === 200 && historyData) {
           setHistoryData(
             historyData.filter((session) => session.session_id !== session_id),
           );
