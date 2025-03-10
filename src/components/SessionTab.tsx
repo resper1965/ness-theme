@@ -5,7 +5,6 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
 import { getAllPlaygroundSessionsAPI } from "@/api/playground";
-import { SessionEntry } from "@/types/playground";
 import { usePlaygroundStore } from "@/stores/PlaygroundStore";
 import { useQueryState } from "nuqs";
 import { SessionItem } from "./SessionItem";
@@ -34,10 +33,6 @@ const SkeletonList: FC<SkeletonListProps> = ({ skeletonCount }) => {
 };
 
 dayjs.extend(utc);
-
-interface GroupedHistory {
-  [key: string]: SessionEntry[];
-}
 
 const formatDate = (
   timestamp: number,
@@ -83,11 +78,13 @@ export const SessionTab = () => {
     };
   }, []);
 
+  // Load a session on render if a session id exists in url
   useEffect(() => {
     if (sessionId && agentId && selectedEndpoint) {
       loadSession(sessionId, agentId);
     }
-  }, [sessionId, agentId, selectedEndpoint, loadSession]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!selectedEndpoint || !agentId) return;
@@ -104,33 +101,14 @@ export const SessionTab = () => {
     }
   }, [selectedEndpoint, agentId, setHistoryData]);
 
-  const groupedHistory = useMemo(() => {
-    if (!historyData) return {};
+  const formattedHistory = useMemo(() => {
+    if (!historyData) return [];
 
-    const now = dayjs().utc();
-    const yesterday = now.subtract(1, "day").startOf("day");
-
-    return historyData.reduce((acc: GroupedHistory, entry) => {
-      const entryDate = dayjs.unix(entry.created_at).utc();
-      let group: string;
-
-      if (entryDate.isAfter(yesterday)) {
-        group = entryDate.isSame(now, "day") ? "Most Recent" : "Yesterday";
-      } else {
-        group = "Older";
-      }
-
-      if (!acc[group]) {
-        acc[group] = [];
-      }
-      const formattedEntry = {
-        ...entry,
-        created_at: entry.created_at,
-        formatted_time: formatDate(entry.created_at, "natural"),
-      };
-      acc[group].push(formattedEntry);
-      return acc;
-    }, {});
+    return historyData.map((entry) => ({
+      ...entry,
+      created_at: entry.created_at,
+      formatted_time: formatDate(entry.created_at, "natural"),
+    }));
   }, [historyData]);
 
   if (isSessionsLoading)
@@ -153,16 +131,9 @@ export const SessionTab = () => {
         {!isSessionsLoading && historyData && historyData.length === 0 ? (
           <SessionBlankState />
         ) : (
-          <div className="flex flex-col space-y-6 pb-6 pr-1">
-            {Object.entries(groupedHistory).map(([group, entries]) => (
-              <div key={group} className="space-y-2">
-                <h3 className="text-xs text-muted-foreground">{group}</h3>
-                <div className="space-y-2">
-                  {entries.map((entry) => (
-                    <SessionItem key={entry.session_id} {...entry} />
-                  ))}
-                </div>
-              </div>
+          <div className="flex flex-col space-y-2 pb-6 pr-1">
+            {formattedHistory.map((entry) => (
+              <SessionItem key={entry.session_id} {...entry} />
             ))}
           </div>
         )}
