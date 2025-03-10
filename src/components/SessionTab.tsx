@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
@@ -36,13 +36,30 @@ export const SessionTab = () => {
   const { historyData, setHistoryData } = usePlaygroundStore();
   const [isScrolling, setIsScrolling] = useState(false);
   const { loadSession } = useSessionLoader();
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   const handleScroll = () => {
     setIsScrolling(true);
-    setTimeout(() => {
+
+    if (scrollTimeoutRef.current) {
+      // Cleanup the previous timeout and set a new one if user starts scrolling again within 1.5 seconds
+      clearTimeout(scrollTimeoutRef.current);
+    }
+
+    // Set a new timeout to check if user is scrolling
+    scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
-    }, 1000);
+    }, 1500);
   };
+
+  // Cleanup the scroll timeout when component unmounts
+  useEffect(() => {
+    return () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (sessionId && agentId && selectedEndpoint) {
@@ -93,10 +110,10 @@ export const SessionTab = () => {
     <div>
       <div className="text-xs font-medium uppercase mb-2">Sessions</div>
       <div
-        className={`h-[calc(100vh-325px)] overflow-y-auto transition-all duration-300 font-geist [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:transition-opacity [&::-webkit-scrollbar]:duration-300
+        className={`h-[calc(100vh-325px)] overflow-y-auto transition-all duration-300 font-geist [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:transition-opacity [&::-webkit-scrollbar]:duration-300
         ${isScrolling ? "[&::-webkit-scrollbar]:opacity-0 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-background" : "[&::-webkit-scrollbar]:opacity-100"}`}
         onScroll={handleScroll}
-        onMouseEnter={() => setIsScrolling(true)}
+        onMouseOver={() => setIsScrolling(true)}
         onMouseLeave={() => {
           setTimeout(() => setIsScrolling(false), 2000);
         }}
