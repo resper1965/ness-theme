@@ -38,15 +38,13 @@ export const SessionTab = () => {
   const { loadSession } = useSessionLoader();
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
 
-  const handleScroll = () => {
+  const handleVisibility = () => {
     setIsScrolling(true);
 
     if (scrollTimeoutRef.current) {
-      // Cleanup the previous timeout and set a new one if user starts scrolling again within 1.5 seconds
       clearTimeout(scrollTimeoutRef.current);
     }
 
-    // Set a new timeout to check if user is scrolling
     scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
     }, 1500);
@@ -112,11 +110,9 @@ export const SessionTab = () => {
       <div
         className={`h-[calc(100vh-325px)] overflow-y-auto transition-all duration-300 font-geist [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:transition-opacity [&::-webkit-scrollbar]:duration-300
         ${isScrolling ? "[&::-webkit-scrollbar]:opacity-0 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-background" : "[&::-webkit-scrollbar]:opacity-100"}`}
-        onScroll={handleScroll}
-        onMouseOver={() => setIsScrolling(true)}
-        onMouseLeave={() => {
-          setTimeout(() => setIsScrolling(false), 2000);
-        }}
+        onScroll={handleVisibility}
+        onMouseOver={handleVisibility}
+        onMouseLeave={handleVisibility}
       >
         {historyData.length === 0 ? (
           <SessionBlankState />
