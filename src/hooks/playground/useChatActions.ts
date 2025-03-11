@@ -19,9 +19,13 @@ const useChatActions = () => {
     (state) => state.setSelectedModel,
   );
   const [, setAgentId] = useQueryState("agent");
+  const [, setSessionId] = useQueryState("session");
   const setMessages = usePlaygroundStore((state) => state.setMessages);
   const setIsEndpointActive = usePlaygroundStore(
     (state) => state.setIsEndpointActive,
+  );
+  const setIsEndpointLoading = usePlaygroundStore(
+    (state) => state.setIsEndpointLoading,
   );
   const setAgents = usePlaygroundStore((state) => state.setAgents);
 
@@ -30,7 +34,6 @@ const useChatActions = () => {
       const status = await getPlaygroundStatusAPI(selectedEndpoint);
       return status;
     } catch {
-      toast.error("Error fetching status");
       return 503;
     }
   }, [selectedEndpoint]);
@@ -47,6 +50,7 @@ const useChatActions = () => {
 
   const clearChat = useCallback(() => {
     setMessages([]);
+    setSessionId(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -71,18 +75,30 @@ const useChatActions = () => {
   }, []);
 
   const loadData = useCallback(async () => {
-    const status = await getStatus();
-    let agents: ComboboxAgent[] = [];
-    if (status === 200) {
-      setIsEndpointActive(true);
-      agents = await getAgents();
-    } else {
-      setIsEndpointActive(false);
+    setIsEndpointLoading(true);
+    try {
+      const status = await getStatus();
+      let agents: ComboboxAgent[] = [];
+      if (status === 200) {
+        setIsEndpointActive(true);
+        agents = await getAgents();
+      } else {
+        setIsEndpointActive(false);
+      }
+      resetData({ agent: agents?.[0] });
+      setAgents(agents);
+      return agents;
+    } finally {
+      setIsEndpointLoading(false);
     }
-    resetData({ agent: agents?.[0] });
-    setAgents(agents);
-    return agents;
-  }, [getStatus, getAgents, setIsEndpointActive, setAgents, resetData]);
+  }, [
+    getStatus,
+    getAgents,
+    setIsEndpointActive,
+    setIsEndpointLoading,
+    setAgents,
+    resetData,
+  ]);
 
   return {
     clearChat,

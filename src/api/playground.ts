@@ -2,7 +2,7 @@ import { toast } from "sonner";
 
 import { APIRoutes } from "./routes";
 
-import { Agent, ComboboxAgent } from "@/types/playground";
+import { Agent, ComboboxAgent, SessionEntry } from "@/types/playground";
 
 export const getPlaygroundAgentsAPI = async (
   endpoint: string,
@@ -33,4 +33,49 @@ export const getPlaygroundStatusAPI = async (base: string): Promise<number> => {
     method: "GET",
   });
   return response.status;
+};
+
+export const getAllPlaygroundSessionsAPI = async (
+  base: string,
+  agentId: string,
+): Promise<SessionEntry[]> => {
+  try {
+    const response = await fetch(
+      APIRoutes.GetPlaygroundSessions(base, agentId),
+      {
+        method: "GET",
+      },
+    );
+    return response.json();
+  } catch {
+    return [];
+  }
+};
+
+export const getPlaygroundSessionAPI = async (
+  base: string,
+  agentId: string,
+  sessionId: string,
+) => {
+  const response = await fetch(
+    APIRoutes.GetPlaygroundSession(base, agentId, sessionId),
+    {
+      method: "GET",
+    },
+  );
+  return response.json();
+};
+
+export const deletePlaygroundSessionAPI = async (
+  base: string,
+  agentId: string,
+  sessionId: string,
+) => {
+  const response = await fetch(
+    APIRoutes.DeletePlaygroundSession(base, agentId, sessionId),
+    {
+      method: "DELETE",
+    },
+  );
+  return response;
 };

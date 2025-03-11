@@ -1,7 +1,10 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import { type PlaygroundChatMessage } from "@/types/playground";
+import {
+  type PlaygroundChatMessage,
+  type SessionEntry,
+} from "@/types/playground";
 
 interface Agent {
   value: string;
@@ -28,6 +31,8 @@ interface PlaygroundStore {
   setIsStreaming: (isStreaming: boolean) => void;
   isEndpointActive: boolean;
   setIsEndpointActive: (isActive: boolean) => void;
+  isEndpointLoading: boolean;
+  setIsEndpointLoading: (isLoading: boolean) => void;
   messages: PlaygroundChatMessage[];
   setMessages: (
     messages:
@@ -44,6 +49,12 @@ interface PlaygroundStore {
 
   selectedModel: string;
   setSelectedModel: (model: string) => void;
+  historyData: SessionEntry[] | null;
+  setHistoryData: (
+    historyData:
+      | SessionEntry[]
+      | ((prevHistory: SessionEntry[] | null) => SessionEntry[] | null),
+  ) => void;
 }
 
 export const usePlaygroundStore = create<PlaygroundStore>()(
@@ -59,6 +70,9 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
       isEndpointActive: false,
       setIsEndpointActive: (isActive) =>
         set(() => ({ isEndpointActive: isActive })),
+      isEndpointLoading: true,
+      setIsEndpointLoading: (isLoading) =>
+        set(() => ({ isEndpointLoading: isLoading })),
       messages: [],
       setMessages: (messages) =>
         set((state) => ({
@@ -75,6 +89,14 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
 
       agents: [],
       setAgents: (agents) => set({ agents }),
+      historyData: null,
+      setHistoryData: (historyData) =>
+        set((state) => ({
+          historyData:
+            typeof historyData === "function"
+              ? historyData(state.historyData)
+              : historyData,
+        })),
 
       selectedModel: "",
       setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
