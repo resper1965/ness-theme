@@ -103,12 +103,12 @@ const SessionBlankState = () => {
   })();
 
   return (
-    <div className="mt-3 flex items-center justify-center rounded-lg bg-background-secondary/50 py-8">
-      <div className="flex flex-col items-center gap-6">
+    <div className="mt-1 flex items-center justify-center rounded-lg bg-background-secondary/50 py-4">
+      <div className="flex flex-col items-center gap-1">
         <HistoryBlankStateIcon />
         <div className="flex flex-col items-center gap-2">
           <h3 className="text-sm font-medium text-primary">No history</h3>
-          <p className="max-w-[220px] text-center text-sm text-muted">
+          <p className="max-w-[210px] text-center text-sm text-muted">
             {errorMessage}
           </p>
         </div>
