@@ -27,7 +27,7 @@ const SkeletonList: FC<SkeletonListProps> = ({ skeletonCount }) => {
   return skeletons.map((skeleton, index) => (
     <Skeleton
       key={skeleton}
-      className={cn("mx-3 mb-2 h-10", index > 0 && "bg-secondary")}
+      className={cn("mx-3 mb-2 h-10", index > 0 && "bg-background-secondary")}
     />
   ));
 };
@@ -50,8 +50,13 @@ export const SessionTab = () => {
     history: "push",
   });
   const [sessionId] = useQueryState("session");
-  const { selectedEndpoint } = usePlaygroundStore();
-  const { historyData, setHistoryData } = usePlaygroundStore();
+  const {
+    selectedEndpoint,
+    isEndpointActive,
+    isEndpointLoading,
+    historyData,
+    setHistoryData,
+  } = usePlaygroundStore();
   const [isScrolling, setIsScrolling] = useState(false);
   const { loadSession } = useSessionLoader();
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
@@ -111,16 +116,15 @@ export const SessionTab = () => {
     }));
   }, [historyData]);
 
-  if (isSessionsLoading)
+  if (isSessionsLoading || isEndpointLoading)
     return (
       <div className="mt-4 h-[calc(100vh-325px)] overflow-y-auto">
-        <SkeletonList skeletonCount={5} />
+        <SkeletonList skeletonCount={15} />
       </div>
     );
 
   return (
     <div>
-      <div className="text-xs font-medium uppercase mb-2">Sessions</div>
       <div
         className={`h-[calc(100vh-325px)] overflow-y-auto transition-all duration-300 font-geist [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:transition-opacity [&::-webkit-scrollbar]:duration-300
         ${isScrolling ? "[&::-webkit-scrollbar]:opacity-0 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-background" : "[&::-webkit-scrollbar]:opacity-100"}`}
@@ -128,14 +132,18 @@ export const SessionTab = () => {
         onMouseOver={() => setIsScrolling(true)}
         onMouseLeave={handleScroll}
       >
-        {!isSessionsLoading && historyData && historyData.length === 0 ? (
+        {!isEndpointActive ||
+        (!isSessionsLoading && (!historyData || historyData.length === 0)) ? (
           <SessionBlankState />
         ) : (
-          <div className="flex flex-col space-y-2 pb-6 pr-1">
-            {formattedHistory.map((entry) => (
-              <SessionItem key={entry.session_id} {...entry} />
-            ))}
-          </div>
+          <>
+            <div className="text-xs font-medium uppercase mb-2">Sessions</div>
+            <div className="flex flex-col space-y-2 pb-6 pr-1">
+              {formattedHistory.map((entry) => (
+                <SessionItem key={entry.session_id} {...entry} />
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>

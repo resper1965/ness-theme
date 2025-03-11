@@ -24,6 +24,9 @@ const useChatActions = () => {
   const setIsEndpointActive = usePlaygroundStore(
     (state) => state.setIsEndpointActive,
   );
+  const setIsEndpointLoading = usePlaygroundStore(
+    (state) => state.setIsEndpointLoading,
+  );
   const setAgents = usePlaygroundStore((state) => state.setAgents);
 
   const getStatus = useCallback(async () => {
@@ -72,18 +75,30 @@ const useChatActions = () => {
   }, []);
 
   const loadData = useCallback(async () => {
-    const status = await getStatus();
-    let agents: ComboboxAgent[] = [];
-    if (status === 200) {
-      setIsEndpointActive(true);
-      agents = await getAgents();
-    } else {
-      setIsEndpointActive(false);
+    setIsEndpointLoading(true);
+    try {
+      const status = await getStatus();
+      let agents: ComboboxAgent[] = [];
+      if (status === 200) {
+        setIsEndpointActive(true);
+        agents = await getAgents();
+      } else {
+        setIsEndpointActive(false);
+      }
+      resetData({ agent: agents?.[0] });
+      setAgents(agents);
+      return agents;
+    } finally {
+      setIsEndpointLoading(false);
     }
-    resetData({ agent: agents?.[0] });
-    setAgents(agents);
-    return agents;
-  }, [getStatus, getAgents, setIsEndpointActive, setAgents, resetData]);
+  }, [
+    getStatus,
+    getAgents,
+    setIsEndpointActive,
+    setIsEndpointLoading,
+    setAgents,
+    resetData,
+  ]);
 
   return {
     clearChat,

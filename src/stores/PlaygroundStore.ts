@@ -31,6 +31,8 @@ interface PlaygroundStore {
   setIsStreaming: (isStreaming: boolean) => void;
   isEndpointActive: boolean;
   setIsEndpointActive: (isActive: boolean) => void;
+  isEndpointLoading: boolean;
+  setIsEndpointLoading: (isLoading: boolean) => void;
   messages: PlaygroundChatMessage[];
   setMessages: (
     messages:
@@ -68,6 +70,9 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
       isEndpointActive: false,
       setIsEndpointActive: (isActive) =>
         set(() => ({ isEndpointActive: isActive })),
+      isEndpointLoading: true,
+      setIsEndpointLoading: (isLoading) =>
+        set(() => ({ isEndpointLoading: isLoading })),
       messages: [],
       setMessages: (messages) =>
         set((state) => ({

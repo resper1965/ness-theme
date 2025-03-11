@@ -39,10 +39,17 @@ export const getAllPlaygroundSessionsAPI = async (
   base: string,
   agentId: string,
 ): Promise<SessionEntry[]> => {
-  const response = await fetch(APIRoutes.GetPlaygroundSessions(base, agentId), {
-    method: "GET",
-  });
-  return response.json();
+  try {
+    const response = await fetch(
+      APIRoutes.GetPlaygroundSessions(base, agentId),
+      {
+        method: "GET",
+      },
+    );
+    return response.json();
+  } catch {
+    return [];
+  }
 };
 
 export const getPlaygroundSessionAPI = async (
