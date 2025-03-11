@@ -125,6 +125,7 @@ export const SessionTab = () => {
 
   return (
     <div>
+      <div className="text-xs font-medium uppercase mb-2">Sessions</div>
       <div
         className={`h-[calc(100vh-325px)] overflow-y-auto transition-all duration-300 font-geist [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:transition-opacity [&::-webkit-scrollbar]:duration-300
         ${isScrolling ? "[&::-webkit-scrollbar]:opacity-0 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-background" : "[&::-webkit-scrollbar]:opacity-100"}`}
@@ -136,14 +137,11 @@ export const SessionTab = () => {
         (!isSessionsLoading && (!historyData || historyData.length === 0)) ? (
           <SessionBlankState />
         ) : (
-          <>
-            <div className="text-xs font-medium uppercase mb-2">Sessions</div>
-            <div className="flex flex-col space-y-2 pb-6 pr-1">
-              {formattedHistory.map((entry) => (
-                <SessionItem key={entry.session_id} {...entry} />
-              ))}
-            </div>
-          </>
+          <div className="flex flex-col space-y-2 pb-6 pr-1">
+            {formattedHistory.map((entry) => (
+              <SessionItem key={entry.session_id} {...entry} />
+            ))}
+          </div>
         )}
       </div>
     </div>
