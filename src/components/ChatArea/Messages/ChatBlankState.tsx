@@ -173,7 +173,7 @@ export const ChatBlankState = () => {
               </div>
             </span>
           </div>
-          <p>You can learn more on the Agent Playground.</p>
+          <p>For the full experience, visit our Agent Playground.</p>
         </motion.h1>
         <motion.div
           initial={{ opacity: 0, y: 10 }}
