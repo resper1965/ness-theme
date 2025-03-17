@@ -192,7 +192,7 @@ export default function Sidebar() {
   };
   return (
     <motion.aside
-      className="h-screen font-dmmono relative py-3 pl-2 pr-1 flex flex-col gap-3 shrink-0 grow-0 overflow-hidden"
+      className="h-screen font-dmmono relative py-3 px-2 flex flex-col gap-y-3 shrink-0 grow-0 overflow-hidden"
       initial={{ width: isCollapsed ? "2.5rem" : "16rem" }}
       animate={{ width: isCollapsed ? "2.5rem" : "16rem" }}
       transition={{

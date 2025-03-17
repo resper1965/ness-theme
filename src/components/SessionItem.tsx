@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import Icon from "./ui/icon";
 import { useState } from "react";
 import SessionHistoryItemDeleteModal from "./SessionHistoryItemDeleteModal";
+import useChatActions from "@/hooks/playground/useChatActions";
 
 const truncateTitle = (text: string, limit: number) => {
   if (text) {
@@ -23,6 +24,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
   const { selectedEndpoint, historyData, setHistoryData } =
     usePlaygroundStore();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { clearChat } = useChatActions();
 
   const handleLoadSession = async () => {
     if (agentId) {
@@ -43,6 +45,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
           setHistoryData(
             historyData.filter((session) => session.session_id !== session_id),
           );
+          clearChat();
           toast.success("Session deleted");
         } else {
           toast.error("Failed to delete session");
@@ -58,7 +61,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
   return (
     <>
       <div
-        className="flex w-full items-center h-11 justify-between rounded-lg bg-background-secondary hover:bg-background-secondary/50 px-2 cursor-pointer group"
+        className="flex w-full items-center h-11 justify-between rounded-lg bg-background-secondary hover:bg-background-secondary/50 px-3 cursor-pointer group py-2"
         onClick={handleLoadSession}
       >
         <div className="flex flex-col gap-1">
