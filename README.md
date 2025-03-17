@@ -24,6 +24,14 @@ Before setting up this UI, you may want to have an Agno agent backend running. I
 
 ### Installation
 
+#### Simple Installation
+
+```bash
+pnpm create agent-ui
+```
+
+#### Manual Installation
+
 1. Clone the repository:
 
 ```bash
