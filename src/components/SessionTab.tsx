@@ -137,7 +137,7 @@ export const SessionTab = () => {
         (!isSessionsLoading && (!historyData || historyData.length === 0)) ? (
           <SessionBlankState />
         ) : (
-          <div className="flex flex-col space-y-2 pb-6 pr-1">
+          <div className="flex flex-col gap-y-1 pb-6 pr-1">
             {formattedHistory.map((entry) => (
               <SessionItem key={entry.session_id} {...entry} />
             ))}
