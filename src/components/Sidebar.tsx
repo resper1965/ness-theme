@@ -68,6 +68,12 @@ const Endpoint = () => {
     setIsHovering(false);
   };
 
+  const truncateText = (text: string, maxLength: number = 23) => {
+    return text.length > maxLength
+      ? `${text.substring(0, maxLength)}...`
+      : text;
+  };
+
   const handleCancel = () => {
     setEndpointValue(selectedEndpoint);
     setIsEditing(false);
@@ -98,7 +104,7 @@ const Endpoint = () => {
             value={endpointValue}
             onChange={(e) => setEndpointValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="flex w-full items-center border-primary/15 border bg-accent rounded-xl p-3 h-9 text-xs font-medium text-muted"
+            className="flex w-full items-center border-primary/15 border bg-accent rounded-xl p-3 h-9 text-xs font-medium text-muted text-ellipsis"
             autoFocus
           />
           <Button
@@ -143,7 +149,9 @@ const Endpoint = () => {
                   transition={{ duration: 0.2 }}
                 >
                   <p className="text-xs font-medium text-muted">
-                    {isMounted ? selectedEndpoint : "http://localhost:7777"}
+                    {isMounted
+                      ? truncateText(selectedEndpoint)
+                      : "http://localhost:7777"}
                   </p>
                   <div
                     className={`size-2 rounded-full ${getStatusColor(isEndpointActive)}`}

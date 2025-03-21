@@ -107,7 +107,7 @@ export const SessionTab = () => {
   }, [selectedEndpoint, agentId, setHistoryData]);
 
   const formattedHistory = useMemo(() => {
-    if (!historyData) return [];
+    if (!historyData || !Array.isArray(historyData)) return [];
 
     return historyData.map((entry) => ({
       ...entry,
