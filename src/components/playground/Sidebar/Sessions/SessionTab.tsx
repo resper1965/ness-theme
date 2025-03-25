@@ -12,7 +12,6 @@ import useSessionLoader from '@/hooks/useSessionLoader'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { FC } from 'react'
-import useChatActions from '@/hooks/useChatActions'
 
 interface SkeletonListProps {
   skeletonCount: number
@@ -61,8 +60,7 @@ const Sessions = () => {
     hydrated
   } = usePlaygroundStore()
   const [isScrolling, setIsScrolling] = useState(false)
-  const { getSession } = useSessionLoader()
-  const { getSessions } = useChatActions()
+  const { getSession, getSessions } = useSessionLoader()
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
   const { isSessionsLoading } = usePlaygroundStore()
 

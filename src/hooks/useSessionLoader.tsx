@@ -1,6 +1,10 @@
 import { useCallback } from 'react'
-import { getPlaygroundSessionAPI } from '@/api/playground'
+import {
+  getPlaygroundSessionAPI,
+  getAllPlaygroundSessionsAPI
+} from '@/api/playground'
 import { usePlaygroundStore } from '../store'
+import { toast } from 'sonner'
 import {
   PlaygroundChatMessage,
   ToolCall,
@@ -22,6 +26,29 @@ interface SessionResponse {
 const useSessionLoader = () => {
   const setMessages = usePlaygroundStore((state) => state.setMessages)
   const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint)
+  const setIsSessionsLoading = usePlaygroundStore(
+    (state) => state.setIsSessionsLoading
+  )
+  const setSessionsData = usePlaygroundStore((state) => state.setSessionsData)
+
+  const getSessions = useCallback(
+    async (agentId: string) => {
+      if (!agentId || !selectedEndpoint) return
+      try {
+        setIsSessionsLoading(true)
+        const history = await getAllPlaygroundSessionsAPI(
+          selectedEndpoint,
+          agentId
+        )
+        setSessionsData(history)
+      } catch {
+        toast.error('Error loading chat history')
+      } finally {
+        setIsSessionsLoading(false)
+      }
+    },
+    [selectedEndpoint, setSessionsData, setIsSessionsLoading]
+  )
 
   const getSession = useCallback(
     async (sessionId: string, agentId: string) => {
@@ -118,7 +145,7 @@ const useSessionLoader = () => {
     [selectedEndpoint, setMessages]
   )
 
-  return { getSession }
+  return { getSession, getSessions }
 }
 
 export default useSessionLoader

@@ -9,14 +9,10 @@ import {
   getPlaygroundStatusAPI
 } from '@/api/playground'
 import { useQueryState } from 'nuqs'
-import { getAllPlaygroundSessionsAPI } from '@/api/playground'
 
 const useChatActions = () => {
   const { chatInputRef } = usePlaygroundStore()
   const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint)
-  const setIsSessionsLoading = usePlaygroundStore(
-    (state) => state.setIsSessionsLoading
-  )
   const [, setSessionId] = useQueryState('session')
   const setMessages = usePlaygroundStore((state) => state.setMessages)
   const setIsEndpointActive = usePlaygroundStore(
@@ -26,7 +22,6 @@ const useChatActions = () => {
     (state) => state.setIsEndpointLoading
   )
   const setAgents = usePlaygroundStore((state) => state.setAgents)
-  const setSessionsData = usePlaygroundStore((state) => state.setSessionsData)
   const setSelectedModel = usePlaygroundStore((state) => state.setSelectedModel)
   const [agentId, setAgentId] = useQueryState('agent')
 
@@ -69,25 +64,6 @@ const useChatActions = () => {
     [setMessages]
   )
 
-  const getSessions = useCallback(
-    async (agentId: string) => {
-      if (!agentId || !selectedEndpoint) return
-      try {
-        setIsSessionsLoading(true)
-        const history = await getAllPlaygroundSessionsAPI(
-          selectedEndpoint,
-          agentId
-        )
-        setSessionsData(history)
-      } catch {
-        toast.error('Error loading chat history')
-      } finally {
-        setIsSessionsLoading(false)
-      }
-    },
-    [selectedEndpoint, setSessionsData, setIsSessionsLoading]
-  )
-
   const loadData = useCallback(async () => {
     setIsEndpointLoading(true)
     try {
@@ -127,8 +103,7 @@ const useChatActions = () => {
     addMessage,
     getAgents,
     focusChatInput,
-    loadData,
-    getSessions
+    loadData
   }
 }
 
