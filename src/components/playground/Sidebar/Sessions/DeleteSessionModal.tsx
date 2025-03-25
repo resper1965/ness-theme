@@ -35,7 +35,7 @@ const DeleteSessionModal: FC<DeleteSessionModalProps> = ({
       <DialogFooter>
         <Button
           variant="outline"
-          className=" rounded-xl border-border font-geist"
+          className="rounded-xl border-border font-geist"
           onClick={onClose}
           disabled={isDeleting}
         >
