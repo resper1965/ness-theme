@@ -9,15 +9,18 @@ import Icon from '@/components/ui/icon'
 import { useState } from 'react'
 import DeleteSessionModal from './DeleteSessionModal'
 import useChatActions from '@/hooks/useChatActions'
-import { truncateText } from '@/lib/utils'
+import { truncateText, cn } from '@/lib/utils'
 
 export const SessionItem = ({ title, session_id }: SessionEntry) => {
   const [agentId] = useQueryState('agent')
+  const [currentSessionId] = useQueryState('session')
   const { loadSession } = useSessionLoader()
   const [, setSessionId] = useQueryState('session')
   const { selectedEndpoint, historyData, setHistoryData } = usePlaygroundStore()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const { clearChat } = useChatActions()
+
+  const isSelected = currentSessionId === session_id
 
   const handleLoadSession = async () => {
     if (agentId) {
@@ -54,11 +57,20 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
   return (
     <>
       <div
-        className="group flex h-11 w-full cursor-pointer items-center justify-between rounded-lg bg-background-secondary px-3 py-2"
+        className={cn(
+          'group flex h-11 w-full cursor-pointer items-center justify-between rounded-lg px-3 py-2 transition-colors duration-200',
+          isSelected
+            ? 'bg-primary/10 cursor-default'
+            : 'bg-background-secondary hover:bg-background-secondary/80'
+        )}
         onClick={handleLoadSession}
       >
         <div className="flex flex-col gap-1">
-          <h4 className="text-sm font-medium">{truncateText(title, 20)}</h4>
+          <h4
+            className={cn('text-sm font-medium', isSelected && 'text-primary')}
+          >
+            {truncateText(title, 20)}
+          </h4>
         </div>
         <Button
           variant="ghost"
