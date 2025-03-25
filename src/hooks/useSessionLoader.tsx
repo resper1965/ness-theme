@@ -22,7 +22,7 @@ interface SessionResponse {
 const useSessionLoader = () => {
   const setMessages = usePlaygroundStore((state) => state.setMessages);
   const selectedEndpoint = usePlaygroundStore(
-    (state) => state.selectedEndpoint
+    (state) => state.selectedEndpoint,
   );
 
   const loadSession = useCallback(
@@ -35,7 +35,7 @@ const useSessionLoader = () => {
         const response = (await getPlaygroundSessionAPI(
           selectedEndpoint,
           agentId,
-          sessionId
+          sessionId,
         )) as SessionResponse;
 
         if (response && response.memory) {
@@ -73,7 +73,7 @@ const useSessionLoader = () => {
                       }
                       return acc;
                     },
-                    []
+                    [],
                   ),
                 ];
 
@@ -106,7 +106,7 @@ const useSessionLoader = () => {
                   };
                 }
                 return message;
-              }
+              },
             );
 
             setMessages(processedMessages);
@@ -117,7 +117,7 @@ const useSessionLoader = () => {
         return null;
       }
     },
-    [selectedEndpoint, setMessages]
+    [selectedEndpoint, setMessages],
   );
 
   return { loadSession };

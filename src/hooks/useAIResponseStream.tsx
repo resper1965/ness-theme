@@ -8,7 +8,7 @@ import { type RunResponse } from "@/types/playground";
  */
 function processChunk(
   chunk: RunResponse,
-  onChunk: (chunk: RunResponse) => void
+  onChunk: (chunk: RunResponse) => void,
 ) {
   onChunk(chunk);
 }
@@ -30,7 +30,7 @@ function processChunk(
  */
 function parseBuffer(
   buffer: string,
-  onChunk: (chunk: RunResponse) => void
+  onChunk: (chunk: RunResponse) => void,
 ): string {
   let jsonStartIndex = buffer.indexOf("{");
   let jsonEndIndex = -1;
@@ -169,7 +169,7 @@ export default function useAIResponseStream() {
         }
       }
     },
-    []
+    [],
   );
 
   return { streamResponse };

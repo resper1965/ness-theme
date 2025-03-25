@@ -39,11 +39,11 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
         const response = await deletePlaygroundSessionAPI(
           selectedEndpoint,
           agentId,
-          session_id
+          session_id,
         );
         if (response.status === 200 && historyData) {
           setHistoryData(
-            historyData.filter((session) => session.session_id !== session_id)
+            historyData.filter((session) => session.session_id !== session_id),
           );
           clearChat();
           toast.success("Session deleted");

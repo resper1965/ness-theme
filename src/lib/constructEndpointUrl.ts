@@ -1,5 +1,5 @@
 export const constructEndpointUrl = (
-  value: string | null | undefined
+  value: string | null | undefined,
 ): string => {
   if (!value) return "";
 

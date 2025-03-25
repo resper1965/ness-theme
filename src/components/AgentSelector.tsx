@@ -39,7 +39,7 @@ export function AgentSelector() {
   const handleOnValueChange = (value: string) => {
     const newAgent = value === agentId ? "" : value;
     setSelectedModel(
-      agents.find((agent) => agent.value === newAgent)?.model.provider || ""
+      agents.find((agent) => agent.value === newAgent)?.model.provider || "",
     );
     setAgentId(newAgent);
     setMessages([]);

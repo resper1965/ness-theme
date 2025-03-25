@@ -1,6 +1,6 @@
 import { type FC } from "react";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 
 import { PARAGRAPH_SIZES } from "./constants";
 import { type ParagraphProps } from "./types";

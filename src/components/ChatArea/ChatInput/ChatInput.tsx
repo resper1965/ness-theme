@@ -27,7 +27,7 @@ const ChatInput = () => {
       toast.error(
         `Error in handleSubmit: ${
           error instanceof Error ? error.message : String(error)
-        }`
+        }`,
       );
     }
   };

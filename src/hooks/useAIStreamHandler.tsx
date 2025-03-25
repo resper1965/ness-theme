@@ -20,10 +20,10 @@ const useAIChatStreamHandler = () => {
   const [agentId] = useQueryState("agent");
   const [sessionId, setSessionId] = useQueryState("session");
   const selectedEndpoint = usePlaygroundStore(
-    (state) => state.selectedEndpoint
+    (state) => state.selectedEndpoint,
   );
   const setStreamingErrorMessage = usePlaygroundStore(
-    (state) => state.setStreamingErrorMessage
+    (state) => state.setStreamingErrorMessage,
   );
   const setIsStreaming = usePlaygroundStore((state) => state.setIsStreaming);
   const setHistoryData = usePlaygroundStore((state) => state.setHistoryData);
@@ -86,7 +86,7 @@ const useAIChatStreamHandler = () => {
         if (!agentId) return;
         const playgroundRunUrl = APIRoutes.AgentRun(endpointUrl).replace(
           "{agent_id}",
-          agentId
+          agentId,
         );
 
         formData.append("stream", "true");
@@ -224,7 +224,7 @@ const useAIChatStreamHandler = () => {
       } catch (error) {
         updateMessagesWithErrorState();
         setStreamingErrorMessage(
-          error instanceof Error ? error.message : String(error)
+          error instanceof Error ? error.message : String(error),
         );
       } finally {
         focusChatInput();
@@ -244,7 +244,7 @@ const useAIChatStreamHandler = () => {
       setHistoryData,
       sessionId,
       setSessionId,
-    ]
+    ],
   );
 
   return { handleStreamResponse };
