@@ -125,20 +125,20 @@ const Endpoint = () => {
               {isHovering ? (
                 <motion.div
                   key="endpoint-display-hover"
-                  className="flex w-full items-center justify-center"
+                  className="absolute inset-0 flex items-center justify-center"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <p className="flex items-center gap-2 text-xs font-medium text-primary">
+                  <p className="flex items-center gap-2 text-xs font-medium text-primary whitespace-nowrap">
                     <Icon type="edit" size="xxs" /> EDIT ENDPOINT
                   </p>
                 </motion.div>
               ) : (
                 <motion.div
                   key="endpoint-display"
-                  className="flex w-full items-center justify-between"
+                  className="absolute inset-0 flex items-center justify-between px-3"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -150,7 +150,7 @@ const Endpoint = () => {
                       : 'http://localhost:7777'}
                   </p>
                   <div
-                    className={`size-2 rounded-full ${getStatusColor(isEndpointActive)}`}
+                    className={`size-2 rounded-full shrink-0 ${getStatusColor(isEndpointActive)}`}
                   />
                 </motion.div>
               )}
