@@ -3,7 +3,7 @@
 import { memo, useMemo } from "react";
 
 import { type AudioData } from "@/types/playground";
-import { decodeBase64Audio } from "@/utils/audio";
+import { decodeBase64Audio } from "@/lib/audio";
 
 /**
  * Renders a single audio item with controls
@@ -17,7 +17,7 @@ const AudioItem = memo(({ audio }: { audio: AudioData }) => {
     if (audio.base64_audio) {
       return decodeBase64Audio(
         audio.base64_audio,
-        audio.mime_type || "audio/wav",
+        audio.mime_type || "audio/wav"
       );
     }
     if (audio.content) {
@@ -25,7 +25,7 @@ const AudioItem = memo(({ audio }: { audio: AudioData }) => {
         audio.content,
         "audio/pcm16",
         audio.sample_rate,
-        audio.channels,
+        audio.channels
       );
     }
     return null;

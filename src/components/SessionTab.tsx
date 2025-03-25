@@ -5,11 +5,11 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
 import { getAllPlaygroundSessionsAPI } from "@/api/playground";
-import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import { usePlaygroundStore } from "../../store";
 import { useQueryState } from "nuqs";
 import { SessionItem } from "./SessionItem";
 import SessionBlankState from "./SessionBlankState";
-import useSessionLoader from "@/hooks/playground/useSessionLoader";
+import useSessionLoader from "@/hooks/useSessionLoader";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/utils/cn";
 import { FC } from "react";
@@ -21,7 +21,7 @@ interface SkeletonListProps {
 const SkeletonList: FC<SkeletonListProps> = ({ skeletonCount }) => {
   const skeletons = useMemo(
     () => Array.from({ length: skeletonCount }, (_, i) => i),
-    [skeletonCount],
+    [skeletonCount]
   );
 
   return skeletons.map((skeleton, index) => (
@@ -36,7 +36,7 @@ dayjs.extend(utc);
 
 const formatDate = (
   timestamp: number,
-  format: "natural" | "full" = "full",
+  format: "natural" | "full" = "full"
 ): string => {
   const date = dayjs.unix(timestamp).utc();
   return format === "natural"
@@ -98,7 +98,7 @@ export const SessionTab = () => {
       getAllPlaygroundSessionsAPI(selectedEndpoint, agentId).then(
         (response) => {
           setHistoryData(response);
-        },
+        }
       );
     } catch {
     } finally {

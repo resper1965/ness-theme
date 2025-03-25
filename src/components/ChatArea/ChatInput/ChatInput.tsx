@@ -3,8 +3,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ChatTextArea } from "./ChatTextArea";
 import { Button } from "@/components/ui/button";
-import { usePlaygroundStore } from "@/stores/PlaygroundStore";
-import useAIChatStreamHandler from "@/hooks/playground/useAIStreamHandler";
+import { usePlaygroundStore } from "../../../../store";
+import useAIChatStreamHandler from "@/hooks/useAIStreamHandler";
 import { useQueryState } from "nuqs";
 import Icon from "@/components/ui/icon";
 
@@ -27,7 +27,7 @@ const ChatInput = () => {
       toast.error(
         `Error in handleSubmit: ${
           error instanceof Error ? error.message : String(error)
-        }`,
+        }`
       );
     }
   };

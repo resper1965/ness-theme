@@ -1,5 +1,5 @@
 import React from "react";
-import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import { usePlaygroundStore } from "../../store";
 import { useQueryState } from "nuqs";
 
 const HistoryBlankStateIcon = () => (

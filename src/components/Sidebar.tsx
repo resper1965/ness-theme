@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { AgentSelector } from "@/components/AgentSelector";
-import useChatActions from "@/hooks/playground/useChatActions";
-import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import useChatActions from "@/hooks/useChatActions";
+import { usePlaygroundStore } from "../../store";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
-import { getProviderIcon } from "@/utils/modelProvider";
+import { getProviderIcon } from "@/lib/modelProvider";
 import { SessionTab } from "./SessionTab";
 
 const SidebarHeader = () => (

@@ -1,14 +1,14 @@
 import { useQueryState } from "nuqs";
 import { SessionEntry } from "@/types/playground";
 import { Button } from "./ui/button";
-import useSessionLoader from "@/hooks/playground/useSessionLoader";
+import useSessionLoader from "@/hooks/useSessionLoader";
 import { deletePlaygroundSessionAPI } from "@/api/playground";
-import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import { usePlaygroundStore } from "../../store";
 import { toast } from "sonner";
 import Icon from "./ui/icon";
 import { useState } from "react";
 import SessionHistoryItemDeleteModal from "./SessionHistoryItemDeleteModal";
-import useChatActions from "@/hooks/playground/useChatActions";
+import useChatActions from "@/hooks/useChatActions";
 
 const truncateTitle = (text: string, limit: number) => {
   if (text) {
@@ -39,11 +39,11 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
         const response = await deletePlaygroundSessionAPI(
           selectedEndpoint,
           agentId,
-          session_id,
+          session_id
         );
         if (response.status === 200 && historyData) {
           setHistoryData(
-            historyData.filter((session) => session.session_id !== session_id),
+            historyData.filter((session) => session.session_id !== session_id)
           );
           clearChat();
           toast.success("Session deleted");
