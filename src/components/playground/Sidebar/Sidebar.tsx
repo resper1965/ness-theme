@@ -8,7 +8,9 @@ import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/lib/modelProvider";
 import Sessions from "./Sessions";
+import { toast } from "sonner";
 
+const ENDPOINT_PLACEHOLDER = "NO ENDPOINT ADDED";
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
     <Icon type="agno" size="xs" />
@@ -53,6 +55,7 @@ const Endpoint = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isRotating, setIsRotating] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setEndpointValue(selectedEndpoint);
@@ -62,12 +65,23 @@ const Endpoint = () => {
   const getStatusColor = (isActive: boolean) =>
     isActive ? "bg-positive" : "bg-destructive";
 
+  const isValidUrl = (url: string): boolean => {
+    try {
+      new URL(url);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  };
+
   const handleSave = () => {
+    if (!isValidUrl(endpointValue)) {
+      toast.error("Please enter a valid URL");
+    } else setError("");
     setSelectedEndpoint(endpointValue);
     setIsEditing(false);
     setIsHovering(false);
   };
-
   const truncateText = (text: string, maxLength: number = 20) => {
     return text.length > maxLength
       ? `${text.substring(0, maxLength)}...`
@@ -94,7 +108,6 @@ const Endpoint = () => {
     await loadHistory(agents?.[0]?.value ?? "");
     setTimeout(() => setIsRotating(false), 500);
   };
-
   return (
     <div className="flex flex-col items-start gap-2">
       <div className="uppercase text-xs font-medium text-primary">Endpoint</div>
@@ -151,7 +164,7 @@ const Endpoint = () => {
                 >
                   <p className="text-xs font-medium text-muted">
                     {isMounted
-                      ? truncateText(selectedEndpoint)
+                      ? truncateText(selectedEndpoint) || ENDPOINT_PLACEHOLDER
                       : "http://localhost:7777"}
                   </p>
                   <div
@@ -190,9 +203,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     setIsMounted(true);
-    if (selectedEndpoint) {
-      loadData();
-    }
+    loadData();
   }, [selectedEndpoint, loadData]);
 
   const handleNewChat = () => {
@@ -237,7 +248,7 @@ const Sidebar = () => {
               disabled={messages.length === 0}
               onClick={handleNewChat}
             />
-            {isMounted && selectedEndpoint && (
+            {isMounted && (
               <>
                 <Endpoint />
                 {isEndpointActive && (
