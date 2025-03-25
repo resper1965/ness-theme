@@ -10,7 +10,6 @@ import { getProviderIcon } from '@/lib/modelProvider'
 import Sessions from './Sessions'
 import { isValidUrl } from '@/lib/utils'
 import { toast } from 'sonner'
-import { useQueryState } from 'nuqs'
 
 const ENDPOINT_PLACEHOLDER = 'NO ENDPOINT ADDED'
 const SidebarHeader = () => (
@@ -51,7 +50,6 @@ const ModelDisplay = ({ model }: { model: string }) => (
 const Endpoint = () => {
   const { selectedEndpoint, isEndpointActive, setSelectedEndpoint, setIsEndpointLoading } =
     usePlaygroundStore()
-  const [, setSelectedAgent] = useQueryState('agent')
   const { loadData, loadHistory } = useChatActions()
   const [isEditing, setIsEditing] = useState(false)
   const [endpointValue, setEndpointValue] = useState('')
