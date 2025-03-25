@@ -109,7 +109,7 @@ const Endpoint = () => {
   const handleRefresh = async () => {
     setIsRotating(true)
     const agents = await loadData()
-    await loadHistory(agents?.[0]?.value ?? '')
+    await loadHistory(agentId ?? agents?.[0]?.value ?? '')
     setTimeout(() => setIsRotating(false), 500)
   }
 
