@@ -11,7 +11,7 @@ import Sessions from './Sessions'
 import { isValidUrl } from '@/lib/utils'
 import { toast } from 'sonner'
 
-const ENDPOINT_PLACEHOLDER = "NO ENDPOINT ADDED";
+const ENDPOINT_PLACEHOLDER = 'NO ENDPOINT ADDED'
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
     <Icon type="agno" size="xs" />
@@ -65,16 +65,14 @@ const Endpoint = () => {
   const getStatusColor = (isActive: boolean) =>
     isActive ? 'bg-positive' : 'bg-destructive'
 
-  
-
   const handleSave = () => {
     if (!isValidUrl(endpointValue)) {
-      toast.error("Please enter a valid URL");
+      toast.error('Please enter a valid URL')
     }
-    setSelectedEndpoint(endpointValue);
-    setIsEditing(false);
-    setIsHovering(false);
-  };
+    setSelectedEndpoint(endpointValue)
+    setIsEditing(false)
+    setIsHovering(false)
+  }
   const truncateText = (text: string, maxLength: number = 20) => {
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text
   }
@@ -195,7 +193,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     setIsMounted(true)
-      loadData()
+    loadData()
   }, [selectedEndpoint, loadData])
 
   const handleNewChat = () => {
