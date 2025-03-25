@@ -9,13 +9,7 @@ import Icon from '@/components/ui/icon'
 import { useState } from 'react'
 import DeleteSessionModal from './DeleteSessionModal'
 import useChatActions from '@/hooks/useChatActions'
-
-const truncateTitle = (text: string, limit: number) => {
-  if (text) {
-    return text.length > limit ? `${text.slice(0, limit)}...` : text
-  }
-  return ''
-}
+import { truncateText } from '@/lib/truncateText'
 
 export const SessionItem = ({ title, session_id }: SessionEntry) => {
   const [agentId] = useQueryState('agent')
@@ -64,7 +58,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
         onClick={handleLoadSession}
       >
         <div className="flex flex-col gap-1">
-          <h4 className="text-sm font-medium">{truncateTitle(title, 20)}</h4>
+          <h4 className="text-sm font-medium">{truncateText(title, 20)}</h4>
         </div>
         <Button
           variant="ghost"

@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react'
 import Icon from '@/components/ui/icon'
 import { getProviderIcon } from '@/lib/modelProvider'
 import Sessions from './Sessions'
+import { truncateText } from '@/lib/truncateText'
 
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
@@ -66,10 +67,6 @@ const Endpoint = () => {
     setSelectedEndpoint(endpointValue)
     setIsEditing(false)
     setIsHovering(false)
-  }
-
-  const truncateText = (text: string, maxLength: number = 20) => {
-    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text
   }
 
   const handleCancel = () => {
@@ -149,7 +146,7 @@ const Endpoint = () => {
                 >
                   <p className="text-xs font-medium text-muted">
                     {isMounted
-                      ? truncateText(selectedEndpoint)
+                      ? truncateText(selectedEndpoint, 21)
                       : 'http://localhost:7777'}
                   </p>
                   <div
