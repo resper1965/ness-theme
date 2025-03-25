@@ -17,7 +17,11 @@ const Icon: FC<IconProps> = ({
   return (
     <IconElement
       className={cn(
-        color && !disabled ? `text-${color}` : "text-primary",
+        color === "destructive"
+          ? "text-destructive"
+          : color
+            ? `text-${color}`
+            : "text-primary",
         disabled && "cursor-default text-muted/50",
         className,
         size === "xxs" && "size-3",
@@ -26,7 +30,7 @@ const Icon: FC<IconProps> = ({
         size === "md" && "size-[42px]",
         size === "lg" && "size-7",
         size === "dot" && "size-[5.07px]",
-        size === "default" && " ",
+        size === "default" && " "
       )}
     />
   );

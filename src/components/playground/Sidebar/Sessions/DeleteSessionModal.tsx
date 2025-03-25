@@ -10,14 +10,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-interface SessionHistoryItemDeleteModalProps {
+interface DeleteSessionModalProps {
   isOpen: boolean;
   onClose: () => void;
   onDelete: () => Promise<void>;
   isDeleting: boolean;
 }
 
-const SessionHistoryItemDeleteModal: FC<SessionHistoryItemDeleteModalProps> = ({
+const DeleteSessionModal: FC<DeleteSessionModalProps> = ({
   isOpen,
   onClose,
   onDelete,
@@ -28,8 +28,8 @@ const SessionHistoryItemDeleteModal: FC<SessionHistoryItemDeleteModalProps> = ({
       <DialogHeader>
         <DialogTitle>Confirm delete session</DialogTitle>
         <DialogDescription>
-          You are permanently deleting this session. This action is
-          irreversible.
+          You are permanently deleting this session. This action cannot be
+          undone.
         </DialogDescription>
       </DialogHeader>
       <DialogFooter>
@@ -54,4 +54,4 @@ const SessionHistoryItemDeleteModal: FC<SessionHistoryItemDeleteModalProps> = ({
   </Dialog>
 );
 
-export default SessionHistoryItemDeleteModal;
+export default DeleteSessionModal;
