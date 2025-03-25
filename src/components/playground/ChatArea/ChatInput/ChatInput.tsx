@@ -39,7 +39,7 @@ const ChatInput = () => {
         value={inputMessage}
         onChange={(e) => setInputMessage(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.key === 'Enter' && !e.shiftKey && !isStreaming) {
             e.preventDefault()
             handleSubmit()
           }
