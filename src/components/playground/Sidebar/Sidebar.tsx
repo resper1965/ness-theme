@@ -131,7 +131,7 @@ const Endpoint = () => {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <p className="flex items-center gap-2 text-xs font-medium text-primary whitespace-nowrap">
+                  <p className="flex items-center gap-2 whitespace-nowrap text-xs font-medium text-primary">
                     <Icon type="edit" size="xxs" /> EDIT ENDPOINT
                   </p>
                 </motion.div>
@@ -150,7 +150,7 @@ const Endpoint = () => {
                       : 'http://localhost:7777'}
                   </p>
                   <div
-                    className={`size-2 rounded-full shrink-0 ${getStatusColor(isEndpointActive)}`}
+                    className={`size-2 shrink-0 rounded-full ${getStatusColor(isEndpointActive)}`}
                   />
                 </motion.div>
               )}
