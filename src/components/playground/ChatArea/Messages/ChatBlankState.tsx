@@ -184,7 +184,7 @@ export const ChatBlankState = () => {
           <ActionButton
             href={EXTERNAL_LINKS.documentation}
             variant="primary"
-            text="GO TO OUR DOCS"
+            text="GO TO DOCS"
           />
           <ActionButton
             href={EXTERNAL_LINKS.playground}
