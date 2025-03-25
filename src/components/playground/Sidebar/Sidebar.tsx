@@ -48,8 +48,12 @@ const ModelDisplay = ({ model }: { model: string }) => (
 )
 
 const Endpoint = () => {
-  const { selectedEndpoint, isEndpointActive, setSelectedEndpoint, setIsEndpointLoading } =
-    usePlaygroundStore()
+  const {
+    selectedEndpoint,
+    isEndpointActive,
+    setSelectedEndpoint,
+    setIsEndpointLoading
+  } = usePlaygroundStore()
   const { loadData, loadHistory } = useChatActions()
   const [isEditing, setIsEditing] = useState(false)
   const [endpointValue, setEndpointValue] = useState('')
@@ -65,7 +69,7 @@ const Endpoint = () => {
   const getStatusColor = (isActive: boolean) =>
     isActive ? 'bg-positive' : 'bg-destructive'
 
-  const handleSave = async() => {
+  const handleSave = async () => {
     if (!isValidUrl(endpointValue)) {
       toast.error('Please enter a valid URL')
       return

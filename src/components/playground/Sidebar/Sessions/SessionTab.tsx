@@ -97,7 +97,7 @@ const Sessions = () => {
     } finally {
       setIsSessionsLoading(false)
     }
-  }, [selectedEndpoint, agentId, loadHistory,isEndpointLoading])
+  }, [selectedEndpoint, agentId, loadHistory, isEndpointLoading])
 
   const formattedHistory = useMemo(() => {
     if (!historyData || !Array.isArray(historyData)) return []
