@@ -1,42 +1,42 @@
-import type { PlaygroundChatMessage } from "@/types/playground";
+import type { PlaygroundChatMessage } from '@/types/playground'
 
-import { AgentMessage, UserMessage } from "./MessageItem";
-import Tooltip from "@/components/ui/Tooltip";
-import { memo } from "react";
+import { AgentMessage, UserMessage } from './MessageItem'
+import Tooltip from '@/components/ui/Tooltip'
+import { memo } from 'react'
 import {
   ToolCallProps,
   ReasoningStepProps,
   ReasoningProps,
   ReferenceData,
-  Reference,
-} from "@/types/playground";
-import React, { type FC } from "react";
-import { ChatBlankState } from "./ChatBlankState";
-import Icon from "@/components/ui/icon";
+  Reference
+} from '@/types/playground'
+import React, { type FC } from 'react'
+import { ChatBlankState } from './ChatBlankState'
+import Icon from '@/components/ui/icon'
 
 interface MessageListProps {
-  messages: PlaygroundChatMessage[];
+  messages: PlaygroundChatMessage[]
 }
 
 interface MessageWrapperProps {
-  message: PlaygroundChatMessage;
-  isLastMessage: boolean;
+  message: PlaygroundChatMessage
+  isLastMessage: boolean
 }
 
 interface ReferenceProps {
-  references: ReferenceData[];
+  references: ReferenceData[]
 }
 
 interface ReferenceItemProps {
-  reference: Reference;
+  reference: Reference
 }
 
 const ReferenceItem: FC<ReferenceItemProps> = ({ reference }) => (
-  <div className="flex flex-col w-[190px] h-[63px] rounded-md bg-background-secondary p-3 justify-between relative overflow-hidden hover:bg-background-secondary/80 transition-colors cursor-default">
+  <div className="relative flex h-[63px] w-[190px] cursor-default flex-col justify-between overflow-hidden rounded-md bg-background-secondary p-3 transition-colors hover:bg-background-secondary/80">
     <p className="text-sm font-medium text-primary">{reference.name}</p>
-    <p className="text-xs text-primary/40 truncate">{reference.content}</p>
+    <p className="truncate text-xs text-primary/40">{reference.content}</p>
   </div>
-);
+)
 
 const References: FC<ReferenceProps> = ({ references }) => (
   <div className="flex flex-col gap-4">
@@ -56,7 +56,7 @@ const References: FC<ReferenceProps> = ({ references }) => (
       </div>
     ))}
   </div>
-);
+)
 
 const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
   return (
@@ -101,7 +101,7 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
           >
             <Icon
               type="hammer"
-              className="bg-background-secondary p-1 rounded-lg"
+              className="rounded-lg bg-background-secondary p-1"
               size="sm"
               color="secondary"
             />
@@ -122,8 +122,8 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
       )}
       <AgentMessage message={message} />
     </div>
-  );
-};
+  )
+}
 const Reasoning: FC<ReasoningStepProps> = ({ index, stepTitle }) => (
   <div className="flex items-center gap-2 text-secondary">
     <div className="flex h-[20px] items-center rounded-md bg-background-secondary p-2">
@@ -131,7 +131,7 @@ const Reasoning: FC<ReasoningStepProps> = ({ index, stepTitle }) => (
     </div>
     <p className="text-xs">{stepTitle}</p>
   </div>
-);
+)
 const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
   <div className="flex flex-col items-start justify-center gap-2">
     {reasoning.map((title, index) => (
@@ -142,40 +142,40 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
       />
     ))}
   </div>
-);
+)
 
 export const ToolComponent = memo(({ tools }: ToolCallProps) => (
-  <div className="cursor-default rounded-full bg-accent px-2  py-1.5 text-xs">
-    <p className=" text-primary/80 uppercase font-dmmono">{tools.tool_name}</p>
+  <div className="cursor-default rounded-full bg-accent px-2 py-1.5 text-xs">
+    <p className="font-dmmono uppercase text-primary/80">{tools.tool_name}</p>
   </div>
-));
+))
 
-ToolComponent.displayName = "ToolComponent";
+ToolComponent.displayName = 'ToolComponent'
 
 const Messages = ({ messages }: MessageListProps) => {
   if (messages.length === 0) {
-    return <ChatBlankState />;
+    return <ChatBlankState />
   }
 
   return (
     <>
       {messages.map((message, index) => {
-        const key = `${message.role}-${message.created_at}-${index}`;
-        const isLastMessage = index === messages.length - 1;
+        const key = `${message.role}-${message.created_at}-${index}`
+        const isLastMessage = index === messages.length - 1
 
-        if (message.role === "agent") {
+        if (message.role === 'agent') {
           return (
             <AgentMessageWrapper
               key={key}
               message={message}
               isLastMessage={isLastMessage}
             />
-          );
+          )
         }
-        return <UserMessage key={key} message={message} />;
+        return <UserMessage key={key} message={message} />
       })}
     </>
-  );
-};
+  )
+}
 
-export default Messages;
+export default Messages
