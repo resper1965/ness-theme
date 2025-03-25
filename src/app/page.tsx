@@ -1,7 +1,7 @@
-"use client";
-import Sidebar from "@/components/playground/Sidebar/Sidebar";
-import { ChatArea } from "@/components/playground/ChatArea";
-import { Suspense } from "react";
+'use client'
+import Sidebar from '@/components/playground/Sidebar/Sidebar'
+import { ChatArea } from '@/components/playground/ChatArea'
+import { Suspense } from 'react'
 
 export default function Home() {
   return (
@@ -11,5 +11,5 @@ export default function Home() {
         <ChatArea />
       </div>
     </Suspense>
-  );
+  )
 }

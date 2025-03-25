@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import ChatInput from "./ChatInput";
-import MessageArea from "./MessageArea";
+import ChatInput from './ChatInput'
+import MessageArea from './MessageArea'
 const ChatArea = () => {
   return (
     <main className="relative flex flex-col flex-grow bg-background rounded-xl m-1.5">
@@ -13,4 +13,4 @@ const ChatArea = () => {
   );
 };
 
-export default ChatArea;
+export default ChatArea
