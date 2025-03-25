@@ -106,7 +106,7 @@ const useChatActions = () => {
     setIsEndpointActive,
     setIsEndpointLoading,
     setAgents,
-    resetData
+    resetData,
   ])
 
   return {

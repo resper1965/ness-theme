@@ -187,14 +187,15 @@ const Endpoint = () => {
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const { clearChat, focusChatInput, loadData } = useChatActions()
-  const { messages, selectedEndpoint, isEndpointActive, selectedModel } =
+  const { messages, selectedEndpoint, isEndpointActive, selectedModel,hydrated } =
     usePlaygroundStore()
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
+    if (hydrated) 
     loadData()
-  }, [selectedEndpoint, loadData])
+  }, [selectedEndpoint, loadData,hydrated])
 
   const handleNewChat = () => {
     clearChat()

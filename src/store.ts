@@ -15,6 +15,8 @@ interface Agent {
 }
 
 interface PlaygroundStore {
+  hydrated: boolean
+  setHydrated: () => void
   streamingErrorMessage: string
   setStreamingErrorMessage: (streamingErrorMessage: string) => void
   endpoints: {
@@ -60,6 +62,8 @@ interface PlaygroundStore {
 export const usePlaygroundStore = create<PlaygroundStore>()(
   persist(
     (set) => ({
+      hydrated: false,
+      setHydrated: () => set({ hydrated: true }),
       streamingErrorMessage: '',
       setStreamingErrorMessage: (streamingErrorMessage) =>
         set(() => ({ streamingErrorMessage })),
@@ -104,7 +108,12 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         selectedEndpoint: state.selectedEndpoint
-      })
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated?.()
+      },
     }
+    
   )
+  
 )
