@@ -10,6 +10,7 @@ import { getProviderIcon } from '@/lib/modelProvider'
 import Sessions from './Sessions'
 import { isValidUrl } from '@/lib/utils'
 import { toast } from 'sonner'
+import { useQueryState } from 'nuqs'
 
 const ENDPOINT_PLACEHOLDER = 'NO ENDPOINT ADDED'
 const SidebarHeader = () => (
@@ -48,14 +49,22 @@ const ModelDisplay = ({ model }: { model: string }) => (
 )
 
 const Endpoint = () => {
-  const { selectedEndpoint, isEndpointActive, setSelectedEndpoint } =
-    usePlaygroundStore()
+  const {
+    selectedEndpoint,
+    isEndpointActive,
+    setSelectedEndpoint,
+    setAgents,
+    setHistoryData,
+    setMessages
+  } = usePlaygroundStore()
   const { loadData, loadHistory } = useChatActions()
   const [isEditing, setIsEditing] = useState(false)
   const [endpointValue, setEndpointValue] = useState('')
   const [isMounted, setIsMounted] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [isRotating, setIsRotating] = useState(false)
+  const [, setAgentId] = useQueryState('agent')
+  const [, setSessionId] = useQueryState('session')
 
   useEffect(() => {
     setEndpointValue(selectedEndpoint)
@@ -72,8 +81,13 @@ const Endpoint = () => {
     }
     const cleanEndpoint = endpointValue.replace(/\/$/, '')
     setSelectedEndpoint(cleanEndpoint)
+    setAgentId(null)
+    setSessionId(null)
     setIsEditing(false)
     setIsHovering(false)
+    setAgents([])
+    setHistoryData([])
+    setMessages([])
   }
   const truncateText = (text: string, maxLength: number = 20) => {
     return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text
