@@ -48,12 +48,8 @@ const ModelDisplay = ({ model }: { model: string }) => (
 )
 
 const Endpoint = () => {
-  const {
-    selectedEndpoint,
-    isEndpointActive,
-    setSelectedEndpoint,
-    setIsEndpointLoading
-  } = usePlaygroundStore()
+  const { selectedEndpoint, isEndpointActive, setSelectedEndpoint } =
+    usePlaygroundStore()
   const { loadData, loadHistory } = useChatActions()
   const [isEditing, setIsEditing] = useState(false)
   const [endpointValue, setEndpointValue] = useState('')
@@ -75,7 +71,6 @@ const Endpoint = () => {
       return
     }
     const cleanEndpoint = endpointValue.replace(/\/$/, '')
-    setIsEndpointLoading(true)
     setSelectedEndpoint(cleanEndpoint)
     setIsEditing(false)
     setIsHovering(false)

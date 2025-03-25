@@ -61,7 +61,7 @@ const Sessions = () => {
   const { loadSession } = useSessionLoader()
   const { loadHistory } = useChatActions()
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
-  const [isSessionsLoading, setIsSessionsLoading] = useState<boolean>(false)
+  const { isSessionsLoading } = usePlaygroundStore()
 
   const handleScroll = () => {
     setIsScrolling(true)
@@ -94,13 +94,8 @@ const Sessions = () => {
 
   useEffect(() => {
     if (!selectedEndpoint || !agentId) return
-    try {
-      setIsSessionsLoading(true)
-      if (!isEndpointLoading) {
-        loadHistory(agentId)
-      }
-    } finally {
-      setIsSessionsLoading(false)
+    if (!isEndpointLoading) {
+      loadHistory(agentId)
     }
   }, [selectedEndpoint, agentId, loadHistory, isEndpointLoading])
 

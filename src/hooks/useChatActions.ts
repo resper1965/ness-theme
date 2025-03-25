@@ -15,6 +15,9 @@ const useChatActions = () => {
   const { chatInputRef } = usePlaygroundStore()
   const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint)
   const setSelectedModel = usePlaygroundStore((state) => state.setSelectedModel)
+  const setIsSessionsLoading = usePlaygroundStore(
+    (state) => state.setIsSessionsLoading
+  )
   const [, setAgentId] = useQueryState('agent')
   const [, setSessionId] = useQueryState('session')
   const setMessages = usePlaygroundStore((state) => state.setMessages)
@@ -74,13 +77,20 @@ const useChatActions = () => {
   const loadHistory = useCallback(
     async (agentId: string) => {
       if (!agentId || !selectedEndpoint) return
-      const history = await getAllPlaygroundSessionsAPI(
-        selectedEndpoint,
-        agentId
-      )
-      setHistoryData(history)
+      try {
+        setIsSessionsLoading(true)
+        const history = await getAllPlaygroundSessionsAPI(
+          selectedEndpoint,
+          agentId
+        )
+        setHistoryData(history)
+      } catch {
+        toast.error('Error loading chat history')
+      } finally {
+        setIsSessionsLoading(false)
+      }
     },
-    [selectedEndpoint, setHistoryData]
+    [selectedEndpoint, setHistoryData, setIsSessionsLoading]
   )
 
   const loadData = useCallback(async () => {
@@ -97,6 +107,8 @@ const useChatActions = () => {
       resetData({ agent: agents?.[0] })
       setAgents(agents)
       return agents
+    } catch {
+      setIsEndpointLoading(false)
     } finally {
       setIsEndpointLoading(false)
     }
