@@ -15,7 +15,8 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
   const [agentId] = useQueryState('agent')
   const { loadSession } = useSessionLoader()
   const [, setSessionId] = useQueryState('session')
-  const { selectedEndpoint, historyData, setHistoryData } = usePlaygroundStore()
+  const { selectedEndpoint, sessionsData, setSessionsData } =
+    usePlaygroundStore()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const { clearChat } = useChatActions()
 
@@ -34,9 +35,9 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
           agentId,
           session_id
         )
-        if (response.status === 200 && historyData) {
-          setHistoryData(
-            historyData.filter((session) => session.session_id !== session_id)
+        if (response.status === 200 && sessionsData) {
+          setSessionsData(
+            sessionsData.filter((session) => session.session_id !== session_id)
           )
           clearChat()
           toast.success('Session deleted')
@@ -54,7 +55,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
   return (
     <>
       <div
-        className="group flex h-11 w-full cursor-pointer items-center justify-between rounded-lg bg-background-secondary px-3 py-2"
+        className="bg-background-secondary group flex h-11 w-full cursor-pointer items-center justify-between rounded-lg px-3 py-2"
         onClick={handleLoadSession}
       >
         <div className="flex flex-col gap-1">

@@ -57,12 +57,12 @@ const Sessions = () => {
     selectedEndpoint,
     isEndpointActive,
     isEndpointLoading,
-    historyData,
+    sessionsData,
     hydrated
   } = usePlaygroundStore()
   const [isScrolling, setIsScrolling] = useState(false)
   const { loadSession } = useSessionLoader()
-  const { loadHistory } = useChatActions()
+  const { getSessions } = useChatActions()
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
   const { isSessionsLoading } = usePlaygroundStore()
 
@@ -98,19 +98,19 @@ const Sessions = () => {
   useEffect(() => {
     if (!selectedEndpoint || !agentId) return
     if (!isEndpointLoading) {
-      loadHistory(agentId)
+      getSessions(agentId)
     }
-  }, [selectedEndpoint, agentId, loadHistory, isEndpointLoading])
+  }, [selectedEndpoint, agentId, getSessions, isEndpointLoading])
 
   const formattedHistory = useMemo(() => {
-    if (!historyData || !Array.isArray(historyData)) return []
+    if (!sessionsData || !Array.isArray(sessionsData)) return []
 
-    return historyData.map((entry) => ({
+    return sessionsData.map((entry) => ({
       ...entry,
       created_at: entry.created_at,
       formatted_time: formatDate(entry.created_at, 'natural')
     }))
-  }, [historyData])
+  }, [sessionsData])
 
   if (isSessionsLoading || isEndpointLoading)
     return (
@@ -132,7 +132,7 @@ const Sessions = () => {
         onMouseLeave={handleScroll}
       >
         {!isEndpointActive ||
-        (!isSessionsLoading && (!historyData || historyData.length === 0)) ? (
+        (!isSessionsLoading && (!sessionsData || sessionsData.length === 0)) ? (
           <SessionBlankState />
         ) : (
           <div className="flex flex-col gap-y-1 pr-1">
