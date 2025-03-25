@@ -58,13 +58,13 @@ const Endpoint = () => {
     setHistoryData,
     setMessages
   } = usePlaygroundStore()
-  const { loadData, loadHistory } = useChatActions()
+  const { loadData } = useChatActions()
   const [isEditing, setIsEditing] = useState(false)
   const [endpointValue, setEndpointValue] = useState('')
   const [isMounted, setIsMounted] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [isRotating, setIsRotating] = useState(false)
-  const [agentId, setAgentId] = useQueryState('agent')
+  const [, setAgentId] = useQueryState('agent')
   const [, setSessionId] = useQueryState('session')
 
   useEffect(() => {
@@ -89,7 +89,6 @@ const Endpoint = () => {
     setAgents([])
     setHistoryData([])
     setMessages([])
-    await loadHistory(agentId ?? '')
   }
 
   const handleCancel = () => {
@@ -108,8 +107,7 @@ const Endpoint = () => {
 
   const handleRefresh = async () => {
     setIsRotating(true)
-    const agents = await loadData()
-    await loadHistory(agentId ?? agents?.[0]?.value ?? '')
+    await loadData()
     setTimeout(() => setIsRotating(false), 500)
   }
 
