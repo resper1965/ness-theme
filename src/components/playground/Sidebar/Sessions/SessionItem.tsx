@@ -7,7 +7,7 @@ import { usePlaygroundStore } from "@/store";
 import { toast } from "sonner";
 import Icon from "@/components/ui/icon";
 import { useState } from "react";
-import SessionHistoryItemDeleteModal from "./SessionHistoryItemDeleteModal";
+import DeleteSessionModal from "./DeleteSessionModal";
 import useChatActions from "@/hooks/useChatActions";
 
 const truncateTitle = (text: string, limit: number) => {
@@ -61,7 +61,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
   return (
     <>
       <div
-        className="flex w-full items-center h-11 justify-between rounded-lg bg-background-secondary hover:bg-background-secondary/50 px-3 cursor-pointer group py-2"
+        className="flex w-full items-center h-11 justify-between rounded-lg bg-background-secondary px-3 cursor-pointer group py-2"
         onClick={handleLoadSession}
       >
         <div className="flex flex-col gap-1">
@@ -70,18 +70,16 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
         <Button
           variant="ghost"
           size="icon"
-          className="transform transition-all duration-200 ease-in-out opacity-0 group-hover:opacity-100 hover:bg-primaryAccent/50"
+          className="transform transition-all duration-200 ease-in-out opacity-0 group-hover:opacity-100"
           onClick={(e) => {
             e.stopPropagation();
             setIsDeleteModalOpen(true);
           }}
         >
-          <div className="flex items-center justify-center">
-            <Icon type="trash" size="xs" />
-          </div>
+          <Icon type="trash" size="xs" />
         </Button>
       </div>
-      <SessionHistoryItemDeleteModal
+      <DeleteSessionModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onDelete={handleDeleteSession}
