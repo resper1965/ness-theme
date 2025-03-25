@@ -2,11 +2,11 @@ import { useCallback } from "react";
 
 import { APIRoutes } from "@/api/routes";
 
-import useChatActions from "@/hooks/playground/useChatActions";
-import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import useChatActions from "@/hooks/useChatActions";
+import { usePlaygroundStore } from "../../store";
 import { RunEvent, type RunResponse } from "@/types/playground";
-import { constructEndpointUrl } from "@/utils/playgroundUtils";
-import useAIResponseStream from "../streaming/useAIResponseStream";
+import { constructEndpointUrl } from "@/lib/constructEndpointUrl";
+import useAIResponseStream from "./useAIResponseStream";
 import { ToolCall } from "@/types/playground";
 import { useQueryState } from "nuqs";
 

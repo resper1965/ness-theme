@@ -1,6 +1,6 @@
 import { type FC } from "react";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 
 import { ICONS } from "./constants";
 import { type IconProps } from "./types";

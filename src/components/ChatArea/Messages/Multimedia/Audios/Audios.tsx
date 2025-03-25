@@ -3,7 +3,7 @@
 import { memo, useMemo } from "react";
 
 import { type AudioData } from "@/types/playground";
-import { decodeBase64Audio } from "@/utils/audio";
+import { decodeBase64Audio } from "@/lib/audio";
 
 /**
  * Renders a single audio item with controls

@@ -5,7 +5,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 
 import type {
   UnorderedListProps,

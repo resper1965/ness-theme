@@ -1,7 +1,7 @@
 "use client";
 
 import { type FC, type JSX } from "react";
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 
 import { HEADING_SIZES } from "./constants";
 import { type HeadingProps } from "./types";

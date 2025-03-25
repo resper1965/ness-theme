@@ -4,15 +4,15 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
-import { getAllPlaygroundSessionsAPI } from "@/api/playground";
-import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import { usePlaygroundStore } from "../../store";
 import { useQueryState } from "nuqs";
 import { SessionItem } from "./SessionItem";
 import SessionBlankState from "./SessionBlankState";
-import useSessionLoader from "@/hooks/playground/useSessionLoader";
+import useSessionLoader from "@/hooks/useSessionLoader";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 import { FC } from "react";
+import useChatActions from "@/hooks/useChatActions";
 
 interface SkeletonListProps {
   skeletonCount: number;
@@ -50,15 +50,11 @@ export const SessionTab = () => {
     history: "push",
   });
   const [sessionId] = useQueryState("session");
-  const {
-    selectedEndpoint,
-    isEndpointActive,
-    isEndpointLoading,
-    historyData,
-    setHistoryData,
-  } = usePlaygroundStore();
+  const { selectedEndpoint, isEndpointActive, isEndpointLoading, historyData } =
+    usePlaygroundStore();
   const [isScrolling, setIsScrolling] = useState(false);
   const { loadSession } = useSessionLoader();
+  const { loadHistory } = useChatActions();
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null);
   const [isSessionsLoading, setIsSessionsLoading] = useState<boolean>(false);
 
@@ -95,16 +91,11 @@ export const SessionTab = () => {
     if (!selectedEndpoint || !agentId) return;
     try {
       setIsSessionsLoading(true);
-      getAllPlaygroundSessionsAPI(selectedEndpoint, agentId).then(
-        (response) => {
-          setHistoryData(response);
-        },
-      );
-    } catch {
+      loadHistory(agentId);
     } finally {
       setIsSessionsLoading(false);
     }
-  }, [selectedEndpoint, agentId, setHistoryData]);
+  }, [selectedEndpoint, agentId, loadHistory]);
 
   const formattedHistory = useMemo(() => {
     if (!historyData || !Array.isArray(historyData)) return [];

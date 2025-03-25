@@ -1,7 +1,7 @@
 import { memo } from "react";
 
 import { type ImageData } from "@/types/playground";
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 
 const Images = ({ images }: { images: ImageData[] }) => (
   <div

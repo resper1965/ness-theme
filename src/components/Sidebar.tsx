@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { AgentSelector } from "@/components/AgentSelector";
-import useChatActions from "@/hooks/playground/useChatActions";
-import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import useChatActions from "@/hooks/useChatActions";
+import { usePlaygroundStore } from "../../store";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
-import { getProviderIcon } from "@/utils/modelProvider";
+import { getProviderIcon } from "@/lib/modelProvider";
 import { SessionTab } from "./SessionTab";
 
 const SidebarHeader = () => (
@@ -47,7 +47,7 @@ const ModelDisplay = ({ model }: { model: string }) => (
 const Endpoint = () => {
   const { selectedEndpoint, isEndpointActive, setSelectedEndpoint } =
     usePlaygroundStore();
-  const { loadData } = useChatActions();
+  const { loadData, loadHistory } = useChatActions();
   const [isEditing, setIsEditing] = useState(false);
   const [endpointValue, setEndpointValue] = useState("");
   const [isMounted, setIsMounted] = useState(false);
@@ -90,7 +90,8 @@ const Endpoint = () => {
 
   const handleRefresh = async () => {
     setIsRotating(true);
-    await loadData();
+    const agents = await loadData();
+    await loadHistory(agents?.[0]?.value ?? "");
     setTimeout(() => setIsRotating(false), 500);
   };
 

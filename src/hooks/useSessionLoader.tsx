@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { getPlaygroundSessionAPI } from "@/api/playground";
-import { usePlaygroundStore } from "@/stores/PlaygroundStore";
+import { usePlaygroundStore } from "../../store";
 import {
   PlaygroundChatMessage,
   ToolCall,

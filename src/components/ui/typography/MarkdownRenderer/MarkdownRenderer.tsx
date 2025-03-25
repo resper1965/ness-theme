@@ -4,7 +4,7 @@ import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 
-import { cn } from "@/utils/cn";
+import { cn } from "@/lib/utils";
 
 import { type MarkdownRendererProps } from "./types";
 import { inlineComponents } from "./inlineStyles";
