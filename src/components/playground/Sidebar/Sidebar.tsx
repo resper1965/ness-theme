@@ -89,7 +89,7 @@ const Endpoint = () => {
     setAgents([])
     setHistoryData([])
     setMessages([])
-    await loadHistory(agentId ?? '')
+    await loadHistory('')
   }
 
   const handleCancel = () => {
@@ -108,8 +108,7 @@ const Endpoint = () => {
 
   const handleRefresh = async () => {
     setIsRotating(true)
-    const agents = await loadData()
-    await loadHistory(agentId ?? agents?.[0]?.value ?? '')
+    await loadData()
     setTimeout(() => setIsRotating(false), 500)
   }
 
