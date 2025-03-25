@@ -50,8 +50,13 @@ const Sessions = () => {
     history: 'push'
   })
   const [sessionId] = useQueryState('session')
-  const { selectedEndpoint, isEndpointActive, isEndpointLoading, historyData } =
-    usePlaygroundStore()
+  const {
+    selectedEndpoint,
+    isEndpointActive,
+    isEndpointLoading,
+    historyData,
+    hydrated
+  } = usePlaygroundStore()
   const [isScrolling, setIsScrolling] = useState(false)
   const { loadSession } = useSessionLoader()
   const { loadHistory } = useChatActions()
@@ -81,11 +86,11 @@ const Sessions = () => {
 
   // Load a session on render if a session id exists in url
   useEffect(() => {
-    if (sessionId && agentId && selectedEndpoint) {
+    if (sessionId && agentId && selectedEndpoint && hydrated) {
       loadSession(sessionId, agentId)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [hydrated])
 
   useEffect(() => {
     if (!selectedEndpoint || !agentId) return
