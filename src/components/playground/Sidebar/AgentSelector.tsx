@@ -31,8 +31,7 @@ export function AgentSelector() {
         if (agent.model.provider) {
           focusChatInput()
         }
-      }
-      else {
+      } else {
         setAgentId(agents[0].value)
       }
     }
