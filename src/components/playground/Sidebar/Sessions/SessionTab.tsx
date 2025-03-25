@@ -91,11 +91,13 @@ const Sessions = () => {
     if (!selectedEndpoint || !agentId) return
     try {
       setIsSessionsLoading(true)
-      loadHistory(agentId)
+      if (!isEndpointLoading) {
+        loadHistory(agentId)
+      }
     } finally {
       setIsSessionsLoading(false)
     }
-  }, [selectedEndpoint, agentId, loadHistory])
+  }, [selectedEndpoint, agentId, loadHistory,isEndpointLoading])
 
   const formattedHistory = useMemo(() => {
     if (!historyData || !Array.isArray(historyData)) return []

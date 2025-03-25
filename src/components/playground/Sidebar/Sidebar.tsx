@@ -49,7 +49,7 @@ const ModelDisplay = ({ model }: { model: string }) => (
 )
 
 const Endpoint = () => {
-  const { selectedEndpoint, isEndpointActive, setSelectedEndpoint } =
+  const { selectedEndpoint, isEndpointActive, setSelectedEndpoint, setIsEndpointLoading } =
     usePlaygroundStore()
   const [, setSelectedAgent] = useQueryState('agent')
   const { loadData, loadHistory } = useChatActions()
@@ -67,13 +67,13 @@ const Endpoint = () => {
   const getStatusColor = (isActive: boolean) =>
     isActive ? 'bg-positive' : 'bg-destructive'
 
-  const handleSave = () => {
+  const handleSave = async() => {
     if (!isValidUrl(endpointValue)) {
       toast.error('Please enter a valid URL')
       return
     }
     const cleanEndpoint = endpointValue.replace(/\/$/, '')
-    setSelectedAgent('')
+    setIsEndpointLoading(true)
     setSelectedEndpoint(cleanEndpoint)
     setIsEditing(false)
     setIsHovering(false)
