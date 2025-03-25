@@ -45,7 +45,7 @@ const ChatInput = () => {
           }
         }}
         className="w-full border border-accent bg-primaryAccent px-4 text-sm text-primary focus:border-accent"
-        disabled={!selectedAgent || isStreaming}
+        disabled={!selectedAgent}
         ref={chatInputRef}
       />
       <Button
