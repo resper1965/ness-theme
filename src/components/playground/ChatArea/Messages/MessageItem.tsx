@@ -1,6 +1,6 @@
 import Icon from "@/components/ui/icon";
 import MarkdownRenderer from "@/components/ui/typography/MarkdownRenderer";
-import { usePlaygroundStore } from "../../../../store";
+import { usePlaygroundStore } from "@/store";
 import type { PlaygroundChatMessage } from "@/types/playground";
 import Videos from "./Multimedia/Videos";
 import Images from "./Multimedia/Images";

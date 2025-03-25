@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { toast } from "sonner";
-import { ChatTextArea } from "./ChatTextArea";
+import { TextArea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { usePlaygroundStore } from "../../../../store";
+import { usePlaygroundStore } from "@/store";
 import useAIChatStreamHandler from "@/hooks/useAIStreamHandler";
 import { useQueryState } from "nuqs";
 import Icon from "@/components/ui/icon";
@@ -34,7 +34,7 @@ const ChatInput = () => {
 
   return (
     <div className="relative mx-auto flex w-full max-w-2xl justify-center items-end gap-x-2 mb-1 font-geist">
-      <ChatTextArea
+      <TextArea
         placeholder={"Ask anything"}
         value={inputMessage}
         onChange={(e) => setInputMessage(e.target.value)}

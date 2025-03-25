@@ -1,7 +1,7 @@
 import type { PlaygroundChatMessage } from "@/types/playground";
 
-import { AgentMessage, UserMessage } from "./Messages";
-import Tooltip from "@/components/common/Tooltip";
+import { AgentMessage, UserMessage } from "./MessageItem";
+import Tooltip from "@/components/ui/Tooltip";
 import { memo } from "react";
 import {
   ToolCallProps,
@@ -152,7 +152,7 @@ export const ToolComponent = memo(({ tools }: ToolCallProps) => (
 
 ToolComponent.displayName = "ToolComponent";
 
-const MessageList = ({ messages }: MessageListProps) => {
+const Messages = ({ messages }: MessageListProps) => {
   if (messages.length === 0) {
     return <ChatBlankState />;
   }
@@ -178,4 +178,4 @@ const MessageList = ({ messages }: MessageListProps) => {
   );
 };
 
-export default MessageList;
+export default Messages;

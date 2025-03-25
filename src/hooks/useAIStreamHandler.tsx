@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { APIRoutes } from "@/api/routes";
 
 import useChatActions from "@/hooks/useChatActions";
-import { usePlaygroundStore } from "../../store";
+import { usePlaygroundStore } from "../store";
 import { RunEvent, type RunResponse } from "@/types/playground";
 import { constructEndpointUrl } from "@/lib/constructEndpointUrl";
 import useAIResponseStream from "./useAIResponseStream";

@@ -6,9 +6,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useStickToBottomContext } from "use-stick-to-bottom";
 
 import { Button } from "@/components/ui/button";
-import Icon from "../ui/icon";
+import Icon from "@/components/ui/icon";
 
-const ScrollToBottomButton: React.FC = () => {
+const ScrollToBottom: React.FC = () => {
   const { isAtBottom, scrollToBottom } = useStickToBottomContext();
 
   return (
@@ -36,4 +36,4 @@ const ScrollToBottomButton: React.FC = () => {
   );
 };
 
-export default ScrollToBottomButton;
+export default ScrollToBottom;
