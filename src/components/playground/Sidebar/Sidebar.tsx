@@ -159,7 +159,8 @@ const Endpoint = () => {
                 >
                   <p className="text-xs font-medium text-muted">
                     {isMounted
-                      ? truncateText(selectedEndpoint, 21) || ENDPOINT_PLACEHOLDER
+                      ? truncateText(selectedEndpoint, 21) ||
+                        ENDPOINT_PLACEHOLDER
                       : 'http://localhost:7777'}
                   </p>
                   <div
