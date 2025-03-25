@@ -26,9 +26,9 @@ const DeleteSessionModal: FC<DeleteSessionModalProps> = ({
   <Dialog open={isOpen} onOpenChange={onClose}>
     <DialogContent className="font-geist">
       <DialogHeader>
-        <DialogTitle>Confirm delete session</DialogTitle>
+        <DialogTitle>Confirm deletion</DialogTitle>
         <DialogDescription>
-          You are permanently deleting this session. This action cannot be
+          This will permanently delete the session. This action cannot be
           undone.
         </DialogDescription>
       </DialogHeader>
