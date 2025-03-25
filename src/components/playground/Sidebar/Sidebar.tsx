@@ -64,7 +64,7 @@ const Endpoint = () => {
   const [isMounted, setIsMounted] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [isRotating, setIsRotating] = useState(false)
-  const [, setAgentId] = useQueryState('agent')
+  const [agentId, setAgentId] = useQueryState('agent')
   const [, setSessionId] = useQueryState('session')
 
   useEffect(() => {
@@ -89,6 +89,7 @@ const Endpoint = () => {
     setAgents([])
     setHistoryData([])
     setMessages([])
+    await loadHistory(agentId ?? '')
   }
 
   const handleCancel = () => {
