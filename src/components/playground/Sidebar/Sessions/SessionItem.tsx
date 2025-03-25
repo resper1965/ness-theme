@@ -60,7 +60,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
         className={cn(
           'group flex h-11 w-full cursor-pointer items-center justify-between rounded-lg px-3 py-2 transition-colors duration-200',
           isSelected
-            ? 'bg-primary/10 cursor-default'
+            ? 'cursor-default bg-primary/10'
             : 'bg-background-secondary hover:bg-background-secondary/80'
         )}
         onClick={handleLoadSession}
