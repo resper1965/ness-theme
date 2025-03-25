@@ -32,6 +32,9 @@ export function AgentSelector() {
           focusChatInput()
         }
       }
+      else {
+        setAgentId(agents[0].value)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [agentId, agents, setSelectedModel])
