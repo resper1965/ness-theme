@@ -12,7 +12,7 @@ A modern chat interface for AI agents built with Next.js, Tailwind CSS, and Type
 - 🧩 **Tool Calls Support**: Visualize agent tool calls and their results
 - 🧠 **Reasoning Steps**: Display agent reasoning process (when available)
 - 📚 **References Support**: Show sources used by the agent
-- 🖼️ **Multi-modality Support**: Handle various content types including images, video, and audio
+- 🖼️ **Multi-modality Support**: Handles various content types including images, video, and audio
 - 🎨 **Customizable UI**: Built with Tailwind CSS for easy styling
 - 🧰 **Built with Modern Stack**: Next.js, TypeScript, shadcn/ui, Framer Motion, and more
 
@@ -20,12 +20,14 @@ A modern chat interface for AI agents built with Next.js, Tailwind CSS, and Type
 
 ### Prerequisites
 
-Before setting up this UI, you may want to have an Agno agent backend running. If you haven't set up the Agno Playground yet, follow the [official guide](https://docs.agno.com/get-started/playground#running-playground-locally) to run the Playground locally.
+Before setting up this UI, you may want to have an Agno playground backend running. If you haven't set up the Agno Playground yet, follow the [official guide](https://docs.agno.com/get-started/playground#running-playground-locally) to run the Playground locally.
 
 ### Installation
 
+### Automatic Installation (Recommended)
+
 ```bash
-pnpm create agent-ui@latest
+npx create agent-ui@latest
 ```
 
 ### Manual Installation
