@@ -11,6 +11,7 @@ import Sessions from './Sessions'
 import { isValidUrl } from '@/lib/utils'
 import { toast } from 'sonner'
 import { useQueryState } from 'nuqs'
+import { truncateText } from '@/lib/utils'
 
 const ENDPOINT_PLACEHOLDER = 'NO ENDPOINT ADDED'
 const SidebarHeader = () => (
@@ -89,9 +90,6 @@ const Endpoint = () => {
     setHistoryData([])
     setMessages([])
   }
-  const truncateText = (text: string, maxLength: number = 20) => {
-    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text
-  }
 
   const handleCancel = () => {
     setEndpointValue(selectedEndpoint)
@@ -149,20 +147,20 @@ const Endpoint = () => {
               {isHovering ? (
                 <motion.div
                   key="endpoint-display-hover"
-                  className="flex w-full items-center justify-center"
+                  className="absolute inset-0 flex items-center justify-center"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <p className="flex items-center gap-2 text-xs font-medium text-primary">
+                  <p className="flex items-center gap-2 whitespace-nowrap text-xs font-medium text-primary">
                     <Icon type="edit" size="xxs" /> EDIT ENDPOINT
                   </p>
                 </motion.div>
               ) : (
                 <motion.div
                   key="endpoint-display"
-                  className="flex w-full items-center justify-between"
+                  className="absolute inset-0 flex items-center justify-between px-3"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -170,11 +168,12 @@ const Endpoint = () => {
                 >
                   <p className="text-xs font-medium text-muted">
                     {isMounted
-                      ? truncateText(selectedEndpoint) || ENDPOINT_PLACEHOLDER
+                      ? truncateText(selectedEndpoint, 21) ||
+                        ENDPOINT_PLACEHOLDER
                       : 'http://localhost:7777'}
                   </p>
                   <div
-                    className={`size-2 rounded-full ${getStatusColor(isEndpointActive)}`}
+                    className={`size-2 shrink-0 rounded-full ${getStatusColor(isEndpointActive)}`}
                   />
                 </motion.div>
               )}
