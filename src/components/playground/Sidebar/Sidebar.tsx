@@ -211,6 +211,7 @@ const Sidebar = () => {
     hydrated
   } = usePlaygroundStore()
   const [isMounted, setIsMounted] = useState(false)
+  const [agentId] = useQueryState('agent')
 
   useEffect(() => {
     setIsMounted(true)
@@ -273,7 +274,10 @@ const Sidebar = () => {
                       Agent
                     </div>
                     <AgentSelector />
-                    {selectedModel && <ModelDisplay model={selectedModel} />}
+
+                    {selectedModel && agentId && (
+                      <ModelDisplay model={selectedModel} />
+                    )}
                   </motion.div>
                 )}
               </>
