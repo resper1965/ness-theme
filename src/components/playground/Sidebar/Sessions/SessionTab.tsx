@@ -61,7 +61,7 @@ const Sessions = () => {
     hydrated
   } = usePlaygroundStore()
   const [isScrolling, setIsScrolling] = useState(false)
-  const { loadSession } = useSessionLoader()
+  const { getSession } = useSessionLoader()
   const { getSessions } = useChatActions()
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
   const { isSessionsLoading } = usePlaygroundStore()
@@ -90,7 +90,7 @@ const Sessions = () => {
   // Load a session on render if a session id exists in url
   useEffect(() => {
     if (sessionId && agentId && selectedEndpoint && hydrated) {
-      loadSession(sessionId, agentId)
+      getSession(sessionId, agentId)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated])

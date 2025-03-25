@@ -23,7 +23,7 @@ const useSessionLoader = () => {
   const setMessages = usePlaygroundStore((state) => state.setMessages)
   const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint)
 
-  const loadSession = useCallback(
+  const getSession = useCallback(
     async (sessionId: string, agentId: string) => {
       if (!sessionId || !agentId || !selectedEndpoint) {
         return null
@@ -118,7 +118,7 @@ const useSessionLoader = () => {
     [selectedEndpoint, setMessages]
   )
 
-  return { loadSession }
+  return { getSession }
 }
 
 export default useSessionLoader

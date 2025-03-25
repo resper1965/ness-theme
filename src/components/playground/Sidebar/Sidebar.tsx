@@ -32,7 +32,7 @@ const NewChatButton = ({
     onClick={onClick}
     disabled={disabled}
     size="lg"
-    className="bg-primary text-background hover:bg-primary/80 h-9 w-full rounded-xl text-xs font-medium"
+    className="h-9 w-full rounded-xl bg-primary text-xs font-medium text-background hover:bg-primary/80"
   >
     <Icon type="plus-icon" size="xs" className="text-background" />
     <span className="uppercase">New Chat</span>
@@ -40,7 +40,7 @@ const NewChatButton = ({
 )
 
 const ModelDisplay = ({ model }: { model: string }) => (
-  <div className="border-primary/15 bg-accent text-muted flex h-9 w-full items-center gap-3 rounded-xl border p-3 text-xs font-medium uppercase">
+  <div className="flex h-9 w-full items-center gap-3 rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase text-muted">
     {(() => {
       const icon = getProviderIcon(model)
       return icon ? <Icon type={icon} className="shrink-0" size="xs" /> : null
@@ -113,7 +113,7 @@ const Endpoint = () => {
 
   return (
     <div className="flex flex-col items-start gap-2">
-      <div className="text-primary text-xs font-medium uppercase">Endpoint</div>
+      <div className="text-xs font-medium uppercase text-primary">Endpoint</div>
       {isEditing ? (
         <div className="flex w-full items-center gap-1">
           <input
@@ -121,7 +121,7 @@ const Endpoint = () => {
             value={endpointValue}
             onChange={(e) => setEndpointValue(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="border-primary/15 bg-accent text-muted flex h-9 w-full items-center text-ellipsis rounded-xl border p-3 text-xs font-medium"
+            className="flex h-9 w-full items-center text-ellipsis rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium text-muted"
             autoFocus
           />
           <Button
@@ -136,7 +136,7 @@ const Endpoint = () => {
       ) : (
         <div className="flex w-full items-center gap-1">
           <motion.div
-            className="border-primary/15 bg-accent relative flex h-9 w-full cursor-pointer items-center justify-between rounded-xl border p-3 uppercase"
+            className="relative flex h-9 w-full cursor-pointer items-center justify-between rounded-xl border border-primary/15 bg-accent p-3 uppercase"
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
             onClick={() => setIsEditing(true)}
@@ -152,7 +152,7 @@ const Endpoint = () => {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <p className="text-primary flex items-center gap-2 whitespace-nowrap text-xs font-medium">
+                  <p className="flex items-center gap-2 whitespace-nowrap text-xs font-medium text-primary">
                     <Icon type="edit" size="xxs" /> EDIT ENDPOINT
                   </p>
                 </motion.div>
@@ -165,7 +165,7 @@ const Endpoint = () => {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <p className="text-muted text-xs font-medium">
+                  <p className="text-xs font-medium text-muted">
                     {isMounted
                       ? truncateText(selectedEndpoint, 21) ||
                         ENDPOINT_PLACEHOLDER
@@ -222,7 +222,7 @@ const Sidebar = () => {
   }
   return (
     <motion.aside
-      className="font-dmmono relative flex h-screen shrink-0 grow-0 flex-col gap-y-3 overflow-hidden px-2 py-3"
+      className="relative flex h-screen shrink-0 grow-0 flex-col gap-y-3 overflow-hidden px-2 py-3 font-dmmono"
       initial={{ width: isCollapsed ? '2.5rem' : '16rem' }}
       animate={{ width: isCollapsed ? '2.5rem' : '16rem' }}
       transition={{
@@ -268,7 +268,7 @@ const Sidebar = () => {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
                   >
-                    <div className="text-primary text-xs font-medium uppercase">
+                    <div className="text-xs font-medium uppercase text-primary">
                       Agent
                     </div>
                     <AgentSelector />
