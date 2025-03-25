@@ -89,7 +89,6 @@ const Endpoint = () => {
     setAgents([])
     setHistoryData([])
     setMessages([])
-    await loadHistory('')
   }
 
   const handleCancel = () => {
