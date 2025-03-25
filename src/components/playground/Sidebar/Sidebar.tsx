@@ -58,7 +58,7 @@ const Endpoint = () => {
     setSessionsData,
     setMessages
   } = usePlaygroundStore()
-  const { loadData } = useChatActions()
+  const { initializePlayground } = useChatActions()
   const [isEditing, setIsEditing] = useState(false)
   const [endpointValue, setEndpointValue] = useState('')
   const [isMounted, setIsMounted] = useState(false)
@@ -107,7 +107,7 @@ const Endpoint = () => {
 
   const handleRefresh = async () => {
     setIsRotating(true)
-    await loadData()
+    await initializePlayground()
     setTimeout(() => setIsRotating(false), 500)
   }
 
@@ -200,7 +200,7 @@ const Endpoint = () => {
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
-  const { clearChat, focusChatInput, loadData } = useChatActions()
+  const { clearChat, focusChatInput, initializePlayground } = useChatActions()
   const {
     messages,
     selectedEndpoint,
@@ -213,8 +213,8 @@ const Sidebar = () => {
 
   useEffect(() => {
     setIsMounted(true)
-    if (hydrated) loadData()
-  }, [selectedEndpoint, loadData, hydrated])
+    if (hydrated) initializePlayground()
+  }, [selectedEndpoint, initializePlayground, hydrated])
 
   const handleNewChat = () => {
     clearChat()

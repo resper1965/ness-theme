@@ -64,7 +64,7 @@ const useChatActions = () => {
     [setMessages]
   )
 
-  const loadData = useCallback(async () => {
+  const initializePlayground = useCallback(async () => {
     setIsEndpointLoading(true)
     try {
       const status = await getStatus()
@@ -103,7 +103,7 @@ const useChatActions = () => {
     addMessage,
     getAgents,
     focusChatInput,
-    loadData
+    initializePlayground
   }
 }
 
