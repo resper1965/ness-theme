@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react'
 import Icon from '@/components/ui/icon'
 import { getProviderIcon } from '@/lib/modelProvider'
 import Sessions from './Sessions'
-import { truncateText } from '@/lib/truncateText'
+import { truncateText } from '@/lib/utils'
 
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">

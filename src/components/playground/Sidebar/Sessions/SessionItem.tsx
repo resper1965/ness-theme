@@ -9,7 +9,7 @@ import Icon from '@/components/ui/icon'
 import { useState } from 'react'
 import DeleteSessionModal from './DeleteSessionModal'
 import useChatActions from '@/hooks/useChatActions'
-import { truncateText } from '@/lib/truncateText'
+import { truncateText } from '@/lib/utils'
 
 export const SessionItem = ({ title, session_id }: SessionEntry) => {
   const [agentId] = useQueryState('agent')
