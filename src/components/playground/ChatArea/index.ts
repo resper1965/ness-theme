@@ -1,4 +1,3 @@
 import ChatArea from './ChatArea'
-import ChatInput from './ChatInput'
 
-export { ChatArea, ChatInput }
+export { ChatArea }

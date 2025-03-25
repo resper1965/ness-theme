@@ -50,8 +50,13 @@ const Sessions = () => {
     history: 'push'
   })
   const [sessionId] = useQueryState('session')
-  const { selectedEndpoint, isEndpointActive, isEndpointLoading, historyData } =
-    usePlaygroundStore()
+  const {
+    selectedEndpoint,
+    isEndpointActive,
+    isEndpointLoading,
+    historyData,
+    hydrated
+  } = usePlaygroundStore()
   const [isScrolling, setIsScrolling] = useState(false)
   const { loadSession } = useSessionLoader()
   const { loadHistory } = useChatActions()
@@ -81,21 +86,23 @@ const Sessions = () => {
 
   // Load a session on render if a session id exists in url
   useEffect(() => {
-    if (sessionId && agentId && selectedEndpoint) {
+    if (sessionId && agentId && selectedEndpoint && hydrated) {
       loadSession(sessionId, agentId)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [hydrated])
 
   useEffect(() => {
     if (!selectedEndpoint || !agentId) return
     try {
       setIsSessionsLoading(true)
-      loadHistory(agentId)
+      if (!isEndpointLoading) {
+        loadHistory(agentId)
+      }
     } finally {
       setIsSessionsLoading(false)
     }
-  }, [selectedEndpoint, agentId, loadHistory])
+  }, [selectedEndpoint, agentId, loadHistory, isEndpointLoading])
 
   const formattedHistory = useMemo(() => {
     if (!historyData || !Array.isArray(historyData)) return []
@@ -118,7 +125,7 @@ const Sessions = () => {
     <div>
       <div className="mb-2 text-xs font-medium uppercase">Sessions</div>
       <div
-        className={`h-[calc(100vh-325px)] overflow-y-auto font-geist transition-all duration-300 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:transition-opacity [&::-webkit-scrollbar]:duration-300 ${isScrolling ? '[&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-background [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:opacity-0' : '[&::-webkit-scrollbar]:opacity-100'}`}
+        className={`h-[calc(100vh-345px)] overflow-y-auto font-geist transition-all duration-300 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:transition-opacity [&::-webkit-scrollbar]:duration-300 ${isScrolling ? '[&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-background [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:opacity-0' : '[&::-webkit-scrollbar]:opacity-100'}`}
         onScroll={handleScroll}
         onMouseOver={() => setIsScrolling(true)}
         onMouseLeave={handleScroll}
@@ -127,7 +134,7 @@ const Sessions = () => {
         (!isSessionsLoading && (!historyData || historyData.length === 0)) ? (
           <SessionBlankState />
         ) : (
-          <div className="flex flex-col gap-y-1 pb-6 pr-1">
+          <div className="flex flex-col gap-y-1 pr-1">
             {formattedHistory.map((entry) => (
               <SessionItem key={entry.session_id} {...entry} />
             ))}
