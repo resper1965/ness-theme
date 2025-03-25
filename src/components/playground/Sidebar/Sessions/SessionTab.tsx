@@ -27,7 +27,10 @@ const SkeletonList: FC<SkeletonListProps> = ({ skeletonCount }) => {
   return skeletons.map((skeleton, index) => (
     <Skeleton
       key={skeleton}
-      className={cn('mx-3 mb-2 h-10', index > 0 && 'bg-background-secondary')}
+      className={cn(
+        'mx-3 mb-1 h-11 rounded-lg px-3 py-2',
+        index > 0 && 'bg-background-secondary'
+      )}
     />
   ))
 }
@@ -116,8 +119,11 @@ const Sessions = () => {
 
   if (isSessionsLoading || isEndpointLoading)
     return (
-      <div className="mt-4 h-[calc(100vh-325px)] overflow-y-auto">
-        <SkeletonList skeletonCount={15} />
+      <div>
+        <div className="mb-2 text-xs font-medium uppercase">Sessions</div>
+        <div className="mt-4 h-[calc(100vh-325px)] w-full overflow-y-auto">
+          <SkeletonList skeletonCount={5} />
+        </div>
       </div>
     )
 
