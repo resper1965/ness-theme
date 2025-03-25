@@ -25,7 +25,7 @@ Before setting up Agent UI, you may want to have an Agno Playground running. If 
 ### Automatic Installation (Recommended)
 
 ```bash
-npx create agent-ui@latest
+npx create-agent-ui@latest
 ```
 
 ### Manual Installation
