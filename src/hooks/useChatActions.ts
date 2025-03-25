@@ -9,6 +9,7 @@ import {
   getPlaygroundStatusAPI,
 } from "@/api/playground";
 import { useQueryState } from "nuqs";
+import { getAllPlaygroundSessionsAPI } from "@/api/playground";
 
 const useChatActions = () => {
   const { chatInputRef } = usePlaygroundStore();
@@ -28,7 +29,7 @@ const useChatActions = () => {
     (state) => state.setIsEndpointLoading,
   );
   const setAgents = usePlaygroundStore((state) => state.setAgents);
-
+  const setHistoryData = usePlaygroundStore((state) => state.setHistoryData);
   const getStatus = useCallback(async () => {
     try {
       const status = await getPlaygroundStatusAPI(selectedEndpoint);
@@ -74,6 +75,18 @@ const useChatActions = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const loadHistory = useCallback(
+    async (agentId: string) => {
+      if (!agentId || !selectedEndpoint) return;
+      const history = await getAllPlaygroundSessionsAPI(
+        selectedEndpoint,
+        agentId,
+      );
+      setHistoryData(history);
+    },
+    [selectedEndpoint, setHistoryData],
+  );
+
   const loadData = useCallback(async () => {
     setIsEndpointLoading(true);
     try {
@@ -106,6 +119,7 @@ const useChatActions = () => {
     getAgents,
     focusChatInput,
     loadData,
+    loadHistory,
   };
 };
 

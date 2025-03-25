@@ -47,7 +47,7 @@ const ModelDisplay = ({ model }: { model: string }) => (
 const Endpoint = () => {
   const { selectedEndpoint, isEndpointActive, setSelectedEndpoint } =
     usePlaygroundStore();
-  const { loadData } = useChatActions();
+  const { loadData, loadHistory } = useChatActions();
   const [isEditing, setIsEditing] = useState(false);
   const [endpointValue, setEndpointValue] = useState("");
   const [isMounted, setIsMounted] = useState(false);
@@ -90,7 +90,8 @@ const Endpoint = () => {
 
   const handleRefresh = async () => {
     setIsRotating(true);
-    await loadData();
+    const agents = await loadData();
+    await loadHistory(agents?.[0]?.value ?? "");
     setTimeout(() => setIsRotating(false), 500);
   };
 
