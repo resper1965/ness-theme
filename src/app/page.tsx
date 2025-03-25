@@ -1,7 +1,6 @@
 "use client";
-import Sidebar from "@/components/Sidebar";
-import ChatArea from "@/components/ChatArea/ChatArea";
-import ChatInput from "@/components/ChatArea/ChatInput/ChatInput";
+import Sidebar from "@/components/playground/Sidebar/Sidebar";
+import { ChatArea, ChatInput } from "@/components/playground/ChatArea";
 import { Suspense } from "react";
 
 export default function Home() {

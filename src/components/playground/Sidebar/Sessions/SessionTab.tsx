@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 
-import { usePlaygroundStore } from "../../store";
+import { usePlaygroundStore } from "@/store";
 import { useQueryState } from "nuqs";
 import { SessionItem } from "./SessionItem";
 import SessionBlankState from "./SessionBlankState";
@@ -44,7 +44,7 @@ const formatDate = (
     : date.format("YYYY-MM-DD HH:mm:ss");
 };
 
-export const SessionTab = () => {
+const Sessions = () => {
   const [agentId] = useQueryState("agent", {
     parse: (value) => value || undefined,
     history: "push",
@@ -138,3 +138,5 @@ export const SessionTab = () => {
     </div>
   );
 };
+
+export default Sessions;

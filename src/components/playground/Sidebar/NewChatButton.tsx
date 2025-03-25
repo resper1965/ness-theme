@@ -1,8 +1,9 @@
 "use client";
-import { Button } from "../ui/button";
-import Icon from "../ui/icon";
+
+import { Button } from "@/components/ui/button";
+import Icon from "@/components/ui/icon";
 import useChatActions from "@/hooks/useChatActions";
-import { usePlaygroundStore } from "../../../store";
+import { usePlaygroundStore } from "@/store";
 
 function NewChatButton() {
   const { clearChat } = useChatActions();

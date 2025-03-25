@@ -1,11 +1,11 @@
 import { useQueryState } from "nuqs";
 import { SessionEntry } from "@/types/playground";
-import { Button } from "./ui/button";
+import { Button } from "../../../ui/button";
 import useSessionLoader from "@/hooks/useSessionLoader";
 import { deletePlaygroundSessionAPI } from "@/api/playground";
-import { usePlaygroundStore } from "../../store";
+import { usePlaygroundStore } from "@/store";
 import { toast } from "sonner";
-import Icon from "./ui/icon";
+import Icon from "@/components/ui/icon";
 import { useState } from "react";
 import SessionHistoryItemDeleteModal from "./SessionHistoryItemDeleteModal";
 import useChatActions from "@/hooks/useChatActions";

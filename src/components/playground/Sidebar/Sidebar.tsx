@@ -1,13 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { AgentSelector } from "@/components/AgentSelector";
+import { AgentSelector } from "@/components/playground/Sidebar/AgentSelector";
 import useChatActions from "@/hooks/useChatActions";
-import { usePlaygroundStore } from "../../store";
+import { usePlaygroundStore } from "@/store";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Icon from "@/components/ui/icon";
 import { getProviderIcon } from "@/lib/modelProvider";
-import { SessionTab } from "./SessionTab";
+import Sessions from "./Sessions";
 
 const SidebarHeader = () => (
   <div className="flex items-center gap-2">
@@ -181,7 +181,7 @@ const Endpoint = () => {
   );
 };
 
-export default function Sidebar() {
+const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { clearChat, focusChatInput, loadData } = useChatActions();
   const { messages, selectedEndpoint, isEndpointActive, selectedModel } =
@@ -256,10 +256,12 @@ export default function Sidebar() {
                 )}
               </>
             )}
-            <SessionTab />
+            <Sessions />
           </motion.div>
         )}
       </AnimatePresence>
     </motion.aside>
   );
-}
+};
+
+export default Sidebar;

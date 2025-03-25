@@ -8,7 +8,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { usePlaygroundStore } from "../../store";
+import { usePlaygroundStore } from "@/store";
 import { useQueryState } from "nuqs";
 import Icon from "@/components/ui/icon";
 import { useEffect } from "react";

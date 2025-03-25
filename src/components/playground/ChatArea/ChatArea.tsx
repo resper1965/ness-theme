@@ -1,8 +1,8 @@
 "use client";
 
-import { usePlaygroundStore } from "../../../store";
-import MessageList from "./Messages/MessageList";
-import ScrollToBottomButton from "@/components/ChatArea/ScrollToBottom";
+import { usePlaygroundStore } from "@/store";
+import MessageList from "./Messages/Messages";
+import ScrollToBottom from "@/components/playground/ChatArea/ScrollToBottom";
 import { StickToBottom } from "use-stick-to-bottom";
 
 const ChatArea = () => {
@@ -20,7 +20,7 @@ const ChatArea = () => {
           <MessageList messages={messages} />
         </div>
       </StickToBottom.Content>
-      <ScrollToBottomButton />
+      <ScrollToBottom />
     </StickToBottom>
   );
 };
