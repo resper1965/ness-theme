@@ -90,6 +90,7 @@ const useAIChatStreamHandler = () => {
         );
 
         formData.append("stream", "true");
+        formData.append("session_id", newSessionId ?? "");
 
         await streamResponse({
           apiUrl: playgroundRunUrl,
