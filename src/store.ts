@@ -57,6 +57,8 @@ interface PlaygroundStore {
       | SessionEntry[]
       | ((prevHistory: SessionEntry[] | null) => SessionEntry[] | null)
   ) => void
+  isSessionsLoading: boolean
+  setIsSessionsLoading: (isSessionsLoading: boolean) => void
 }
 
 export const usePlaygroundStore = create<PlaygroundStore>()(
@@ -101,7 +103,10 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
         })),
 
       selectedModel: '',
-      setSelectedModel: (selectedModel) => set(() => ({ selectedModel }))
+      setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
+      isSessionsLoading: false,
+      setIsSessionsLoading: (isSessionsLoading) =>
+        set(() => ({ isSessionsLoading }))
     }),
     {
       name: 'endpoint-storage',

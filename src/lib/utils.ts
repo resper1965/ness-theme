@@ -14,13 +14,19 @@ export const truncateText = (text: string, limit: number) => {
 
 export const isValidUrl = (url: string): boolean => {
   try {
-    const parsed = new URL(url)
+    const pattern = new RegExp(
+      '^https?:\\/\\/' +
+        '((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|' +
+        'localhost|' +
+        '\\d{1,3}(\\.\\d{1,3}){3})' +
+        '(\\:\\d+)?' +
+        '(\\/[-a-zA-Z\\d%@_.~+&:]*)*' +
+        '(\\?[;&a-zA-Z\\d%@_.,~+&:=-]*)?' +
+        '(\\#[-a-zA-Z\\d_]*)?$',
+      'i'
+    )
 
-    const isHttp = parsed.protocol === 'http:' || parsed.protocol === 'https:'
-
-    const hasHost = !!parsed.hostname
-
-    return isHttp && hasHost
+    return pattern.test(url.trim())
   } catch {
     return false
   }

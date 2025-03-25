@@ -14,8 +14,9 @@ import { getAllPlaygroundSessionsAPI } from '@/api/playground'
 const useChatActions = () => {
   const { chatInputRef } = usePlaygroundStore()
   const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint)
-  const setSelectedModel = usePlaygroundStore((state) => state.setSelectedModel)
-  const [, setAgentId] = useQueryState('agent')
+  const setIsSessionsLoading = usePlaygroundStore(
+    (state) => state.setIsSessionsLoading
+  )
   const [, setSessionId] = useQueryState('session')
   const setMessages = usePlaygroundStore((state) => state.setMessages)
   const setIsEndpointActive = usePlaygroundStore(
@@ -26,6 +27,9 @@ const useChatActions = () => {
   )
   const setAgents = usePlaygroundStore((state) => state.setAgents)
   const setHistoryData = usePlaygroundStore((state) => state.setHistoryData)
+  const setSelectedModel = usePlaygroundStore((state) => state.setSelectedModel)
+  const [agentId, setAgentId] = useQueryState('agent')
+
   const getStatus = useCallback(async () => {
     try {
       const status = await getPlaygroundStatusAPI(selectedEndpoint)
@@ -65,22 +69,23 @@ const useChatActions = () => {
     [setMessages]
   )
 
-  const resetData = useCallback(({ agent }: { agent: ComboboxAgent }) => {
-    if (!agent) setSelectedModel('')
-    setAgentId(agent?.value ?? null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const loadHistory = useCallback(
     async (agentId: string) => {
       if (!agentId || !selectedEndpoint) return
-      const history = await getAllPlaygroundSessionsAPI(
-        selectedEndpoint,
-        agentId
-      )
-      setHistoryData(history)
+      try {
+        setIsSessionsLoading(true)
+        const history = await getAllPlaygroundSessionsAPI(
+          selectedEndpoint,
+          agentId
+        )
+        setHistoryData(history)
+      } catch {
+        toast.error('Error loading chat history')
+      } finally {
+        setIsSessionsLoading(false)
+      }
     },
-    [selectedEndpoint, setHistoryData]
+    [selectedEndpoint, setHistoryData, setIsSessionsLoading]
   )
 
   const loadData = useCallback(async () => {
@@ -91,12 +96,18 @@ const useChatActions = () => {
       if (status === 200) {
         setIsEndpointActive(true)
         agents = await getAgents()
+        if (agents.length > 0 && !agentId) {
+          const firstAgent = agents[0]
+          setAgentId(firstAgent.value)
+          setSelectedModel(firstAgent.model.provider || '')
+        }
       } else {
         setIsEndpointActive(false)
       }
-      resetData({ agent: agents?.[0] })
       setAgents(agents)
       return agents
+    } catch {
+      setIsEndpointLoading(false)
     } finally {
       setIsEndpointLoading(false)
     }
@@ -106,7 +117,9 @@ const useChatActions = () => {
     setIsEndpointActive,
     setIsEndpointLoading,
     setAgents,
-    resetData
+    setAgentId,
+    setSelectedModel,
+    agentId
   ])
 
   return {

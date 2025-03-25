@@ -10,6 +10,7 @@ import { getProviderIcon } from '@/lib/modelProvider'
 import Sessions from './Sessions'
 import { isValidUrl } from '@/lib/utils'
 import { toast } from 'sonner'
+import { useQueryState } from 'nuqs'
 import { truncateText } from '@/lib/utils'
 
 const ENDPOINT_PLACEHOLDER = 'NO ENDPOINT ADDED'
@@ -53,14 +54,18 @@ const Endpoint = () => {
     selectedEndpoint,
     isEndpointActive,
     setSelectedEndpoint,
-    setIsEndpointLoading
+    setAgents,
+    setHistoryData,
+    setMessages
   } = usePlaygroundStore()
-  const { loadData, loadHistory } = useChatActions()
+  const { loadData } = useChatActions()
   const [isEditing, setIsEditing] = useState(false)
   const [endpointValue, setEndpointValue] = useState('')
   const [isMounted, setIsMounted] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [isRotating, setIsRotating] = useState(false)
+  const [, setAgentId] = useQueryState('agent')
+  const [, setSessionId] = useQueryState('session')
 
   useEffect(() => {
     setEndpointValue(selectedEndpoint)
@@ -76,10 +81,14 @@ const Endpoint = () => {
       return
     }
     const cleanEndpoint = endpointValue.replace(/\/$/, '')
-    setIsEndpointLoading(true)
     setSelectedEndpoint(cleanEndpoint)
+    setAgentId(null)
+    setSessionId(null)
     setIsEditing(false)
     setIsHovering(false)
+    setAgents([])
+    setHistoryData([])
+    setMessages([])
   }
 
   const handleCancel = () => {
@@ -98,8 +107,7 @@ const Endpoint = () => {
 
   const handleRefresh = async () => {
     setIsRotating(true)
-    const agents = await loadData()
-    await loadHistory(agents?.[0]?.value ?? '')
+    await loadData()
     setTimeout(() => setIsRotating(false), 500)
   }
 
@@ -201,6 +209,7 @@ const Sidebar = () => {
     hydrated
   } = usePlaygroundStore()
   const [isMounted, setIsMounted] = useState(false)
+  const [agentId] = useQueryState('agent')
 
   useEffect(() => {
     setIsMounted(true)
@@ -263,7 +272,10 @@ const Sidebar = () => {
                       Agent
                     </div>
                     <AgentSelector />
-                    {selectedModel && <ModelDisplay model={selectedModel} />}
+
+                    {selectedModel && agentId && (
+                      <ModelDisplay model={selectedModel} />
+                    )}
                   </motion.div>
                 )}
               </>

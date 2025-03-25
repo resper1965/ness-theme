@@ -31,6 +31,8 @@ export function AgentSelector() {
         if (agent.model.provider) {
           focusChatInput()
         }
+      } else {
+        setAgentId(agents[0].value)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
