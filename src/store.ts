@@ -111,9 +111,7 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHydrated?.()
-      },
+      }
     }
-    
   )
-  
 )
