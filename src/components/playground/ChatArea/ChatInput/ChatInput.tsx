@@ -39,13 +39,13 @@ const ChatInput = () => {
         value={inputMessage}
         onChange={(e) => setInputMessage(e.target.value)}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
+          if (e.key === 'Enter' && !e.shiftKey && !isStreaming) {
             e.preventDefault()
             handleSubmit()
           }
         }}
         className="w-full border border-accent bg-primaryAccent px-4 text-sm text-primary focus:border-accent"
-        disabled={!selectedAgent || isStreaming}
+        disabled={!selectedAgent}
         ref={chatInputRef}
       />
       <Button
