@@ -9,9 +9,10 @@ import { useQueryState } from 'nuqs'
 import SessionItem from './SessionItem'
 import SessionBlankState from './SessionBlankState'
 import useSessionLoader from '@/hooks/useSessionLoader'
-import { Skeleton } from '@/components/ui/skeleton'
+
 import { cn } from '@/lib/utils'
 import { FC } from 'react'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface SkeletonListProps {
   skeletonCount: number
@@ -27,7 +28,7 @@ const SkeletonList: FC<SkeletonListProps> = ({ skeletonCount }) => {
     <Skeleton
       key={skeleton}
       className={cn(
-        'mx-3 mb-1 h-11 rounded-lg px-3 py-2',
+        'mb-1 h-11 rounded-lg px-3 py-2',
         index > 0 && 'bg-background-secondary'
       )}
     />

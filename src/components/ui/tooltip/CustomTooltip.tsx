@@ -5,9 +5,9 @@ import {
   Tooltip as BaseTooltip,
   TooltipContent,
   TooltipTrigger
-} from '@/components/ui/Tooltip/tooltip'
+} from '@/components/ui/tooltip/tooltip'
 
-import type { TooltipProps } from '@/components/ui/Tooltip/types'
+import type { TooltipProps } from '@/components/ui/tooltip/types'
 
 const Tooltip: FC<TooltipProps> = ({
   className,
