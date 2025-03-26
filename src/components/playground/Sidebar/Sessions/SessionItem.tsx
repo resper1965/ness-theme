@@ -9,9 +9,18 @@ import Icon from '@/components/ui/icon'
 import { useState } from 'react'
 import DeleteSessionModal from './DeleteSessionModal'
 import useChatActions from '@/hooks/useChatActions'
-import { truncateText } from '@/lib/utils'
+import { truncateText, cn } from '@/lib/utils'
 
-export const SessionItem = ({ title, session_id }: SessionEntry) => {
+type SessionItemProps = SessionEntry & {
+  isSelected: boolean
+  onSessionClick: () => void
+}
+const SessionItem = ({
+  title,
+  session_id,
+  isSelected,
+  onSessionClick
+}: SessionItemProps) => {
   const [agentId] = useQueryState('agent')
   const { getSession } = useSessionLoader()
   const [, setSessionId] = useQueryState('session')
@@ -22,6 +31,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
 
   const handleGetSession = async () => {
     if (agentId) {
+      onSessionClick()
       await getSession(session_id, agentId)
       setSessionId(session_id)
     }
@@ -51,15 +61,23 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
       }
     }
   }
-
   return (
     <>
       <div
-        className="group flex h-11 w-full cursor-pointer items-center justify-between rounded-lg bg-background-secondary px-3 py-2"
+        className={cn(
+          'group flex h-11 w-full cursor-pointer items-center justify-between rounded-lg px-3 py-2 transition-colors duration-200',
+          isSelected
+            ? 'cursor-default bg-primary/10'
+            : 'bg-background-secondary hover:bg-background-secondary/80'
+        )}
         onClick={handleGetSession}
       >
         <div className="flex flex-col gap-1">
-          <h4 className="text-sm font-medium">{truncateText(title, 20)}</h4>
+          <h4
+            className={cn('text-sm font-medium', isSelected && 'text-primary')}
+          >
+            {truncateText(title, 20)}
+          </h4>
         </div>
         <Button
           variant="ghost"
@@ -82,3 +100,5 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
     </>
   )
 }
+
+export default SessionItem

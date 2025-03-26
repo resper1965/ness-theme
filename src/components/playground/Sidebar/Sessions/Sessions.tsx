@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect, useMemo, useState, useRef } from 'react'
+import { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 
 import { usePlaygroundStore } from '@/store'
 import { useQueryState } from 'nuqs'
-import { SessionItem } from './SessionItem'
+import SessionItem from './SessionItem'
 import SessionBlankState from './SessionBlankState'
 import useSessionLoader from '@/hooks/useSessionLoader'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -60,6 +60,9 @@ const Sessions = () => {
     hydrated
   } = usePlaygroundStore()
   const [isScrolling, setIsScrolling] = useState(false)
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null
+  )
   const { getSession, getSessions } = useSessionLoader()
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
   const { isSessionsLoading } = usePlaygroundStore()
@@ -100,6 +103,12 @@ const Sessions = () => {
     }
   }, [selectedEndpoint, agentId, getSessions, isEndpointLoading])
 
+  useEffect(() => {
+    if (sessionId) {
+      setSelectedSessionId(sessionId)
+    }
+  }, [sessionId])
+
   const formattedSessionsData = useMemo(() => {
     if (!sessionsData || !Array.isArray(sessionsData)) return []
 
@@ -110,6 +119,11 @@ const Sessions = () => {
     }))
   }, [sessionsData])
 
+  const handleSessionClick = useCallback(
+    (id: string) => () => setSelectedSessionId(id),
+    []
+  )
+
   if (isSessionsLoading || isEndpointLoading)
     return (
       <div>
@@ -119,7 +133,6 @@ const Sessions = () => {
         </div>
       </div>
     )
-
   return (
     <div>
       <div className="mb-2 text-xs font-medium uppercase">Sessions</div>
@@ -135,7 +148,12 @@ const Sessions = () => {
         ) : (
           <div className="flex flex-col gap-y-1 pr-1">
             {formattedSessionsData.map((entry) => (
-              <SessionItem key={entry.session_id} {...entry} />
+              <SessionItem
+                key={entry.session_id}
+                {...entry}
+                isSelected={selectedSessionId === entry.session_id}
+                onSessionClick={handleSessionClick(entry.session_id)}
+              />
             ))}
           </div>
         )}

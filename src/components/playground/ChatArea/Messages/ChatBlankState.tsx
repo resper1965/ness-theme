@@ -61,7 +61,7 @@ const ActionButton = ({ href, variant, text }: ActionButtonProps) => {
   )
 }
 
-export const ChatBlankState = () => {
+const ChatBlankState = () => {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null)
 
   // Animation variants for the icon
@@ -195,3 +195,5 @@ export const ChatBlankState = () => {
     </section>
   )
 }
+
+export default ChatBlankState

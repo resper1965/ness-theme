@@ -1,3 +1,3 @@
-import Sessions from './SessionTab'
+import Sessions from './Sessions'
 
 export default Sessions
