@@ -7,8 +7,7 @@ import { IconType } from '@/components/ui/icon/types'
 import React, { useState } from 'react'
 
 const EXTERNAL_LINKS = {
-  documentation:
-    'https://docs.agno.com/introduction/playground',
+  documentation: 'https://docs.agno.com/introduction/playground',
   playground: 'https://app.agno.com/playground/chat',
   agno: 'https://agno.com'
 }
