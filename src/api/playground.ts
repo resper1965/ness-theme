@@ -19,7 +19,8 @@ export const getPlaygroundAgentsAPI = async (
     const agents: ComboboxAgent[] = data.map((item: Agent) => ({
       value: item.agent_id || '',
       label: item.name || '',
-      model: item.model || ''
+      model: item.model || '',
+      storage: item.storage || false
     }))
     return agents
   } catch {
@@ -46,6 +47,13 @@ export const getAllPlaygroundSessionsAPI = async (
         method: 'GET'
       }
     )
+    if (!response.ok) {
+      if (response.status === 404) {
+        // Return empty array when storage is not enabled
+        return []
+      }
+      throw new Error(`Failed to fetch sessions: ${response.statusText}`)
+    }
     return response.json()
   } catch {
     return []

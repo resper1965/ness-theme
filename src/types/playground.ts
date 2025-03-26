@@ -66,6 +66,7 @@ export interface Agent {
   name: string
   description: string
   model: Model
+  storage?: boolean
 }
 
 interface MessageContext {
@@ -160,6 +161,7 @@ export interface ComboboxAgent {
   model: {
     provider: string
   }
+  storage?: boolean
 }
 export interface ImageData {
   revised_prompt: string

@@ -12,6 +12,7 @@ interface Agent {
   model: {
     provider: string
   }
+  storage?: boolean
 }
 
 interface PlaygroundStore {
@@ -41,14 +42,13 @@ interface PlaygroundStore {
       | PlaygroundChatMessage[]
       | ((prevMessages: PlaygroundChatMessage[]) => PlaygroundChatMessage[])
   ) => void
-
+  hasStorage: boolean
+  setHasStorage: (hasStorage: boolean) => void
   chatInputRef: React.RefObject<HTMLTextAreaElement | null>
   selectedEndpoint: string
   setSelectedEndpoint: (selectedEndpoint: string) => void
-
   agents: Agent[]
   setAgents: (agents: Agent[]) => void
-
   selectedModel: string
   setSelectedModel: (model: string) => void
   sessionsData: SessionEntry[] | null
@@ -85,14 +85,16 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
           messages:
             typeof messages === 'function' ? messages(state.messages) : messages
         })),
-
+      hasStorage: false,
+      setHasStorage: (hasStorage) => set(() => ({ hasStorage })),
       chatInputRef: { current: null },
       selectedEndpoint: 'http://localhost:7777',
       setSelectedEndpoint: (selectedEndpoint) =>
         set(() => ({ selectedEndpoint })),
-
       agents: [],
       setAgents: (agents) => set({ agents }),
+      selectedModel: '',
+      setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
       sessionsData: null,
       setSessionsData: (sessionsData) =>
         set((state) => ({
@@ -101,9 +103,6 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
               ? sessionsData(state.sessionsData)
               : sessionsData
         })),
-
-      selectedModel: '',
-      setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
       isSessionsLoading: false,
       setIsSessionsLoading: (isSessionsLoading) =>
         set(() => ({ isSessionsLoading }))

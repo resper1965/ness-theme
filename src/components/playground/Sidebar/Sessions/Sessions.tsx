@@ -58,7 +58,9 @@ const Sessions = () => {
     isEndpointActive,
     isEndpointLoading,
     sessionsData,
-    hydrated
+    hydrated,
+    hasStorage,
+    setSessionsData
   } = usePlaygroundStore()
   const [isScrolling, setIsScrolling] = useState(false)
   const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
@@ -98,11 +100,22 @@ const Sessions = () => {
   }, [hydrated])
 
   useEffect(() => {
-    if (!selectedEndpoint || !agentId) return
+    if (!selectedEndpoint || !agentId || !hasStorage) {
+      setSessionsData(() => null)
+      return
+    }
     if (!isEndpointLoading) {
+      setSessionsData(() => null)
       getSessions(agentId)
     }
-  }, [selectedEndpoint, agentId, getSessions, isEndpointLoading])
+  }, [
+    selectedEndpoint,
+    agentId,
+    getSessions,
+    isEndpointLoading,
+    hasStorage,
+    setSessionsData
+  ])
 
   useEffect(() => {
     if (sessionId) {
@@ -144,6 +157,7 @@ const Sessions = () => {
         onMouseLeave={handleScroll}
       >
         {!isEndpointActive ||
+        !hasStorage ||
         (!isSessionsLoading && (!sessionsData || sessionsData.length === 0)) ? (
           <SessionBlankState />
         ) : (

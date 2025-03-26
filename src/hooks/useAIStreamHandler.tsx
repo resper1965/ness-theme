@@ -25,6 +25,7 @@ const useAIChatStreamHandler = () => {
   )
   const setIsStreaming = usePlaygroundStore((state) => state.setIsStreaming)
   const setSessionsData = usePlaygroundStore((state) => state.setSessionsData)
+  const hasStorage = usePlaygroundStore((state) => state.hasStorage)
   const { streamResponse } = useAIResponseStream()
 
   const updateMessagesWithErrorState = useCallback(() => {
@@ -207,7 +208,7 @@ const useAIChatStreamHandler = () => {
             setStreamingErrorMessage(error.message)
           },
           onComplete: () => {
-            if (newSessionId && newSessionId !== sessionId) {
+            if (newSessionId && newSessionId !== sessionId && hasStorage) {
               const placeHolderSessionData = {
                 session_id: newSessionId,
                 title: formData.get('message') as string,
@@ -242,7 +243,8 @@ const useAIChatStreamHandler = () => {
       focusChatInput,
       setSessionsData,
       sessionId,
-      setSessionId
+      setSessionId,
+      hasStorage
     ]
   )
 
