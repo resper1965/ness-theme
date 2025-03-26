@@ -36,13 +36,13 @@ const useSessionLoader = () => {
       if (!agentId || !selectedEndpoint) return
       try {
         setIsSessionsLoading(true)
-        const history = await getAllPlaygroundSessionsAPI(
+        const sessions = await getAllPlaygroundSessionsAPI(
           selectedEndpoint,
           agentId
         )
-        setSessionsData(history)
+        setSessionsData(sessions)
       } catch {
-        toast.error('Error loading chat history')
+        toast.error('Error loading sessions')
       } finally {
         setIsSessionsLoading(false)
       }
@@ -64,10 +64,10 @@ const useSessionLoader = () => {
         )) as SessionResponse
 
         if (response && response.memory) {
-          const chatHistory = response.memory.runs ?? response.memory.chats
+          const sessionHistory = response.memory.runs ?? response.memory.chats
 
-          if (chatHistory && Array.isArray(chatHistory)) {
-            const messagesForPlayground = chatHistory.flatMap((run) => {
+          if (sessionHistory && Array.isArray(sessionHistory)) {
+            const messagesForPlayground = sessionHistory.flatMap((run) => {
               const filteredMessages: PlaygroundChatMessage[] = []
 
               if (run.message) {

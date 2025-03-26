@@ -100,7 +100,7 @@ const Sessions = () => {
     }
   }, [selectedEndpoint, agentId, getSessions, isEndpointLoading])
 
-  const formattedHistory = useMemo(() => {
+  const formattedSessionsData = useMemo(() => {
     if (!sessionsData || !Array.isArray(sessionsData)) return []
 
     return sessionsData.map((entry) => ({
@@ -134,7 +134,7 @@ const Sessions = () => {
           <SessionBlankState />
         ) : (
           <div className="flex flex-col gap-y-1 pr-1">
-            {formattedHistory.map((entry) => (
+            {formattedSessionsData.map((entry) => (
               <SessionItem key={entry.session_id} {...entry} />
             ))}
           </div>
