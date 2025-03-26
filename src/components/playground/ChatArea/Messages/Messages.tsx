@@ -11,7 +11,7 @@ import {
   Reference
 } from '@/types/playground'
 import React, { type FC } from 'react'
-import { ChatBlankState } from './ChatBlankState'
+import ChatBlankState from './ChatBlankState'
 import Icon from '@/components/ui/icon'
 
 interface MessageListProps {
@@ -144,14 +144,12 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
   </div>
 )
 
-export const ToolComponent = memo(({ tools }: ToolCallProps) => (
+const ToolComponent = memo(({ tools }: ToolCallProps) => (
   <div className="cursor-default rounded-full bg-accent px-2 py-1.5 text-xs">
     <p className="font-dmmono uppercase text-primary/80">{tools.tool_name}</p>
   </div>
 ))
-
 ToolComponent.displayName = 'ToolComponent'
-
 const Messages = ({ messages }: MessageListProps) => {
   if (messages.length === 0) {
     return <ChatBlankState />

@@ -1,18 +1,17 @@
 'use client'
 
-import { useEffect, useMemo, useState, useRef } from 'react'
+import { useEffect, useMemo, useState, useRef, useCallback } from 'react'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 
 import { usePlaygroundStore } from '@/store'
 import { useQueryState } from 'nuqs'
-import { SessionItem } from './SessionItem'
+import SessionItem from './SessionItem'
 import SessionBlankState from './SessionBlankState'
 import useSessionLoader from '@/hooks/useSessionLoader'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/lib/utils'
 import { FC } from 'react'
-import useChatActions from '@/hooks/useChatActions'
 
 interface SkeletonListProps {
   skeletonCount: number
@@ -57,12 +56,14 @@ const Sessions = () => {
     selectedEndpoint,
     isEndpointActive,
     isEndpointLoading,
-    historyData,
+    sessionsData,
     hydrated
   } = usePlaygroundStore()
   const [isScrolling, setIsScrolling] = useState(false)
-  const { loadSession } = useSessionLoader()
-  const { loadHistory } = useChatActions()
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null
+  )
+  const { getSession, getSessions } = useSessionLoader()
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
   const { isSessionsLoading } = usePlaygroundStore()
 
@@ -90,7 +91,7 @@ const Sessions = () => {
   // Load a session on render if a session id exists in url
   useEffect(() => {
     if (sessionId && agentId && selectedEndpoint && hydrated) {
-      loadSession(sessionId, agentId)
+      getSession(sessionId, agentId)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated])
@@ -98,19 +99,30 @@ const Sessions = () => {
   useEffect(() => {
     if (!selectedEndpoint || !agentId) return
     if (!isEndpointLoading) {
-      loadHistory(agentId)
+      getSessions(agentId)
     }
-  }, [selectedEndpoint, agentId, loadHistory, isEndpointLoading])
+  }, [selectedEndpoint, agentId, getSessions, isEndpointLoading])
 
-  const formattedHistory = useMemo(() => {
-    if (!historyData || !Array.isArray(historyData)) return []
+  useEffect(() => {
+    if (sessionId) {
+      setSelectedSessionId(sessionId)
+    }
+  }, [sessionId])
 
-    return historyData.map((entry) => ({
+  const formattedSessionsData = useMemo(() => {
+    if (!sessionsData || !Array.isArray(sessionsData)) return []
+
+    return sessionsData.map((entry) => ({
       ...entry,
       created_at: entry.created_at,
       formatted_time: formatDate(entry.created_at, 'natural')
     }))
-  }, [historyData])
+  }, [sessionsData])
+
+  const handleSessionClick = useCallback(
+    (id: string) => () => setSelectedSessionId(id),
+    []
+  )
 
   if (isSessionsLoading || isEndpointLoading)
     return (
@@ -121,7 +133,7 @@ const Sessions = () => {
         </div>
       </div>
     )
-
+  console.log('in sessions tab')
   return (
     <div>
       <div className="mb-2 text-xs font-medium uppercase">Sessions</div>
@@ -132,12 +144,17 @@ const Sessions = () => {
         onMouseLeave={handleScroll}
       >
         {!isEndpointActive ||
-        (!isSessionsLoading && (!historyData || historyData.length === 0)) ? (
+        (!isSessionsLoading && (!sessionsData || sessionsData.length === 0)) ? (
           <SessionBlankState />
         ) : (
           <div className="flex flex-col gap-y-1 pr-1">
-            {formattedHistory.map((entry) => (
-              <SessionItem key={entry.session_id} {...entry} />
+            {formattedSessionsData.map((entry) => (
+              <SessionItem
+                key={entry.session_id}
+                {...entry}
+                isSelected={selectedSessionId === entry.session_id}
+                onSessionClick={handleSessionClick(entry.session_id)}
+              />
             ))}
           </div>
         )}

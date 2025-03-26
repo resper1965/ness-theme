@@ -11,20 +11,28 @@ import DeleteSessionModal from './DeleteSessionModal'
 import useChatActions from '@/hooks/useChatActions'
 import { truncateText, cn } from '@/lib/utils'
 
-export const SessionItem = ({ title, session_id }: SessionEntry) => {
+type SessionItemProps = SessionEntry & {
+  isSelected: boolean
+  onSessionClick: () => void
+}
+const SessionItem = ({
+  title,
+  session_id,
+  isSelected,
+  onSessionClick
+}: SessionItemProps) => {
   const [agentId] = useQueryState('agent')
-  const [currentSessionId] = useQueryState('session')
-  const { loadSession } = useSessionLoader()
+  const { getSession } = useSessionLoader()
   const [, setSessionId] = useQueryState('session')
-  const { selectedEndpoint, historyData, setHistoryData } = usePlaygroundStore()
+  const { selectedEndpoint, sessionsData, setSessionsData } =
+    usePlaygroundStore()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const { clearChat } = useChatActions()
 
-  const isSelected = currentSessionId === session_id
-
-  const handleLoadSession = async () => {
+  const handleGetSession = async () => {
     if (agentId) {
-      await loadSession(session_id, agentId)
+      onSessionClick()
+      await getSession(session_id, agentId)
       setSessionId(session_id)
     }
   }
@@ -37,9 +45,9 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
           agentId,
           session_id
         )
-        if (response.status === 200 && historyData) {
-          setHistoryData(
-            historyData.filter((session) => session.session_id !== session_id)
+        if (response.status === 200 && sessionsData) {
+          setSessionsData(
+            sessionsData.filter((session) => session.session_id !== session_id)
           )
           clearChat()
           toast.success('Session deleted')
@@ -53,7 +61,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
       }
     }
   }
-
+  console.log(isSelected)
   return (
     <>
       <div
@@ -63,7 +71,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
             ? 'cursor-default bg-primary/10'
             : 'bg-background-secondary hover:bg-background-secondary/80'
         )}
-        onClick={handleLoadSession}
+        onClick={handleGetSession}
       >
         <div className="flex flex-col gap-1">
           <h4
@@ -93,3 +101,5 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
     </>
   )
 }
+
+export default SessionItem
