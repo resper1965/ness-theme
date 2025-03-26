@@ -1,6 +1,10 @@
 import { useCallback } from 'react'
-import { getPlaygroundSessionAPI } from '@/api/playground'
+import {
+  getPlaygroundSessionAPI,
+  getAllPlaygroundSessionsAPI
+} from '@/api/playground'
 import { usePlaygroundStore } from '../store'
+import { toast } from 'sonner'
 import {
   PlaygroundChatMessage,
   ToolCall,
@@ -22,8 +26,31 @@ interface SessionResponse {
 const useSessionLoader = () => {
   const setMessages = usePlaygroundStore((state) => state.setMessages)
   const selectedEndpoint = usePlaygroundStore((state) => state.selectedEndpoint)
+  const setIsSessionsLoading = usePlaygroundStore(
+    (state) => state.setIsSessionsLoading
+  )
+  const setSessionsData = usePlaygroundStore((state) => state.setSessionsData)
 
-  const loadSession = useCallback(
+  const getSessions = useCallback(
+    async (agentId: string) => {
+      if (!agentId || !selectedEndpoint) return
+      try {
+        setIsSessionsLoading(true)
+        const sessions = await getAllPlaygroundSessionsAPI(
+          selectedEndpoint,
+          agentId
+        )
+        setSessionsData(sessions)
+      } catch {
+        toast.error('Error loading sessions')
+      } finally {
+        setIsSessionsLoading(false)
+      }
+    },
+    [selectedEndpoint, setSessionsData, setIsSessionsLoading]
+  )
+
+  const getSession = useCallback(
     async (sessionId: string, agentId: string) => {
       if (!sessionId || !agentId || !selectedEndpoint) {
         return null
@@ -37,10 +64,10 @@ const useSessionLoader = () => {
         )) as SessionResponse
 
         if (response && response.memory) {
-          const chatHistory = response.memory.runs ?? response.memory.chats
+          const sessionHistory = response.memory.runs ?? response.memory.chats
 
-          if (chatHistory && Array.isArray(chatHistory)) {
-            const messagesForPlayground = chatHistory.flatMap((run) => {
+          if (sessionHistory && Array.isArray(sessionHistory)) {
+            const messagesForPlayground = sessionHistory.flatMap((run) => {
               const filteredMessages: PlaygroundChatMessage[] = []
 
               if (run.message) {
@@ -118,7 +145,7 @@ const useSessionLoader = () => {
     [selectedEndpoint, setMessages]
   )
 
-  return { loadSession }
+  return { getSession, getSessions }
 }
 
 export default useSessionLoader

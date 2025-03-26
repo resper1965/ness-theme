@@ -13,15 +13,16 @@ import { truncateText } from '@/lib/utils'
 
 export const SessionItem = ({ title, session_id }: SessionEntry) => {
   const [agentId] = useQueryState('agent')
-  const { loadSession } = useSessionLoader()
+  const { getSession } = useSessionLoader()
   const [, setSessionId] = useQueryState('session')
-  const { selectedEndpoint, historyData, setHistoryData } = usePlaygroundStore()
+  const { selectedEndpoint, sessionsData, setSessionsData } =
+    usePlaygroundStore()
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const { clearChat } = useChatActions()
 
-  const handleLoadSession = async () => {
+  const handleGetSession = async () => {
     if (agentId) {
-      await loadSession(session_id, agentId)
+      await getSession(session_id, agentId)
       setSessionId(session_id)
     }
   }
@@ -34,9 +35,9 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
           agentId,
           session_id
         )
-        if (response.status === 200 && historyData) {
-          setHistoryData(
-            historyData.filter((session) => session.session_id !== session_id)
+        if (response.status === 200 && sessionsData) {
+          setSessionsData(
+            sessionsData.filter((session) => session.session_id !== session_id)
           )
           clearChat()
           toast.success('Session deleted')
@@ -55,7 +56,7 @@ export const SessionItem = ({ title, session_id }: SessionEntry) => {
     <>
       <div
         className="group flex h-11 w-full cursor-pointer items-center justify-between rounded-lg bg-background-secondary px-3 py-2"
-        onClick={handleLoadSession}
+        onClick={handleGetSession}
       >
         <div className="flex flex-col gap-1">
           <h4 className="text-sm font-medium">{truncateText(title, 20)}</h4>

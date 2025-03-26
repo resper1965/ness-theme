@@ -24,7 +24,7 @@ const useAIChatStreamHandler = () => {
     (state) => state.setStreamingErrorMessage
   )
   const setIsStreaming = usePlaygroundStore((state) => state.setIsStreaming)
-  const setHistoryData = usePlaygroundStore((state) => state.setHistoryData)
+  const setSessionsData = usePlaygroundStore((state) => state.setSessionsData)
   const { streamResponse } = useAIResponseStream()
 
   const updateMessagesWithErrorState = useCallback(() => {
@@ -213,9 +213,9 @@ const useAIChatStreamHandler = () => {
                 title: formData.get('message') as string,
                 created_at: Math.floor(Date.now() / 1000)
               }
-              setHistoryData((prevHistoryData) => [
+              setSessionsData((prevSessionsData) => [
                 placeHolderSessionData,
-                ...(prevHistoryData ?? [])
+                ...(prevSessionsData ?? [])
               ])
             }
           }
@@ -240,7 +240,7 @@ const useAIChatStreamHandler = () => {
       setStreamingErrorMessage,
       setIsStreaming,
       focusChatInput,
-      setHistoryData,
+      setSessionsData,
       sessionId,
       setSessionId
     ]

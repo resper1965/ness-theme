@@ -51,11 +51,11 @@ interface PlaygroundStore {
 
   selectedModel: string
   setSelectedModel: (model: string) => void
-  historyData: SessionEntry[] | null
-  setHistoryData: (
-    historyData:
+  sessionsData: SessionEntry[] | null
+  setSessionsData: (
+    sessionsData:
       | SessionEntry[]
-      | ((prevHistory: SessionEntry[] | null) => SessionEntry[] | null)
+      | ((prevSessions: SessionEntry[] | null) => SessionEntry[] | null)
   ) => void
   isSessionsLoading: boolean
   setIsSessionsLoading: (isSessionsLoading: boolean) => void
@@ -93,13 +93,13 @@ export const usePlaygroundStore = create<PlaygroundStore>()(
 
       agents: [],
       setAgents: (agents) => set({ agents }),
-      historyData: null,
-      setHistoryData: (historyData) =>
+      sessionsData: null,
+      setSessionsData: (sessionsData) =>
         set((state) => ({
-          historyData:
-            typeof historyData === 'function'
-              ? historyData(state.historyData)
-              : historyData
+          sessionsData:
+            typeof sessionsData === 'function'
+              ? sessionsData(state.sessionsData)
+              : sessionsData
         })),
 
       selectedModel: '',
