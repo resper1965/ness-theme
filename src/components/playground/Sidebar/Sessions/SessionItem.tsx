@@ -61,7 +61,6 @@ const SessionItem = ({
       }
     }
   }
-  console.log(isSelected)
   return (
     <>
       <div

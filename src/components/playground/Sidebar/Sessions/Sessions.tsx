@@ -133,7 +133,6 @@ const Sessions = () => {
         </div>
       </div>
     )
-  console.log('in sessions tab')
   return (
     <div>
       <div className="mb-2 text-xs font-medium uppercase">Sessions</div>
