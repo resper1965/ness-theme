@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 
 const EXTERNAL_LINKS = {
   documentation:
-    'https://docs.agno.com/get-started/playground#agent-playground',
+    'https://docs.agno.com/introduction/playground',
   playground: 'https://app.agno.com/playground/chat',
   agno: 'https://agno.com'
 }
