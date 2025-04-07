@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 
 const EXTERNAL_LINKS = {
   documentation: 'https://agno.link/agent-ui',
-  playground: 'https://app.agno.com/playground/chat',
+  playground: 'https://app.agno.com/playground/agents',
   agno: 'https://agno.com'
 }
 
@@ -106,7 +106,7 @@ const ChatBlankState = () => {
 
   return (
     <section
-      className="flex flex-col items-center text-center font-geist"
+      className="font-geist flex flex-col items-center text-center"
       aria-label="Welcome message"
     >
       <div className="flex max-w-3xl flex-col gap-y-8">
@@ -157,7 +157,7 @@ const ChatBlankState = () => {
                         <Icon type={icon.type} size="default" />
                       </div>
                       <motion.div
-                        className="pointer-events-none absolute bottom-full left-1/2 mb-1 -translate-x-1/2 transform whitespace-nowrap rounded bg-neutral-800 px-2 py-1 text-xs text-primary"
+                        className="text-primary pointer-events-none absolute bottom-full left-1/2 mb-1 -translate-x-1/2 transform whitespace-nowrap rounded bg-neutral-800 px-2 py-1 text-xs"
                         variants={tooltipVariants}
                         initial="hidden"
                         animate={
