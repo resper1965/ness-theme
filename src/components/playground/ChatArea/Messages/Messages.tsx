@@ -136,7 +136,7 @@ const Reasonings: FC<ReasoningProps> = ({ reasoning }) => (
   <div className="flex flex-col items-start justify-center gap-2">
     {reasoning.map((title, index) => (
       <Reasoning
-        key={`${title.title}-${title.action}`}
+        key={`${title.title}-${title.action}-${index}`}
         stepTitle={title.title}
         index={index}
       />

@@ -9,6 +9,7 @@ import { constructEndpointUrl } from '@/lib/constructEndpointUrl'
 import useAIResponseStream from './useAIResponseStream'
 import { ToolCall } from '@/types/playground'
 import { useQueryState } from 'nuqs'
+import { getJsonMarkdown } from '@/lib/utils'
 
 /**
  * useAIChatStreamHandler is responsible for making API calls and handling the stream response.
@@ -95,7 +96,21 @@ const useAIChatStreamHandler = () => {
           apiUrl: playgroundRunUrl,
           requestBody: formData,
           onChunk: (chunk: RunResponse) => {
-            if (chunk.event === RunEvent.RunResponse) {
+            if (chunk.event === RunEvent.RunStarted) {
+              newSessionId = chunk.session_id as string
+              setSessionId(chunk.session_id as string)
+              if (hasStorage && !sessionId) {
+                const sessionData = {
+                  session_id: chunk.session_id as string,
+                  title: formData.get('message') as string,
+                  created_at: chunk.created_at
+                }
+                setSessionsData((prevSessionsData) => [
+                  sessionData,
+                  ...(prevSessionsData ?? [])
+                ])
+              }
+            } else if (chunk.event === RunEvent.RunResponse) {
               setMessages((prevMessages) => {
                 const newMessages = [...prevMessages]
                 const lastMessage = newMessages[newMessages.length - 1]
@@ -138,6 +153,15 @@ const useAIChatStreamHandler = () => {
                     lastMessage.audio = chunk.audio
                   }
                 } else if (
+                  lastMessage &&
+                  lastMessage.role === 'agent' &&
+                  typeof chunk?.content !== 'string'
+                ) {
+                  const jsonBlock = getJsonMarkdown(chunk?.content)
+
+                  lastMessage.content += jsonBlock
+                  lastContent = jsonBlock
+                } else if (
                   chunk.response_audio?.transcript &&
                   typeof chunk.response_audio?.transcript === 'string'
                 ) {
@@ -154,8 +178,15 @@ const useAIChatStreamHandler = () => {
               updateMessagesWithErrorState()
               const errorContent = chunk.content as string
               setStreamingErrorMessage(errorContent)
+              if (hasStorage && newSessionId) {
+                setSessionsData(
+                  (prevSessionsData) =>
+                    prevSessionsData?.filter(
+                      (session) => session.session_id !== newSessionId
+                    ) ?? null
+                )
+              }
             } else if (chunk.event === RunEvent.RunCompleted) {
-              // Final update on completion of the stream:
               setMessages((prevMessages) => {
                 const newMessages = prevMessages.map((message, index) => {
                   if (
@@ -198,34 +229,34 @@ const useAIChatStreamHandler = () => {
                 return newMessages
               })
             }
-            if (chunk.session_id && chunk.session_id !== newSessionId) {
-              newSessionId = chunk.session_id
-              setSessionId(chunk.session_id)
-            }
           },
           onError: (error) => {
             updateMessagesWithErrorState()
             setStreamingErrorMessage(error.message)
-          },
-          onComplete: () => {
-            if (newSessionId && newSessionId !== sessionId && hasStorage) {
-              const placeHolderSessionData = {
-                session_id: newSessionId,
-                title: formData.get('message') as string,
-                created_at: Math.floor(Date.now() / 1000)
-              }
-              setSessionsData((prevSessionsData) => [
-                placeHolderSessionData,
-                ...(prevSessionsData ?? [])
-              ])
+            if (hasStorage && newSessionId) {
+              setSessionsData(
+                (prevSessionsData) =>
+                  prevSessionsData?.filter(
+                    (session) => session.session_id !== newSessionId
+                  ) ?? null
+              )
             }
-          }
+          },
+          onComplete: () => {}
         })
       } catch (error) {
         updateMessagesWithErrorState()
         setStreamingErrorMessage(
           error instanceof Error ? error.message : String(error)
         )
+        if (hasStorage && newSessionId) {
+          setSessionsData(
+            (prevSessionsData) =>
+              prevSessionsData?.filter(
+                (session) => session.session_id !== newSessionId
+              ) ?? null
+          )
+        }
       } finally {
         focusChatInput()
         setIsStreaming(false)

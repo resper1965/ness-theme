@@ -80,7 +80,7 @@ const Endpoint = () => {
       toast.error('Please enter a valid URL')
       return
     }
-    const cleanEndpoint = endpointValue.replace(/\/$/, '')
+    const cleanEndpoint = endpointValue.replace(/\/$/, '').trim()
     setSelectedEndpoint(cleanEndpoint)
     setAgentId(null)
     setSessionId(null)
