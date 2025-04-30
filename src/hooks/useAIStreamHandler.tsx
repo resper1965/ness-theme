@@ -96,7 +96,10 @@ const useAIChatStreamHandler = () => {
           apiUrl: playgroundRunUrl,
           requestBody: formData,
           onChunk: (chunk: RunResponse) => {
-            if (chunk.event === RunEvent.RunStarted) {
+            if (
+              chunk.event === RunEvent.RunStarted ||
+              chunk.event === RunEvent.ReasoningStarted
+            ) {
               newSessionId = chunk.session_id as string
               setSessionId(chunk.session_id as string)
               if (hasStorage && !sessionId) {

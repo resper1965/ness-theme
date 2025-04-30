@@ -162,9 +162,9 @@ const Sessions = () => {
           <SessionBlankState />
         ) : (
           <div className="flex flex-col gap-y-1 pr-1">
-            {formattedSessionsData.map((entry) => (
+            {formattedSessionsData.map((entry, index) => (
               <SessionItem
-                key={entry.session_id}
+                key={`${entry.session_id}-${index}`}
                 {...entry}
                 isSelected={selectedSessionId === entry.session_id}
                 onSessionClick={handleSessionClick(entry.session_id)}
