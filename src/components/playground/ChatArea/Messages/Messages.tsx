@@ -108,11 +108,11 @@ const AgentMessageWrapper = ({ message }: MessageWrapperProps) => {
           </Tooltip>
 
           <div className="flex flex-wrap gap-2">
-            {message.tool_calls.map((toolCall) => (
+            {message.tool_calls.map((toolCall, index) => (
               <ToolComponent
                 key={
                   toolCall.tool_call_id ||
-                  `${toolCall.tool_name}-${toolCall.created_at}`
+                  `${toolCall.tool_name}-${toolCall.created_at}-${index}`
                 }
                 tools={toolCall}
               />
