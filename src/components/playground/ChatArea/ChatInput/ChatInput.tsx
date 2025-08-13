@@ -13,6 +13,7 @@ const ChatInput = () => {
 
   const { handleStreamResponse } = useAIChatStreamHandler()
   const [selectedAgent] = useQueryState('agent')
+  const [teamId] = useQueryState('team')
   const [inputMessage, setInputMessage] = useState('')
   const isStreaming = usePlaygroundStore((state) => state.isStreaming)
   const handleSubmit = async () => {
@@ -33,7 +34,7 @@ const ChatInput = () => {
   }
 
   return (
-    <div className="relative mx-auto mb-1 flex w-full max-w-2xl items-end justify-center gap-x-2 font-geist">
+    <div className="font-geist relative mx-auto mb-1 flex w-full max-w-2xl items-end justify-center gap-x-2">
       <TextArea
         placeholder={'Ask anything'}
         value={inputMessage}
@@ -49,15 +50,17 @@ const ChatInput = () => {
             handleSubmit()
           }
         }}
-        className="w-full border border-accent bg-primaryAccent px-4 text-sm text-primary focus:border-accent"
-        disabled={!selectedAgent}
+        className="border-accent bg-primaryAccent text-primary focus:border-accent w-full border px-4 text-sm"
+        disabled={!(selectedAgent || teamId)}
         ref={chatInputRef}
       />
       <Button
         onClick={handleSubmit}
-        disabled={!selectedAgent || !inputMessage.trim() || isStreaming}
+        disabled={
+          !(selectedAgent || teamId) || !inputMessage.trim() || isStreaming
+        }
         size="icon"
-        className="rounded-xl bg-primary p-5 text-primaryAccent"
+        className="bg-primary text-primaryAccent rounded-xl p-5"
       >
         <Icon type="send" color="primaryAccent" />
       </Button>
