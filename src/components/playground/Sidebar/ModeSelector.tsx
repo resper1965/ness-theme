@@ -58,7 +58,7 @@ export function ModeSelector() {
   if (!hasTeams && !hasAgents) {
     return (
       <Select disabled>
-        <SelectTrigger className="border-primary/15 bg-primaryAccent h-9 w-full rounded-xl border text-xs font-medium uppercase opacity-50">
+        <SelectTrigger className="h-9 w-full rounded-xl border border-primary/15 bg-primaryAccent text-xs font-medium uppercase opacity-50">
           <SelectValue placeholder="No Mode Available" />
         </SelectTrigger>
       </Select>
@@ -71,10 +71,10 @@ export function ModeSelector() {
       onValueChange={(value) => handleModeChange(value as 'agent' | 'team')}
       disabled={isDropdownDisabled}
     >
-      <SelectTrigger className="border-primary/15 bg-primaryAccent h-9 w-full rounded-xl border text-xs font-medium uppercase">
+      <SelectTrigger className="h-9 w-full rounded-xl border border-primary/15 bg-primaryAccent text-xs font-medium uppercase">
         <SelectValue />
       </SelectTrigger>
-      <SelectContent className="bg-primaryAccent font-dmmono border-none shadow-lg">
+      <SelectContent className="border-none bg-primaryAccent font-dmmono shadow-lg">
         {hasAgents && (
           <SelectItem value="agent" className="cursor-pointer">
             <div className="text-xs font-medium uppercase">Agent</div>
