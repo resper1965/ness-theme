@@ -17,8 +17,8 @@ A modern chat interface for AgentOS built with Next.js, Tailwind CSS, and TypeSc
 
 ## Version Support
 
-- **Main Branch**: Supports AgentOS v2.0 (recommended)
-- **v1.1 Branch**: Supports AgentOS v1.x for legacy compatibility
+- **Main Branch**: Supports Agno v2.x (recommended)
+- **v1 Branch**: Supports Agno v1.x for legacy compatibility
 
 ## Getting Started
 
