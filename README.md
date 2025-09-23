@@ -1,100 +1,244 @@
-# Agent UI
+# Gabi - Chat Multi-Agentes
 
-A modern chat interface for AgentOS built with Next.js, Tailwind CSS, and TypeScript. This template provides a ready-to-use UI for connecting to and interacting with your AgentOS instances through the Agno platform.
+Um chat inteligente baseado no padrão BMAD com tecnologia Agno SDK, permitindo criação dinâmica de agentes e múltiplas fontes de conhecimento.
 
-<img src="https://agno-public.s3.us-east-1.amazonaws.com/assets/agent_ui_banner.svg" alt="agent-ui" style="border-radius: 10px; width: 100%; max-width: 800px;" />
+## 🚀 Características
 
-## Features
+- **Chat Multi-Agentes**: Criação dinâmica de até 3 agentes + 1 orquestrador por sessão
+- **Múltiplas Fontes de Conhecimento**: RAG, sites, documentos, MCP servers
+- **Tecnologia Agno SDK**: Integração com Agno para orquestração de agentes
+- **Interface Moderna**: Design dark-first com design system ness
+- **Deployment Docker**: Configuração completa com Portainer e Traefik
 
-- 🔗 **AgentOS Integration**: Seamlessly connect to local and live AgentOS instances
-- 💬 **Modern Chat Interface**: Clean design with real-time streaming support
-- 🧩 **Tool Calls Support**: Visualizes agent tool calls and their results
-- 🧠 **Reasoning Steps**: Displays agent reasoning process (when available)
-- 📚 **References Support**: Show sources used by the agent
-- 🖼️ **Multi-modality Support**: Handles various content types including images, video, and audio
-- 🎨 **Customizable UI**: Built with Tailwind CSS for easy styling
-- 🧰 **Built with Modern Stack**: Next.js, TypeScript, shadcn/ui, Framer Motion, and more
+## 🏗️ Arquitetura
 
-## Version Support
+### Gabi Chat (Next.js)
+- Interface de chat moderna
+- Design system ness com cores frias
+- Componentes reutilizáveis
+- Estado gerenciado com Zustand
 
-- **Main Branch**: Supports Agno v2.x (recommended)
-- **v1 Branch**: Supports Agno v1.x for legacy compatibility
+### Gabi OS (Python + FastAPI)
+- API REST completa
+- Integração com Agno SDK
+- Gerenciamento de agentes dinâmicos
+- Múltiplas fontes de conhecimento
+- Banco de dados Supabase Local
 
-## Getting Started
+### Infraestrutura
+- Docker Compose para orquestração
+- Nginx como proxy reverso
+- Redis para cache e sessões
+- Supabase Local para persistência
+- Portainer para gerenciamento
 
-### Prerequisites
+## 🛠️ Instalação
 
-Before setting up Agent UI, you need a running AgentOS instance. If you haven't created one yet, check out our [Creating Your First OS](/agent-os/creating-your-first-os) guide.
+### Pré-requisitos
+- Docker e Docker Compose
+- Node.js 18+ (para desenvolvimento)
+- Python 3.11+ (para desenvolvimento)
 
-> **Note**: Agent UI connects to AgentOS instances through the Agno platform. Make sure your AgentOS is running before attempting to connect.
-
-### Installation
-
-### Automatic Installation (Recommended)
-
+### Deployment Automático
 ```bash
-npx create-agent-ui@latest
+# Executar script de deployment
+./scripts/deploy.sh
 ```
 
-### Manual Installation
-
-1. Clone the repository:
-
+### Deployment Manual
 ```bash
-git clone https://github.com/agno-agi/agent-ui.git
-cd agent-ui
+# 1. Configurar variáveis de ambiente
+cp env.example .env
+# Editar .env com suas configurações
+
+# 2. Construir e iniciar serviços
+docker-compose up -d
+
+# 3. Executar migrações
+docker-compose exec backend alembic upgrade head
 ```
 
-2. Install dependencies:
+## 🔧 Configuração
 
+### Variáveis de Ambiente
 ```bash
-pnpm install
+# Supabase Local Database
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/gabi
+
+# Agno SDK
+AGNO_API_KEY=your_agno_api_key
+OPENAI_API_KEY=your_openai_api_key
+
+# Security
+SECRET_KEY=your_secret_key
+
+# CORS
+CORS_ORIGINS=http://localhost:3000,http://localhost:3001
 ```
 
-3. Start the development server:
+### Fontes de Conhecimento
 
+#### RAG (Retrieval Augmented Generation)
 ```bash
-pnpm dev
+POST /api/v1/knowledge/sources/rag
+{
+  "name": "Documentos da Empresa",
+  "documents": [...],
+  "config": {
+    "embedding_model": "text-embedding-ada-002",
+    "chunk_size": 1000
+  }
+}
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Website
+```bash
+POST /api/v1/knowledge/sources/website
+{
+  "name": "Site da Empresa",
+  "urls": ["https://example.com"],
+  "config": {
+    "crawl_depth": 2,
+    "max_pages": 100
+  }
+}
+```
 
-## Connecting to Your AgentOS
+#### Document
+```bash
+POST /api/v1/knowledge/sources/document
+{
+  "name": "Manual Técnico",
+  "file_paths": ["/uploads/manual.pdf"],
+  "config": {
+    "supported_formats": ["pdf", "txt", "docx"]
+  }
+}
+```
 
-Agent UI connects directly to your AgentOS instance, allowing you to interact with your agents through a modern chat interface.
+#### MCP (Model Context Protocol)
+```bash
+POST /api/v1/knowledge/sources/mcp
+{
+  "name": "Context7 MCP",
+  "server_url": "https://context7.example.com",
+  "api_key": "your_api_key",
+  "capabilities": ["search", "retrieval"]
+}
+```
 
-> **Prerequisites**: You need a running AgentOS instance before you can connect Agent UI to it. If you haven't created one yet, check out our [Creating Your First OS](https://docs.agno.com/agent-os/creating-your-first-os) guide.
+## 🤖 Criação de Agentes
 
-## Step-by-Step Connection Process
+### Templates Disponíveis
+- **research_agent**: Pesquisa e análise
+- **writing_agent**: Criação de conteúdo
+- **analysis_agent**: Análise de dados
+- **orchestrator**: Coordenação de agentes
 
-### 1. Configure the Endpoint
+### Criar Workflow de Agentes
+```bash
+POST /api/v1/workflows/create-workflow
+{
+  "session_id": "session-123",
+  "task_description": "Analisar dados de vendas e criar relatório"
+}
+```
 
-By default, Agent UI connects to `http://localhost:7777`. You can easily change this by:
+### Criar Agente por Template
+```bash
+POST /api/v1/workflows/create-from-template
+{
+  "session_id": "session-123",
+  "template_name": "research_agent",
+  "custom_config": {
+    "name": "Analista de Dados",
+    "model": "gpt-4"
+  }
+}
+```
 
-1. Hovering over the endpoint URL in the left sidebar
-2. Clicking the edit option to modify the connection settings
+## 📊 Monitoramento
 
-### 2. Choose Your Environment
+### Health Checks
+- Gabi Chat: http://localhost:3000
+- Gabi OS: http://localhost:8000/health
+- API Docs: http://localhost:8000/docs
 
-- **Local Development**: Use `http://localhost:7777` (default) or your custom local port
-- **Production**: Enter your production AgentOS HTTPS URL
+### Logs
+```bash
+# Todos os serviços
+docker-compose logs -f
 
-> **Warning**: Make sure your AgentOS is actually running on the specified endpoint before attempting to connect.
+# Serviço específico
+docker-compose logs -f gabi-os
+docker-compose logs -f gabi-chat
+```
 
-### 3. Test the Connection
+### Status dos Serviços
+```bash
+docker-compose ps
+```
 
-Once you've configured the endpoint:
+## 🔄 Desenvolvimento
 
-1. The Agent UI will automatically attempt to connect to your AgentOS
-2. If successful, you'll see your agents available in the chat interface
-3. If there are connection issues, check that your AgentOS is running and accessible. Check out the troubleshooting guide [here](https://docs.agno.com/faq/agentos-connection)
+### Gabi Chat
+```bash
+cd .
+npm install
+npm run dev
+```
 
+### Gabi OS
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
 
+### Banco de Dados
+```bash
+# Migrações
+alembic upgrade head
 
-## Contributing
+# Nova migração
+alembic revision --autogenerate -m "description"
+```
 
-Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines.
+## 🚀 Deployment em Produção
 
-## License
+### Com Portainer
+1. Configure Portainer com Traefik
+2. Use o docker-compose.yml fornecido
+3. Configure SSL automaticamente
+4. Monitore via Portainer dashboard
 
-This project is licensed under the [MIT License](./LICENSE).
+### Variáveis de Produção
+- Use banco Neon para produção
+- Configure CORS adequadamente
+- Use secrets para API keys
+- Configure backup automático
+
+## 📚 API Documentation
+
+Acesse a documentação interativa em:
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
+## 🆘 Suporte
+
+Para suporte e dúvidas:
+- Abra uma issue no GitHub
+- Consulte a documentação da API
+- Verifique os logs dos serviços

@@ -1,0 +1,133 @@
+services:
+  # Gabi Chat (Frontend Next.js)
+  gabi-chat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gabi-chat
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    networks:
+      - gabi-network
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gabi-frontend.rule=Host(`${DOMAIN}`)"
+      - "traefik.http.routers.gabi-frontend.entrypoints=websecure"
+      - "traefik.http.routers.gabi-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.gabi-frontend.loadbalancer.server.port=3000"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Gabi OS (Backend Python com Agno SDK)
+  gabi-os:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gabi-os
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+      - DEBUG=${DEBUG:-false}
+      - DATABASE_URL=${DATABASE_URL}
+      - AGNO_API_KEY=${AGNO_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SECRET_KEY=${SECRET_KEY}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+    volumes:
+      - ./backend/data:/app/data
+      - ./backend/logs:/app/logs
+      - ./backend/uploads:/app/uploads
+    networks:
+      - gabi-network
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gabi-backend.rule=Host(`${DOMAIN}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.gabi-backend.entrypoints=websecure"
+      - "traefik.http.routers.gabi-backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.gabi-backend.loadbalancer.server.port=8000"
+    depends_on:
+      - supabase-db
+      - redis
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Supabase Database (Simplificado - sem auth)
+  supabase-db:
+    image: supabase/postgres:15.1.0.147
+    container_name: gabi-supabase-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-gabi}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_HOST_AUTH_METHOD=scram-sha-256
+    volumes:
+      - supabase_db_data:/var/lib/postgresql/data
+      - ./scripts/supabase-init.sql:/docker-entrypoint-initdb.d/supabase-init.sql
+    networks:
+      - gabi-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-gabi}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Supabase Studio (Interface Web)
+  supabase-studio:
+    image: supabase/studio:20241219-0b8b2b4
+    container_name: gabi-supabase-studio
+    restart: unless-stopped
+    environment:
+      - SUPABASE_URL=http://supabase-db:5432
+      - SUPABASE_REST_URL=http://supabase-db:5432/rest/v1/
+      - SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+      - SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
+    networks:
+      - gabi-network
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gabi-studio.rule=Host(`studio.${DOMAIN}`)"
+      - "traefik.http.routers.gabi-studio.entrypoints=websecure"
+      - "traefik.http.routers.gabi-studio.tls.certresolver=letsencrypt"
+      - "traefik.http.services.gabi-studio.loadbalancer.server.port=3000"
+    depends_on:
+      - supabase-db
+
+  # Redis para cache e sessões
+  redis:
+    image: redis:7.4-alpine
+    container_name: gabi-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    networks:
+      - gabi-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  supabase_db_data:
+  redis_data:
+
+networks:
+  gabi-network:
+    driver: bridge
+    name: gabi-network
+  traefik-network:
+    external: true
+    name: traefik

@@ -36,7 +36,7 @@ const ChatInput = () => {
   return (
     <div className="relative mx-auto mb-1 flex w-full max-w-2xl items-end justify-center gap-x-2 font-geist">
       <TextArea
-        placeholder={'Ask anything'}
+        placeholder={'Pergunte qualquer coisa'}
         value={inputMessage}
         onChange={(e) => setInputMessage(e.target.value)}
         onKeyDown={(e) => {

@@ -75,7 +75,7 @@ const TextArea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           'rounded-xl border border-border',
           'px-3 py-2',
           'text-sm leading-5',
-          'placeholder:text-muted-foreground',
+          'placeholder:text-[#B8BCC8]',
           'focus-visible:ring-0.5 focus-visible:ring-ring focus-visible:border-primary/50 focus-visible:outline-none',
           'disabled:cursor-not-allowed disabled:opacity-50',
           showScroll ? 'overflow-y-auto' : 'overflow-hidden',
