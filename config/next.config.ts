@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['localhost'],
   },
+  assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
+  publicRuntimeConfig: {
+    assetsPath: '/assets',
+  },
 }
 
 export default nextConfig

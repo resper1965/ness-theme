@@ -1,5 +1,6 @@
 """
-Rotas para gerenciamento de bases de conhecimento
+Rotas para gerenciamento de bases de conhecimento - Implementação baseada no documento oficial do Agno
+Compatível com Agno UI seguindo padrão BMAD
 """
 
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File

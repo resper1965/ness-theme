@@ -6,16 +6,15 @@ uvicorn[standard]>=0.24.0
 pydantic>=2.10.0
 pydantic-settings>=2.7.0
 
-# Banco de dados
+# Banco de dados - Neon (produção)
 sqlalchemy>=2.0.23
 psycopg2-binary>=2.9.9
 alembic>=1.13.1
 
-# Supabase
-supabase>=2.3.4
-postgrest>=0.13.2
+# Agno SDK - Instalação via pip
+agno>=0.1.0
 
-# Agno SDK - Dependências principais
+# Dependências do Agno SDK
 annotated-types>=0.7.0
 anyio>=4.7.0
 certifi>=2024.12.14

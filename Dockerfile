@@ -15,6 +15,13 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Copy configuration files to their expected locations
+COPY config/next.config.ts ./next.config.ts
+COPY config/tailwind.config.ts ./tailwind.config.ts
+COPY config/postcss.config.mjs ./postcss.config.mjs
+COPY config/tsconfig.json ./tsconfig.json
+COPY config/components.json ./components.json
+
 # Build the application
 RUN npm install -g pnpm && pnpm run build
 

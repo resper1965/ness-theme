@@ -36,7 +36,7 @@ services:
       - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://localhost:3001}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1}
     ports:
-      - "8000:8000"
+      - "7777:8000"
     volumes:
       - ./backend/data:/app/data
       - ./backend/logs:/app/logs
@@ -44,7 +44,6 @@ services:
     networks:
       - gabi-network
     depends_on:
-      - supabase-db
       - redis
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8000/health"]
@@ -52,44 +51,8 @@ services:
       timeout: 10s
       retries: 3
 
-  # PostgreSQL Database
-  supabase-db:
-    image: postgres:15-alpine
-    container_name: gabi-supabase-db
-    restart: unless-stopped
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB:-gabi}
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-    ports:
-      - "5432:5432"
-    volumes:
-      - supabase_db_data:/var/lib/postgresql/data
-      - ./scripts/supabase-init.sql:/docker-entrypoint-initdb.d/supabase-init.sql
-    networks:
-      - gabi-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-gabi}"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # Supabase Studio (Interface Web)
-  supabase-studio:
-    image: supabase/studio:latest
-    container_name: gabi-supabase-studio
-    restart: unless-stopped
-    environment:
-      - SUPABASE_URL=http://localhost:5432
-      - SUPABASE_REST_URL=http://localhost:5432/rest/v1/
-      - SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
-      - SUPABASE_SERVICE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
-    ports:
-      - "3001:3000"
-    networks:
-      - gabi-network
-    depends_on:
-      - supabase-db
+  # Banco de dados Neon (produção) - Removido banco local
+  # O projeto usa Neon online para todos os ambientes conforme especificado
 
   # Redis para cache e sessões
   redis:
@@ -131,7 +94,6 @@ services:
       retries: 3
 
 volumes:
-  supabase_db_data:
   redis_data:
 
 networks:

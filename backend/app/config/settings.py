@@ -13,14 +13,11 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
     
-    # Database
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/gabi"
+    # Database - Neon (produção)
+    DATABASE_URL: str = "postgresql://neon_connection_string_here"
     
-    # Supabase
-    SUPABASE_URL: str = "http://localhost:8000"
-    SUPABASE_ANON_KEY: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0"
-    SUPABASE_SERVICE_KEY: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU"
-    JWT_SECRET: str = "super-secret-jwt-token-with-at-least-32-characters-long"
+    # Neon Database (substitui Supabase local)
+    # Use banco Neon para todos os ambientes conforme especificado
     
     # Agno SDK
     AGNO_API_KEY: str = ""

@@ -1,43 +1,45 @@
 """
-Rotas para gerenciamento de agentes
+Rotas para gerenciamento de agentes - Implementação baseada no documento oficial do Agno
+Compatível com Agno UI seguindo padrão BMAD
 """
 
-from fastapi import APIRouter, HTTPException, Depends
-from typing import List
-from app.schemas.agent import AgentCreate, AgentResponse, AgentUpdate
-from app.schemas.session import MessageRequest, MessageResponse
+from fastapi import APIRouter, HTTPException, Depends, Request
+from typing import List, Dict, Any
+from app.schemas.agent import AgentCreate, AgentResponse, AgentDetails, MessageRequest, MessageResponse
 from app.services.agno_service import AgnoService
 
 router = APIRouter()
 
-# Dependency para obter o serviço Agno
-def get_agno_service() -> AgnoService:
-    return AgnoService()
+# Instância global do serviço Agno
+_agno_service = None
 
-@router.post("/", response_model=AgentResponse)
-async def create_agent(
-    session_id: str,
-    agent_data: AgentCreate,
+def get_agno_service() -> AgnoService:
+    global _agno_service
+    if _agno_service is None:
+        _agno_service = AgnoService()
+    return _agno_service
+
+@router.get("/", response_model=List[AgentDetails])
+async def get_agents(
     agno_service: AgnoService = Depends(get_agno_service)
 ):
-    """Cria um novo agente na sessão"""
+    """Retorna todos os agentes disponíveis - compatível com Agno UI"""
     try:
-        agent = await agno_service.create_agent(session_id, agent_data)
-        return agent
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        return agno_service.get_agents()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
-@router.get("/session/{session_id}", response_model=List[AgentResponse])
-async def get_session_agents(
-    session_id: str,
+@router.post("/", response_model=AgentResponse)
+async def create_agent(
+    agent_data: AgentCreate,
     agno_service: AgnoService = Depends(get_agno_service)
 ):
-    """Retorna todos os agentes de uma sessão"""
+    """Cria um novo agente"""
     try:
-        agents = await agno_service.get_session_agents(session_id)
-        return agents
+        agent = await agno_service.create_agent(agent_data.session_id, agent_data)
+        return agent
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
@@ -48,21 +50,43 @@ async def get_agent(
 ):
     """Retorna um agente específico"""
     try:
-        # Implementar busca de agente específico
-        raise HTTPException(status_code=501, detail="Funcionalidade em desenvolvimento")
+        if agent_id not in agno_service.active_agents:
+            raise HTTPException(status_code=404, detail="Agente não encontrado")
+        
+        agent = agno_service.active_agents[agent_id]
+        return AgentResponse(
+            id=agent.id,
+            name=agent.name,
+            description=agent.description,
+            type=agent.type,
+            model=agent.model,
+            status="active",
+            session_id=agent.session_id
+        )
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
-@router.put("/{agent_id}", response_model=AgentResponse)
-async def update_agent(
+@router.post("/{agent_id}/runs")
+async def run_agent(
     agent_id: str,
-    agent_data: AgentUpdate,
+    request: Request,
     agno_service: AgnoService = Depends(get_agno_service)
 ):
-    """Atualiza um agente"""
+    """Executa agente - compatível com Agno UI"""
     try:
-        # Implementar atualização de agente
-        raise HTTPException(status_code=501, detail="Funcionalidade em desenvolvimento")
+        # Parse form data como no Agno original
+        form_data = await request.form()
+        session_id = form_data.get("session_id", "")
+        message = form_data.get("message", "")
+        stream = form_data.get("stream", "true").lower() == "true"
+        
+        response = await agno_service.run_agent(agent_id, session_id, message, stream)
+        return response
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
@@ -73,8 +97,13 @@ async def delete_agent(
 ):
     """Remove um agente"""
     try:
-        # Implementar remoção de agente
-        raise HTTPException(status_code=501, detail="Funcionalidade em desenvolvimento")
+        if agent_id in agno_service.active_agents:
+            del agno_service.active_agents[agent_id]
+            return {"message": "Agente removido com sucesso"}
+        else:
+            raise HTTPException(status_code=404, detail="Agente não encontrado")
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 

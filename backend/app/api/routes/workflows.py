@@ -1,133 +1,72 @@
 """
-Rotas para gerenciamento de workflows de agentes
+Rotas para gerenciamento de teams/workflows - Implementação baseada no documento oficial do Agno
+Compatível com Agno UI seguindo padrão BMAD
 """
 
-from fastapi import APIRouter, HTTPException, Depends
-from typing import List, Dict, Any, Optional
-from pydantic import BaseModel
+from fastapi import APIRouter, HTTPException, Depends, Request
+from typing import List, Dict, Any
 from app.services.agno_service import AgnoService
 
 router = APIRouter()
 
-class WorkflowRequest(BaseModel):
-    """Schema para criação de workflow"""
-    session_id: str
-    task_description: str
-    custom_config: Optional[Dict[str, Any]] = None
+# Instância global do serviço Agno
+_agno_service = None
 
-class TemplateRequest(BaseModel):
-    """Schema para criação de agente por template"""
-    session_id: str
-    template_name: str
-    custom_config: Optional[Dict[str, Any]] = None
-
-class AgentSuggestionRequest(BaseModel):
-    """Schema para sugestão de agentes"""
-    task_description: str
-
-# Dependency para obter o serviço Agno
 def get_agno_service() -> AgnoService:
-    return AgnoService()
+    global _agno_service
+    if _agno_service is None:
+        _agno_service = AgnoService()
+    return _agno_service
 
-@router.post("/create-workflow")
-async def create_agent_workflow(
-    workflow_data: WorkflowRequest,
+@router.get("/", response_model=List[Dict[str, Any]])
+async def get_teams(
     agno_service: AgnoService = Depends(get_agno_service)
 ):
-    """Cria workflow de agentes baseado na descrição da tarefa"""
+    """Retorna todos os teams disponíveis - compatível com Agno UI"""
     try:
-        agents = await agno_service.create_agent_workflow(
-            workflow_data.session_id,
-            workflow_data.task_description
-        )
-        return {
-            "message": "Workflow criado com sucesso",
-            "agents": agents,
-            "task_description": workflow_data.task_description
+        return agno_service.get_teams()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+
+@router.post("/{team_id}/runs")
+async def run_team(
+    team_id: str,
+    request: Request,
+    agno_service: AgnoService = Depends(get_agno_service)
+):
+    """Executa team - compatível com Agno UI"""
+    try:
+        # Parse form data como no Agno original
+        form_data = await request.form()
+        session_id = form_data.get("session_id", "")
+        message = form_data.get("message", "")
+        stream = form_data.get("stream", "true").lower() == "true"
+        
+        # Por enquanto, simular execução de team
+        response = {
+            "run_id": f"team-run-{team_id}",
+            "team_id": team_id,
+            "session_id": session_id,
+            "status": "RUNNING",
+            "message": f"Team {team_id} processando: {message}",
         }
+        
+        return response
+        
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
-@router.post("/create-from-template")
-async def create_agent_from_template(
-    template_data: TemplateRequest,
+@router.delete("/{team_id}/sessions/{session_id}")
+async def delete_team_session(
+    team_id: str,
+    session_id: str,
     agno_service: AgnoService = Depends(get_agno_service)
 ):
-    """Cria agente a partir de template"""
+    """Remove uma sessão de team - compatível com Agno UI"""
     try:
-        agent = await agno_service.create_agent_from_template(
-            template_data.session_id,
-            template_data.template_name,
-            template_data.custom_config
-        )
-        return {
-            "message": "Agente criado com sucesso",
-            "agent": agent,
-            "template": template_data.template_name
-        }
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
-
-@router.get("/templates")
-async def get_available_templates(
-    agno_service: AgnoService = Depends(get_agno_service)
-):
-    """Retorna templates de agentes disponíveis"""
-    try:
-        templates = agno_service.agent_manager.get_available_templates()
-        return {
-            "templates": templates,
-            "count": len(templates)
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
-
-@router.post("/suggest-agents")
-async def suggest_agent_combination(
-    suggestion_data: AgentSuggestionRequest,
-    agno_service: AgnoService = Depends(get_agno_service)
-):
-    """Sugere combinação de agentes baseada na tarefa"""
-    try:
-        suggestions = agno_service.agent_manager.suggest_agent_combination(
-            suggestion_data.task_description
-        )
-        return {
-            "suggestions": suggestions,
-            "task_description": suggestion_data.task_description,
-            "count": len(suggestions)
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
-
-@router.get("/templates/{template_name}/capabilities")
-async def get_template_capabilities(
-    template_name: str,
-    agno_service: AgnoService = Depends(get_agno_service)
-):
-    """Retorna capacidades de um template"""
-    try:
-        capabilities = agno_service.agent_manager.get_agent_capabilities(template_name)
-        return {
-            "template": template_name,
-            "capabilities": capabilities,
-            "count": len(capabilities)
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
-
-@router.get("/performance/{agent_id}")
-async def get_agent_performance(
-    agent_id: str,
-    agno_service: AgnoService = Depends(get_agno_service)
-):
-    """Retorna métricas de performance de um agente"""
-    try:
-        metrics = agno_service.agent_manager.get_agent_performance_metrics(agent_id)
-        return metrics
+        # Por enquanto, simular remoção
+        return {"message": f"Sessão {session_id} do team {team_id} removida com sucesso"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")

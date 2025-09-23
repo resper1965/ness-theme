@@ -14,9 +14,6 @@ import logging
 from app.config.settings import get_settings
 from app.api.routes import agents, sessions, knowledge, workflows
 from app.database.connection import get_database
-from app.agno import Agent, OpenAIModel, InMemoryStorage, InMemoryKnowledgeBase, IngestEngine, RAGEngine
-from app.agno.agent import AgentConfig
-from app.agno.knowledge import IngestSource
 
 # Configuração de logging
 logging.basicConfig(level=logging.INFO)
@@ -43,11 +40,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Inicialização do sistema Agno
-agno_memory = InMemoryStorage()
-agno_knowledge = InMemoryKnowledgeBase(name="gabi_kb", description="Base de conhecimento do Gabi")
-agno_rag = RAGEngine(agno_knowledge)
-agno_ingest = IngestEngine(agno_knowledge)
+# Inicialização do sistema Agno será feita no startup
 
 @app.on_event("startup")
 async def startup_event():
@@ -58,11 +51,10 @@ async def startup_event():
     await get_database()
     
     # Inicializar sistema Agno
-    await agno_knowledge.add_document(
-        content="Sistema Gabi inicializado com sucesso. Base de conhecimento ativa.",
-        metadata={"type": "system", "status": "initialized"},
-        source="system"
-    )
+    from app.services.agno_service import AgnoService
+    global agno_service
+    agno_service = AgnoService()
+    await agno_service.initialize()
     
     logger.info("✅ Gabi Backend iniciado com sucesso!")
 
@@ -70,7 +62,8 @@ async def startup_event():
 async def shutdown_event():
     """Cleanup do backend"""
     logger.info("🛑 Finalizando Gabi Backend...")
-    logger.info("✅ Sistema Agno finalizado com sucesso!")
+    if 'agno_service' in globals():
+        await agno_service.cleanup()
     logger.info("✅ Gabi Backend finalizado!")
 
 # Health check
@@ -83,11 +76,13 @@ async def health_check():
         "version": "1.0.0"
     }
 
-# Incluir rotas
-app.include_router(agents.router, prefix="/api/v1/agents", tags=["agents"])
-app.include_router(sessions.router, prefix="/api/v1/sessions", tags=["sessions"])
-app.include_router(knowledge.router, prefix="/api/v1/knowledge", tags=["knowledge"])
-app.include_router(workflows.router, prefix="/api/v1/workflows", tags=["workflows"])
+# Rotas compatíveis com Agno UI (sem prefixo /api/v1)
+logger.info("🔗 Registrando rotas...")
+app.include_router(agents.router, prefix="/agents", tags=["agents"])
+app.include_router(sessions.router, prefix="/sessions", tags=["sessions"])
+app.include_router(knowledge.router, prefix="/knowledge", tags=["knowledge"])
+app.include_router(workflows.router, prefix="/teams", tags=["teams"])
+logger.info("✅ Rotas registradas com sucesso!")
 
 # Exception handlers
 @app.exception_handler(HTTPException)
