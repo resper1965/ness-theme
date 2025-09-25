@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: gabi-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Gabi123!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./baseREB:/backup
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - gabi-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 10s bash -c '</dev/tcp/localhost/1433' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  sqlserver-restore:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: gabi-sqlserver-restore
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Gabi123!
+      - MSSQL_PID=Express
+    volumes:
+      - ./baseREB:/backup
+      - ./scripts:/scripts
+    networks:
+      - gabi-network
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    command: ["/scripts/restore-backup.sh"]
+
+volumes:
+  sqlserver_data:
+
+networks:
+  gabi-network:
+    external: true

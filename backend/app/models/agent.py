@@ -28,9 +28,12 @@ class Agent(BaseModel):
     type: AgentType
     model: str
     knowledge_sources: List[KnowledgeSource] = []
-    session_id: str
+    session_id: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.now)
     status: str = "active"
+    specialization: Optional[str] = None
+    expertise_areas: List[str] = []
+    capabilities: List[str] = []
     
     class Config:
         use_enum_values = True

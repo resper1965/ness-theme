@@ -1,7 +1,9 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { ModeSelector } from '@/components/chat/Sidebar/ModeSelector'
-import { EntitySelector } from '@/components/chat/Sidebar/EntitySelector'
+import { ChatHistory } from '@/components/chat/Sidebar/ChatHistory'
+import { SavedChats } from '@/components/chat/Sidebar/SavedChats'
+// import { EntitySelector } from '@/components/chat/Sidebar/EntitySelector' // Removido - movido para configurações
 import useChatActions from '@/hooks/useChatActions'
 import { useStore } from '@/store'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -14,11 +16,13 @@ import { toast } from 'sonner'
 import { useQueryState } from 'nuqs'
 import { truncateText } from '@/lib/utils'
 import { Skeleton } from '@/components/ui/skeleton'
+import { ThemeToggle } from '@/components/ui/theme-toggle'
 
 const ENDPOINT_PLACEHOLDER = 'NENHUM ENDPOINT ADICIONADO'
 const SidebarHeader = () => (
-  <div className="flex items-center gap-3 py-4">
-    <span className="text-2xl font-medium text-white">Gabi<span className="text-[#00ADE8]">.</span></span>
+  <div className="flex items-center justify-between py-4 px-4">
+    <span className="text-2xl font-medium text-foreground" style={{ fontSize: '135%' }}>Gabi<span className="text-brand-blue">.</span></span>
+    <ThemeToggle />
   </div>
 )
 
@@ -32,8 +36,8 @@ const NewChatButton = ({
   <Button
     onClick={onClick}
     disabled={disabled}
-    size="lg"
-    className="h-9 w-full rounded-xl bg-primary text-xs font-medium text-background hover:bg-primary/80"
+    size="sm"
+    className="h-8 w-full rounded-xl bg-primary text-xs font-medium text-background hover:bg-primary/80 mx-4"
   >
     <Icon type="plus-icon" size="xs" className="text-background" />
     <span className="uppercase">Novo Chat</span>
@@ -41,7 +45,7 @@ const NewChatButton = ({
 )
 
 const ModelDisplay = ({ model }: { model: string }) => (
-  <div className="flex h-9 w-full items-center gap-3 rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase text-muted">
+  <div className="flex h-8 w-full items-center gap-3 rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase text-muted mx-4">
     {(() => {
       const icon = getProviderIcon(model)
       return icon ? <Icon type={icon} className="shrink-0" size="xs" /> : null
@@ -112,9 +116,9 @@ const Endpoint = () => {
     setTimeout(() => setIsRotating(false), 500)
   }
 
-  return (
-    <div className="flex flex-col items-start gap-4">
-      <div className="text-sm font-medium text-white">Gabi<span className="text-[#00ADE8]">.</span>OS</div>
+    return (
+        <div className="flex flex-col items-start gap-4 px-4">
+      <div className="text-sm font-medium text-foreground">Gabi<span className="text-brand-blue">.</span>OS</div>
       {isEditing ? (
         <div className="flex w-full items-center gap-1">
           <input
@@ -226,9 +230,9 @@ const Sidebar = () => {
     focusChatInput()
   }
 
-  return (
-    <motion.aside
-      className="relative flex h-screen shrink-0 grow-0 flex-col overflow-hidden px-4 py-6 font-montserrat"
+    return (
+        <motion.aside
+      className="relative flex h-screen shrink-0 grow-0 flex-col overflow-hidden bg-sidebar border-r border-sidebar-border py-6 font-montserrat"
       initial={{ width: '16rem' }}
       animate={{ width: isCollapsed ? '2.5rem' : '16rem' }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
@@ -286,13 +290,13 @@ const Sidebar = () => {
                   ) : (
                     <>
                       <ModeSelector />
-                      <EntitySelector />
                       {selectedModel && (agentId || teamId) && (
                         <ModelDisplay model={selectedModel} />
                       )}
                     </>
                   )}
                 </motion.div>
+                <SavedChats />
                 <Sessions />
               </>
             )}

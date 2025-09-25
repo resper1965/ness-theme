@@ -16,36 +16,36 @@ const ChatBlankState = () => {
       >
 
         {/* Título principal */}
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="text-4xl font-medium text-white mb-4"
-        >
-          Bem-vinda à <span className="text-white">Gabi<span className="text-[#00ADE8]">.</span></span>
-        </motion.h1>
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="text-heading-1 text-default-font mb-6 text-balance"
+            >
+              <span className="text-default-font">Gabi<span className="text-brand-blue">.</span></span>
+            </motion.h1>
 
         {/* Subtítulo */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="text-lg text-[#B8BCC8] font-light leading-relaxed"
-        >
-          Chat Multi-Agentes com tecnologia avançada.
-          <br />
-          Comece uma conversa digitando sua mensagem abaixo.
-        </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+              className="text-body text-subtext-color font-normal leading-relaxed text-balance max-w-2xl"
+            >
+              Chat Multi-Agentes com tecnologia avançada.
+              <br />
+              Comece uma conversa digitando sua mensagem abaixo.
+            </motion.p>
 
         {/* Powered by ness. */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.0 }}
-          className="text-sm text-[#B8BCC8] font-light"
-        >
-          powered by <span className="text-white">ness<span className="text-[#00ADE8]">.</span></span>
-        </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.0 }}
+              className="text-caption text-subtext-color font-light"
+            >
+              powered by <span className="text-default-font">ness<span className="text-brand-blue">.</span></span>
+            </motion.div>
       </motion.div>
     </section>
   )

@@ -1,72 +1,161 @@
 """
-Rotas para gerenciamento de teams/workflows - Implementação baseada no documento oficial do Agno
-Compatível com Agno UI seguindo padrão BMAD
+Endpoints para gerenciamento de workflows baseados na documentação do Agno
 """
 
-from fastapi import APIRouter, HTTPException, Depends, Request
-from typing import List, Dict, Any
-from app.services.agno_service import AgnoService
+from fastapi import APIRouter, Depends, HTTPException
+from typing import List, Dict, Any, Optional
+from pydantic import BaseModel
+from app.services.workflow_service import WorkflowService
+from app.services.agno_service import get_agno_service
 
-router = APIRouter()
+router = APIRouter(prefix="/workflows", tags=["workflows"])
 
-# Instância global do serviço Agno
-_agno_service = None
+# Schemas
+class WorkflowTemplateResponse(BaseModel):
+    id: str
+    name: str
+    description: str
+    type: str
+    agents: List[Dict[str, Any]]
+    sequence: List[Dict[str, Any]]
 
-def get_agno_service() -> AgnoService:
-    global _agno_service
-    if _agno_service is None:
-        _agno_service = AgnoService()
-    return _agno_service
+class WorkflowCreateRequest(BaseModel):
+    template_id: str
+    session_id: str
+    custom_config: Optional[Dict[str, Any]] = None
 
-@router.get("/", response_model=List[Dict[str, Any]])
-async def get_teams(
-    agno_service: AgnoService = Depends(get_agno_service)
-):
-    """Retorna todos os teams disponíveis - compatível com Agno UI"""
+class WorkflowResponse(BaseModel):
+    id: str
+    template_id: str
+    session_id: str
+    name: str
+    description: str
+    type: str
+    agents: List[Dict[str, Any]]
+    sequence: List[Dict[str, Any]]
+    status: str
+    created_at: str
+    custom_config: Dict[str, Any]
+
+class WorkflowStatusUpdate(BaseModel):
+    status: str
+
+# Dependency
+def get_workflow_service() -> WorkflowService:
+    return WorkflowService()
+
+@router.get("/templates", response_model=List[WorkflowTemplateResponse])
+async def get_workflow_templates():
+    """Retorna todos os templates de workflow disponíveis"""
+    workflow_service = get_workflow_service()
+    templates = workflow_service.get_workflow_templates()
+    
+    result = []
+    for template_id, template in templates.items():
+        result.append(WorkflowTemplateResponse(
+            id=template_id,
+            name=template["name"],
+            description=template["description"],
+            type=template["type"],
+            agents=template["agents"],
+            sequence=template["sequence"]
+        ))
+    
+    return result
+
+@router.get("/templates/{template_id}", response_model=WorkflowTemplateResponse)
+async def get_workflow_template(template_id: str):
+    """Retorna um template específico de workflow"""
+    workflow_service = get_workflow_service()
+    template = workflow_service.get_workflow_template(template_id)
+    
+    if not template:
+        raise HTTPException(status_code=404, detail="Template não encontrado")
+    
+    return WorkflowTemplateResponse(
+        id=template_id,
+        name=template["name"],
+        description=template["description"],
+        type=template["type"],
+        agents=template["agents"],
+        sequence=template["sequence"]
+    )
+
+@router.post("/create", response_model=WorkflowResponse)
+async def create_workflow(request: WorkflowCreateRequest):
+    """Cria um novo workflow a partir de um template"""
+    workflow_service = get_workflow_service()
+    
     try:
-        return agno_service.get_teams()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
-
-@router.post("/{team_id}/runs")
-async def run_team(
-    team_id: str,
-    request: Request,
-    agno_service: AgnoService = Depends(get_agno_service)
-):
-    """Executa team - compatível com Agno UI"""
-    try:
-        # Parse form data como no Agno original
-        form_data = await request.form()
-        session_id = form_data.get("session_id", "")
-        message = form_data.get("message", "")
-        stream = form_data.get("stream", "true").lower() == "true"
+        workflow = workflow_service.create_workflow_from_template(
+            template_id=request.template_id,
+            session_id=request.session_id,
+            custom_config=request.custom_config
+        )
         
-        # Por enquanto, simular execução de team
-        response = {
-            "run_id": f"team-run-{team_id}",
-            "team_id": team_id,
-            "session_id": session_id,
-            "status": "RUNNING",
-            "message": f"Team {team_id} processando: {message}",
-        }
-        
-        return response
-        
+        return WorkflowResponse(**workflow)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
 
-@router.delete("/{team_id}/sessions/{session_id}")
-async def delete_team_session(
-    team_id: str,
-    session_id: str,
-    agno_service: AgnoService = Depends(get_agno_service)
-):
-    """Remove uma sessão de team - compatível com Agno UI"""
-    try:
-        # Por enquanto, simular remoção
-        return {"message": f"Sessão {session_id} do team {team_id} removida com sucesso"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+@router.get("/", response_model=List[WorkflowResponse])
+async def get_workflows(session_id: Optional[str] = None):
+    """Retorna workflows ativos, opcionalmente filtrados por sessão"""
+    workflow_service = get_workflow_service()
+    workflows = workflow_service.get_active_workflows(session_id)
+    
+    return [WorkflowResponse(**workflow) for workflow in workflows]
+
+@router.get("/{workflow_id}", response_model=WorkflowResponse)
+async def get_workflow(workflow_id: str):
+    """Retorna um workflow específico"""
+    workflow_service = get_workflow_service()
+    workflow = workflow_service.get_workflow(workflow_id)
+    
+    if not workflow:
+        raise HTTPException(status_code=404, detail="Workflow não encontrado")
+    
+    return WorkflowResponse(**workflow)
+
+@router.put("/{workflow_id}/status")
+async def update_workflow_status(workflow_id: str, status_update: WorkflowStatusUpdate):
+    """Atualiza o status de um workflow"""
+    workflow_service = get_workflow_service()
+    
+    success = workflow_service.update_workflow_status(workflow_id, status_update.status)
+    if not success:
+        raise HTTPException(status_code=404, detail="Workflow não encontrado")
+    
+    return {"message": f"Status do workflow {workflow_id} atualizado para {status_update.status}"}
+
+@router.get("/{workflow_id}/agents")
+async def get_workflow_agents(workflow_id: str):
+    """Retorna os agentes de um workflow"""
+    workflow_service = get_workflow_service()
+    agents = workflow_service.get_workflow_agents(workflow_id)
+    
+    if not agents:
+        raise HTTPException(status_code=404, detail="Workflow não encontrado")
+    
+    return {"agents": agents}
+
+@router.get("/{workflow_id}/sequence")
+async def get_workflow_sequence(workflow_id: str):
+    """Retorna a sequência de execução de um workflow"""
+    workflow_service = get_workflow_service()
+    sequence = workflow_service.get_workflow_sequence(workflow_id)
+    
+    if not sequence:
+        raise HTTPException(status_code=404, detail="Workflow não encontrado")
+    
+    return {"sequence": sequence}
+
+@router.delete("/{workflow_id}")
+async def delete_workflow(workflow_id: str):
+    """Remove um workflow"""
+    workflow_service = get_workflow_service()
+    
+    success = workflow_service.delete_workflow(workflow_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Workflow não encontrado")
+    
+    return {"message": f"Workflow {workflow_id} removido com sucesso"}

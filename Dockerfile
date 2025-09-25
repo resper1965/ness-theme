@@ -5,15 +5,23 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat wget
 WORKDIR /app
 
-# Install dependencies based on the preferred package manager
-COPY package.json pnpm-lock.yaml* ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+    # Install dependencies based on the preferred package manager
+    COPY package.json package-lock.json* ./
+    RUN npm install
 
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+
+# Copy source files first
+COPY src ./src
+COPY public ./public
+COPY assets ./assets
+COPY bmad ./bmad
+COPY docs ./docs
+COPY package.json ./
+COPY pnpm-lock.yaml* ./
 
 # Copy configuration files to their expected locations
 COPY config/next.config.ts ./next.config.ts
@@ -22,8 +30,8 @@ COPY config/postcss.config.mjs ./postcss.config.mjs
 COPY config/tsconfig.json ./tsconfig.json
 COPY config/components.json ./components.json
 
-# Build the application
-RUN npm install -g pnpm && pnpm run build
+    # Build the application
+    RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner

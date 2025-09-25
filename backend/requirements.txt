@@ -11,6 +11,13 @@ sqlalchemy>=2.0.23
 psycopg2-binary>=2.9.9
 alembic>=1.13.1
 
+# SQL Server (para RAG)
+pyodbc>=5.0.1
+
+# Vetorização e embeddings
+sentence-transformers>=2.2.2
+numpy>=1.24.3
+
 # Agno SDK - Instalação via pip
 agno>=0.1.0
 

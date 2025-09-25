@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  restore-backup:
+    image: python:3.11-slim
+    container_name: gabi-restore-backup
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+    volumes:
+      - ./baseREB:/backup
+      - ./scripts:/scripts
+    networks:
+      - gabi-network
+    depends_on:
+      - sqlserver
+    command: |
+      bash -c "
+        echo 'Instalando dependências do sistema...'
+        apt-get update && apt-get install -y unixodbc unixodbc-dev gcc g++ curl
+        
+        echo 'Instalando Microsoft ODBC Driver...'
+        curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
+        curl https://packages.microsoft.com/config/debian/11/prod.list > /etc/apt/sources.list.d/mssql-release.list
+        apt-get update
+        ACCEPT_EULA=Y apt-get install -y msodbcsql17
+        
+        echo 'Instalando dependências Python...'
+        pip install pyodbc
+        
+        echo 'Aguardando SQL Server...'
+        sleep 60
+        
+        echo 'Executando restauração...'
+        python /scripts/restore_backup.py
+      "
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: gabi-sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Gabi123!
+      - MSSQL_PID=Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./baseREB:/backup
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - gabi-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "timeout 10s bash -c '</dev/tcp/localhost/1433' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  sqlserver_data:
+
+networks:
+  gabi-network:
+    external: true

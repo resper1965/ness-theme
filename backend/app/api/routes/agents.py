@@ -5,7 +5,10 @@ Compatível com Agno UI seguindo padrão BMAD
 
 from fastapi import APIRouter, HTTPException, Depends, Request
 from typing import List, Dict, Any
-from app.schemas.agent import AgentCreate, AgentResponse, AgentDetails, MessageRequest, MessageResponse
+from app.schemas.agent import (
+    AgentCreate, AgentResponse, AgentDetails, MessageRequest, MessageResponse,
+    AgentUpdate, AgentTemplate, AgentHealth, AgentClone
+)
 from app.services.agno_service import AgnoService
 
 router = APIRouter()
@@ -42,6 +45,7 @@ async def create_agent(
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+
 
 @router.get("/{agent_id}", response_model=AgentResponse)
 async def get_agent(
@@ -122,4 +126,25 @@ async def send_message(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")
+
+@router.get("/templates")
+async def get_agent_templates():
+    """Retorna templates de agentes disponíveis"""
+    try:
+        # Retornar dados de teste primeiro
+        return [
+            {
+                "id": "research-agent",
+                "name": "Research Agent",
+                "description": "Agente especializado em pesquisa e análise",
+                "type": "agent",
+                "model": "gpt-4",
+                "knowledge_sources": ["rag", "website"],
+                "capabilities": ["web_search", "data_analysis"],
+                "is_system": False
+            }
+        ]
+    except Exception as e:
+        print(f"Erro ao buscar templates: {e}")  # Debug
         raise HTTPException(status_code=500, detail=f"Erro interno: {str(e)}")

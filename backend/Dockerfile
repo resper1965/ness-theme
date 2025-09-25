@@ -10,6 +10,11 @@ RUN apt-get update && apt-get install -y \
     g++ \
     libpq-dev \
     curl \
+    unixodbc \
+    unixodbc-dev \
+    freetds-dev \
+    freetds-bin \
+    tdsodbc \
     && rm -rf /var/lib/apt/lists/*
 
 # Copiar requirements e instalar dependências Python

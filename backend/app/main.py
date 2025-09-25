@@ -12,7 +12,7 @@ from typing import List, Optional
 import logging
 
 from app.config.settings import get_settings
-from app.api.routes import agents, sessions, knowledge, workflows
+from app.api.routes import agents, sessions, knowledge, workflows, agents_crud, ingestion, templates, agno_status, agent_creation, chat, sql, custom_tools, analytics, mcp
 from app.database.connection import get_database
 
 # Configuração de logging
@@ -79,9 +79,19 @@ async def health_check():
 # Rotas compatíveis com Agno UI (sem prefixo /api/v1)
 logger.info("🔗 Registrando rotas...")
 app.include_router(agents.router, prefix="/agents", tags=["agents"])
+app.include_router(agents_crud.router, prefix="/agents", tags=["agents-crud"])
+app.include_router(templates.router, prefix="/agents", tags=["templates"])
 app.include_router(sessions.router, prefix="/sessions", tags=["sessions"])
 app.include_router(knowledge.router, prefix="/knowledge", tags=["knowledge"])
-app.include_router(workflows.router, prefix="/teams", tags=["teams"])
+app.include_router(workflows.router, prefix="/workflows", tags=["workflows"])
+app.include_router(ingestion.router, prefix="/ingestion", tags=["ingestion"])
+app.include_router(agno_status.router, prefix="/agno", tags=["agno-status"])
+app.include_router(agent_creation.router, prefix="/dynamic", tags=["agent-creation"])
+app.include_router(chat.router, prefix="/chat", tags=["chat"])
+app.include_router(sql.router, prefix="/sql", tags=["sql"])
+app.include_router(custom_tools.router, prefix="/tools", tags=["custom-tools"])
+app.include_router(analytics.router, prefix="/analytics", tags=["analytics"])
+app.include_router(mcp.router, prefix="/mcp", tags=["mcp"])
 logger.info("✅ Rotas registradas com sucesso!")
 
 # Exception handlers
