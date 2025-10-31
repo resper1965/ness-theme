@@ -1,57 +1,40 @@
+# Dockerfile para Next.js
 FROM node:18-alpine AS base
 
-# Install dependencies only when needed
+# Instalar dependências apenas quando necessário
 FROM base AS deps
-RUN apk add --no-cache libc6-compat wget
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-    # Install dependencies based on the preferred package manager
-    COPY package.json package-lock.json* ./
-    RUN npm install
+# Copiar arquivos de dependências
+COPY package.json package-lock.json* ./
+RUN npm ci
 
-# Rebuild the source code only when needed
+# Rebuild do código fonte apenas quando necessário
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 
-# Copy source files first
-COPY src ./src
-COPY public ./public
-COPY assets ./assets
-COPY bmad ./bmad
-COPY docs ./docs
-COPY package.json ./
-COPY pnpm-lock.yaml* ./
+# Desabilitar telemetria do Next.js durante o build
+ENV NEXT_TELEMETRY_DISABLED 1
 
-# Copy configuration files to their expected locations
-COPY config/next.config.ts ./next.config.ts
-COPY config/tailwind.config.ts ./tailwind.config.ts
-COPY config/postcss.config.mjs ./postcss.config.mjs
-COPY config/tsconfig.json ./tsconfig.json
-COPY config/components.json ./components.json
+RUN npm run build
 
-    # Build the application
-    RUN npm run build
-
-# Production image, copy all the files and run next
+# Imagem de produção, copiar todos os arquivos e executar next
 FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-
-# Install wget for health checks
-RUN apk add --no-cache wget
+ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
-
-# Automatically leverage output traces to reduce image size
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# Copiar arquivos necessários
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
 USER nextjs
 
@@ -61,3 +44,4 @@ ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
 CMD ["node", "server.js"]
+

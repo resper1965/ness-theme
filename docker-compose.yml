@@ -1,122 +1,19 @@
 services:
-  # Gabi Chat (Frontend Next.js)
-  gabi-chat:
+  app:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: gabi-chat
-    restart: unless-stopped
-    environment:
-      - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+      dockerfile: Dockerfile.dev
+    container_name: gabi-clean-dashboard
     ports:
       - "3000:3000"
-    networks:
-      - gabi-network
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # Gabi OS (Backend Python com Agno SDK)
-  gabi-os:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: gabi-os
-    restart: unless-stopped
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
     environment:
-      - ENVIRONMENT=${ENVIRONMENT:-production}
-      - DEBUG=${DEBUG:-false}
-      - DATABASE_URL=${DATABASE_URL}
-      - AGNO_API_KEY=${AGNO_API_KEY}
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - SECRET_KEY=${SECRET_KEY}
-      - CORS_ORIGINS=${CORS_ORIGINS:-http://localhost:3000,http://localhost:3001}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1}
-    ports:
-      - "7777:8000"
-    volumes:
-      - ./backend/data:/app/data
-      - ./backend/logs:/app/logs
-      - ./backend/uploads:/app/uploads
-    networks:
-      - gabi-network
-    depends_on:
-      - redis
-      - postgres
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # PostgreSQL Database (desenvolvimento local)
-  postgres:
-    image: postgres:15-alpine
-    container_name: gabi-postgres
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+    stdin_open: true
+    tty: true
     restart: unless-stopped
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB:-gabi}
-      - POSTGRES_USER=${POSTGRES_USER:-gabi}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-gabi123}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - gabi-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-gabi} -d ${POSTGRES_DB:-gabi}"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
 
-  # Redis para cache e sessões
-  redis:
-    image: redis:7.4-alpine
-    container_name: gabi-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    networks:
-      - gabi-network
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  # Nginx como proxy reverso - Desabilitado temporariamente
-  # nginx:
-  #   image: nginx:1.27-alpine
-  #   container_name: gabi-nginx
-  #   restart: unless-stopped
-  #   ports:
-  #     - "80:80"
-  #     - "443:443"
-  #   volumes:
-  #     - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf
-  #     - ./deploy/nginx/ssl:/etc/nginx/ssl
-  #   networks:
-  #     - gabi-network
-  #   depends_on:
-  #     - gabi-chat
-  #     - gabi-os
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-f", "http://localhost/health"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
-
-volumes:
-  redis_data:
-  postgres_data:
-
-networks:
-  gabi-network:
-    driver: bridge
-    name: gabi-network

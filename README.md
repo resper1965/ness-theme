@@ -1,89 +1,158 @@
-# Gabi - Chat Multi-Agentes
+# Ness Theme - Template Base
 
-Um chat inteligente baseado no padrão BMAD com tecnologia Agno SDK, implementado seguindo o documento oficial do Agno.
+Template base para projetos futuros criado a partir do tema [tweakcn dashboard](https://tweakcn.com/themes/cmhf58ysi000304l8eexg3lzq).
 
-## 📁 Estrutura do Projeto
+## 🎨 Branding "Ness"
 
-```
-Gabi/
-├── backend/                      # Backend Python com Agno SDK
-├── bmad/                        # Padrão BMAD implementado
-├── src/                         # Frontend Next.js
-├── config/                      # Arquivos de configuração
-│   ├── components.json          # Configuração do shadcn/ui
-│   ├── eslint.config.mjs        # Configuração do ESLint
-│   ├── next.config.ts           # Configuração do Next.js
-│   ├── postcss.config.mjs       # Configuração do PostCSS
-│   ├── prettier.config.cjs      # Configuração do Prettier
-│   ├── tailwind.config.ts       # Configuração do Tailwind
-│   ├── tsconfig.json            # Configuração do TypeScript
-│   └── env.example              # Exemplo de variáveis de ambiente
-├── docs/                        # Documentação
-│   ├── README.md                # Documentação principal
-│   ├── BRAND_GUIDELINES.md      # Diretrizes de marca
-│   └── AGNO_SDK_INTEGRATION_GUIDE.md # Guia de integração Agno SDK
-├── assets/                      # Assets públicos
-│   ├── favicon.ico              # Favicon
-│   ├── gabi.png                 # Logo Gabi
-│   └── gabia.png                # Logo Gabi alternativo
-├── docker-compose.yml           # Orquestração Docker
-├── Dockerfile                   # Container do frontend
-├── package.json                 # Dependências do frontend
-└── pnpm-lock.yaml              # Lock file do pnpm
-```
+Este template usa o branding "Ness" como tema principal, mantendo compatibilidade com modo claro/escuro.
 
-## 🚀 Início Rápido
+## Stack Tecnológica
 
-### 1. Configuração
+- **Next.js 14** - Framework React com App Router
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Estilização utilitária
+- **shadcn/ui** - Componentes UI acessíveis e customizáveis
+- **next-intl** - Sistema multiidiomas nativo
+- **Supabase** - Backend como serviço integrado
+- **BMAD Method** - Framework de desenvolvimento ágil com IA
+
+## 🚀 Instalação
+
 ```bash
-# Copiar configurações de exemplo
-cp config/env.example .env
+# Clonar o repositório
+git clone <repo-url> ness-theme
+cd ness-theme
 
-# Editar variáveis de ambiente
-nano .env
+# Instalar dependências (setup do BMAD executa automaticamente)
+npm install
 ```
 
-### 2. Instalação
-```bash
-# Instalar dependências do frontend
-pnpm install
+O script `postinstall` executa automaticamente o setup do BMAD Method e verifica atualizações.
 
-# Instalar dependências do backend
-cd backend
-pip install -r requirements.txt
+## 📦 BMAD Method
+
+O BMAD Method está incluído no repositório e será verificado automaticamente:
+
+- ✅ **Incluído no repositório**: O diretório `bmad/` faz parte do projeto
+- ✅ **Verificação automática**: Após `npm install`, verifica atualizações
+- ✅ **Atualização manual**: Execute `npm run bmad:update` quando necessário
+
+### Comandos BMAD
+
+```bash
+# Verificar atualizações disponíveis
+npm run bmad:check
+
+# Atualizar BMAD para última versão
+npm run bmad:update
+
+# Setup manual do BMAD (se necessário)
+npm run setup
 ```
 
-### 3. Execução
+## 🌍 Multiidiomas (i18n)
+
+O projeto suporta nativamente múltiplos idiomas:
+- 🇧🇷 Português (pt) - Padrão
+- 🇺🇸 Inglês (en)
+- 🇪🇸 Espanhol (es)
+
+Ver [README-CONFIG.md](./README-CONFIG.md) para mais detalhes.
+
+## 🗄️ Supabase
+
+Supabase está pré-configurado para todas as funcionalidades.
+
+1. Crie um projeto no [Supabase](https://supabase.com)
+2. Copie `.env.example` para `.env.local`
+3. Preencha as credenciais
+
+Ver [SUPABASE-SETUP.md](./SUPABASE-SETUP.md) para instruções completas.
+
+## Desenvolvimento
+
+### Opção 1: Usando npm (local)
+
 ```bash
-# Executar com Docker
+npm run dev
+```
+
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
+
+### Opção 2: Usando Docker (recomendado)
+
+Certifique-se de que o Docker Desktop está rodando, depois:
+
+```bash
+# Usar docker-compose para desenvolvimento
+docker-compose up
+
+# Ou rodar em background
 docker-compose up -d
-
-# Ou executar localmente
-pnpm dev          # Frontend
-cd backend && uvicorn app.main:app --reload  # Backend
 ```
 
-## 📚 Documentação
+O projeto estará disponível em [http://localhost:3000](http://localhost:3000).
 
-- **[Índice da Documentação](docs/INDEX.md)** - Navegação completa da documentação
-- **[Documentação Principal](docs/README.md)** - Guia completo do projeto
-- **[Brand Guidelines](docs/BRAND_GUIDELINES.md)** - Diretrizes de marca
-- **[Agno SDK Integration Guide](docs/AGNO_SDK_INTEGRATION_GUIDE.md)** - Guia de integração
+Para mais informações sobre Docker, consulte [README-DOCKER.md](./README-DOCKER.md).
 
-## 🔗 Links Úteis
+## Adicionar Componentes shadcn/ui
 
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-- **API Docs**: http://localhost:8000/docs
+```bash
+npx shadcn@latest add [component-name]
+```
 
-## 🤝 Contribuição
+## Estrutura do Projeto
 
-1. Fork o projeto
-2. Crie uma branch para sua feature
-3. Commit suas mudanças
-4. Push para a branch
-5. Abra um Pull Request
+```
+├── app/[locale]/         # App Router do Next.js (multiidiomas)
+├── components/           # Componentes React
+│   ├── ui/              # Componentes shadcn/ui
+│   ├── dashboard/       # Componentes do dashboard
+│   └── lib/             # Componentes customizados
+├── lib/                 # Utilitários
+│   ├── supabase/        # Clientes Supabase
+│   └── branding/        # Sistema de branding
+├── i18n/                # Configuração e traduções
+├── bmad/                # BMAD Method framework
+├── scripts/             # Scripts de setup e manutenção
+└── docker-compose.yml   # Configuração Docker
+```
 
-## 📄 Licença
+## Uso como Template
 
-Este projeto está licenciado sob a [MIT License](LICENSE).
+Este projeto foi configurado para ser usado como base para novos projetos:
+
+1. Clone este repositório
+2. Renomeie o diretório para o nome do novo projeto
+3. Atualize o `package.json` com o novo nome
+4. Execute `npm install` para configurar BMAD
+5. Configure Supabase (ver [SUPABASE-SETUP.md](./SUPABASE-SETUP.md))
+6. Comece a desenvolver!
+
+## 📚 Documentação Adicional
+
+- [README-CONFIG.md](./README-CONFIG.md) - Configurações detalhadas (i18n, Supabase, Branding)
+- [README-DOCKER.md](./README-DOCKER.md) - Setup e uso com Docker
+- [SUPABASE-SETUP.md](./SUPABASE-SETUP.md) - Guia completo de setup Supabase
+- [TEMPLATE.md](./TEMPLATE.md) - Guia de uso como template
+
+## Referências
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [shadcn/ui Components](https://ui.shadcn.com/)
+- [bundui/ui Repository](https://github.com/bundui/ui) - Fork do shadcn/ui com referências adicionais
+- [Tailwind CSS](https://tailwindcss.com/docs)
+- [tweakcn](https://tweakcn.com/) - Editor visual de temas
+- [BMAD Method](https://github.com/bmad-method/bmad-method) - Framework de desenvolvimento ágil
+
+## 🔄 Atualizações Automáticas
+
+Após clonar o repositório:
+1. `npm install` executa automaticamente o setup do BMAD
+2. Verifica se há atualizações disponíveis
+3. Notifica se houver novas versões
+
+Para atualizar manualmente:
+```bash
+npm run bmad:update
+```

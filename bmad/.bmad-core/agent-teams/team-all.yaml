@@ -2,7 +2,9 @@
 bundle:
   name: Team All
   icon: 👥
-  description: Includes every core system agent.
+  description: >-
+    Includes every core system agent.
+    Enhanced with template-specific workflows for Gabi Clean template base.
 agents:
   - bmad-orchestrator
   - "*"
@@ -13,3 +15,12 @@ workflows:
   - greenfield-fullstack.yaml
   - greenfield-service.yaml
   - greenfield-ui.yaml
+  - template-base-enhancement.yaml
+  - template-base-greenfield.yaml
+metadata:
+  template_support: true
+  recommended_for:
+    - template-based-projects
+    - next.js-projects
+    - supabase-integration
+    - multi-language-apps

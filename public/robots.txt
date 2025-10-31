@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://gabi.ness.com/sitemap.xml
-
-# Favicon
-Favicon: https://gabi.ness.com/favicon.ico

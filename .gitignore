@@ -32,7 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env.local
-.env
+.env*.local
 
 # vercel
 .vercel
@@ -40,4 +40,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-baseREB/
+
+# BMAD version file (gerado automaticamente)
+bmad/.bmad-version
+
+# BMAD git (mantém apenas o código, não o .git interno)
+# Descomente se não quiser que o .git do bmad seja commitado
+# bmad/.git
